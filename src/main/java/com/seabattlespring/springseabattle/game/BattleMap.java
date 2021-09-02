@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 public class BattleMap {
     private Ship[][] shipsOnMap;
-    //hello
 
     public BattleMap() {
         shipsOnMap = new Ship[10][10];
