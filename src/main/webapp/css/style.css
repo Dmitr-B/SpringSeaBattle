@@ -1,0 +1,10 @@
+.battlefield {
+    width: 860px;
+    height: 530px;
+    position: relative;
+    margin: 0 auto;
+}
+
+h1{
+    color: red;
+}
