@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Controller
-//@RequestMapping("/gameweb")
+//@RequestMapping("/play")
 public class GameController {
 
     @GetMapping("/play")
@@ -18,9 +18,5 @@ public class GameController {
     public String index() {
         return "play";
     }
-//
-//    @GetMapping
-//    public ResponseEntity<String> display() {
-//        return ResponseEntity.ok().build();
-//    }
+
 }

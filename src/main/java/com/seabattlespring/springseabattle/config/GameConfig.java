@@ -14,7 +14,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
 @ComponentScan("com.seabattlespring.springseabattle")
-@EnableWebMvc
+//@EnableWebMvc
 public class GameConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
