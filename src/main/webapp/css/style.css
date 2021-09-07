@@ -3,8 +3,40 @@
     height: 530px;
     position: relative;
     margin: 0 auto;
+    background: url("/img/background.png") repeat;
+}
+
+.field {
+    width: 366px;
+    height: 363px;
+    position: relative;
+    background: url("/img/play_field.png") no-repeat;
+}
+
+.ships {
+    width: 330px;
+    height: 330px;
+    position: relative;
+    left: 29px;
+    top: 27px;
+}
+
+.instruction {
+    margin-left: 430px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.placement-box {
+    line-height: 34px;
+    padding-bottom: 18px;
+}
+
+.placement-box.link {
+    font-size: 20px;
+    border-bottom: dashed 2px #4530af;
 }
 
 h1{
-    color: red;
+    color: blue;
 }
