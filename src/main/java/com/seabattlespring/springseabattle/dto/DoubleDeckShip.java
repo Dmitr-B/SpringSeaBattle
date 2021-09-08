@@ -15,6 +15,6 @@ public class DoubleDeckShip extends Ship{
 
     @Override
     public String toString() {
-        return "DoubleDeckShip{}";
+        return "DoubleDeckShip";
     }
 }

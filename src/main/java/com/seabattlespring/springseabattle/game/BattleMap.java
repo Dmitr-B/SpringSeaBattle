@@ -2,8 +2,10 @@ package com.seabattlespring.springseabattle.game;
 
 import com.seabattlespring.springseabattle.dto.Area;
 import com.seabattlespring.springseabattle.dto.Ship;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+@Data
 public class BattleMap {
     private Ship[][] shipsOnMap;
 
