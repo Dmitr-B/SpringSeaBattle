@@ -11,4 +11,8 @@ public class Player {
         this.name = name;
         this.battleMap = new BattleMap();
     }
+
+    public boolean isEmptySinglePlace(int x, int y) {
+        return battleMap.getOnceShip(x, y) == null;
+    }
 }

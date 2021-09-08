@@ -13,7 +13,7 @@ public class BattleMap {
         shipsOnMap = new Ship[10][10];
     }
 
-    private void setArea(int x, int y) {
+    public void setArea(int x, int y) {
         for (int i = 0; i < 8; i++) {
             switch (i) {
                 case 0: if (x + 1 < shipsOnMap.length)
@@ -53,7 +53,7 @@ public class BattleMap {
         }
     }
 
-    private Ship getOnceShip(int x, int y) {
+    public Ship getOnceShip(int x, int y) {
         return shipsOnMap[x][y];
     }
 

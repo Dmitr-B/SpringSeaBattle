@@ -24,6 +24,9 @@ public class ShipService {
 
 
     public void saveSingleShip(SingleDeckShip singleDeckShip) {
+//        if (player.isEmptySinglePlace(singleDeckShip.getX(), singleDeckShip.getY())) {
+//            player.getBattleMap().getOnceShip(singleDeckShip.getX(),singleDeckShip.getY())
+//        }
         singleDeckShips.add(singleDeckShip);
         log.info("Ship" + singleDeckShips);
         log.info("counter" + SingleDeckShip.getCounter());

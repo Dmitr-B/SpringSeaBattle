@@ -2,9 +2,12 @@ package com.seabattlespring.springseabattle.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.seabattlespring.springseabattle.game.BattleMap;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SingleDeckShip extends Ship{
     private static int counter = 0;
