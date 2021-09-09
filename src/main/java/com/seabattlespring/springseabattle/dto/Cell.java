@@ -1,8 +1,8 @@
 package com.seabattlespring.springseabattle.dto;
 
-public abstract class Ship extends Cell{
+public abstract class Cell {
     @Override
     public String toString() {
-        return "Ship";
+        return "Cell";
     }
 }

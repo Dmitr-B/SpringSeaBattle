@@ -1,13 +1,14 @@
 package com.seabattlespring.springseabattle.game;
 
 import com.seabattlespring.springseabattle.dto.Area;
+import com.seabattlespring.springseabattle.dto.Cell;
 import com.seabattlespring.springseabattle.dto.Ship;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
 public class BattleMap {
-    private Ship[][] shipsOnMap;
+    private Cell[][] shipsOnMap;
 
     public BattleMap() {
         shipsOnMap = new Ship[10][10];
@@ -53,7 +54,7 @@ public class BattleMap {
         }
     }
 
-    public Ship getOnceShip(int x, int y) {
+    public Cell getOnceShip(int x, int y) {
         return shipsOnMap[x][y];
     }
 
