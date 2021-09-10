@@ -3,12 +3,16 @@ package com.seabattlespring.springseabattle.game;
 import com.seabattlespring.springseabattle.dto.Area;
 import com.seabattlespring.springseabattle.dto.Cell;
 import com.seabattlespring.springseabattle.dto.Ship;
+import com.seabattlespring.springseabattle.dto.SingleDeckShip;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 @Data
 public class BattleMap {
     private Cell[][] shipsOnMap;
+    private Set<SingleDeckShip> singleDeckShips;
 
     public BattleMap() {
         shipsOnMap = new Ship[10][10];

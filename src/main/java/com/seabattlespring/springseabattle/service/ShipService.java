@@ -1,6 +1,7 @@
 package com.seabattlespring.springseabattle.service;
 
 import com.seabattlespring.springseabattle.dto.SingleDeckShip;
+import com.seabattlespring.springseabattle.game.Game;
 import com.seabattlespring.springseabattle.game.Player;
 import com.seabattlespring.springseabattle.repository.SingleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +18,20 @@ public class ShipService {
 
     private final SingleRepository singleRepository;
 
-    private Player player;
-//    private List<SingleDeckShip> singleDeckShips;
-//
-//    {
-//        singleDeckShips = new ArrayList<>();
-//        player = new Player("loh");
-//    }
+    private Game game;
+
+    {
+        Player player = new Player("loh");
+        Player player1 = new Player("Pidar");
+        game = new Game(player,player1);
+    }
 
 
     public void saveSingleShip(SingleDeckShip singleDeckShip) {
 
+        if (game.getPlayer1().isEmptySinglePlace(singleDeckShip.getCoordinates().getX(), singleDeckShip.getCoordinates().getY())) {
+            //game.getPlayer1().getBattleMap().setArea(singleDeckShip.getCoordinates().getX(), singleDeckShip.getCoordinates().getY());
+        }
         singleRepository.save(singleDeckShip);
         //singleDeckShips.add(singleDeckShip);
         //log.info("Ship" + singleDeckShips);
