@@ -6,23 +6,31 @@ import com.seabattlespring.springseabattle.game.BattleMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Document
 public class SingleDeckShip extends Ship{
-    private static int counter = 0;
+    private static int counter = 1;
 
-    @JsonProperty("x")
-    private int x;
+    @Id
+    private String id = this.toString() + SingleDeckShip.getCounter();
 
-    @JsonProperty("y")
-    private int y;
+    @JsonProperty("coordinates")
+    private Coordinates coordinates;
+
+//    @JsonProperty("x")
+//    private int x;
+//
+//    @JsonProperty("y")
+//    private int y;
     //private int[][] coordinates = new int[0][1];
 
     @JsonCreator
-    public SingleDeckShip(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public SingleDeckShip(Coordinates coordinates) {
+        this.coordinates = coordinates;
 
         if (counter < 4)
             counter++;
