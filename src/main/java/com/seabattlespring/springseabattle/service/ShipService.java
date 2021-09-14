@@ -28,7 +28,6 @@ public class ShipService {
         Player player = new Player("loh");
         Player player1 = new Player("Pidar");
         game = new Game(player,player1);
-        System.out.println("Condon " + SingleDeckShip.getCounter());
     }
 
 
@@ -62,6 +61,12 @@ public class ShipService {
     }
 
     public void addDoubleShipToMap(DoubleDeckShip doubleDeckShip) {
-        log.info("Suchka " + doubleDeckShip);
+        log.info("Fuck " + doubleDeckShip);
+        log.info("x " + doubleDeckShip.getCoordinates1().getX());
+        log.info("y " + doubleDeckShip.getCoordinates1().getY());
+        log.info("x1 " + doubleDeckShip.getCoordinates2().getX());
+        log.info("y1 " + doubleDeckShip.getCoordinates2().getY());
+        log.info("Valid input " + game.getPlayer1().isValidDoubleCoordinates(doubleDeckShip.getCoordinates1().getX(), doubleDeckShip.getCoordinates1().getY(),
+                doubleDeckShip.getCoordinates2().getX(), doubleDeckShip.getCoordinates2().getY()));
     }
 }

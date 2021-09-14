@@ -21,4 +21,21 @@ public class Player {
     public boolean isValidSingleShip(int x, int y) {
         return isEmptySinglePlace(x, y) && SingleDeckShip.getCounter() != 4;
     }
+
+    public boolean isEmptyDoublePlace(int x, int y, int x1, int y1) {
+        return battleMap.getOnceShip(x, y) == null && battleMap.getOnceShip(x1, y1) == null;
+    }
+
+    public boolean isValidDoubleCoordinates(int x, int y, int x1, int y1) {
+
+        if (x1 != x && y1 !=y) {
+            return false;
+        }
+
+        return x1 == x + 1 || y1 == y + 1 || x1 == x - 1 || y1 == y -1; //
+    }
+
+    public boolean isValidDoubleShip(int x, int y, int x1, int y1) {
+        return true;
+    }
 }

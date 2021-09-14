@@ -31,7 +31,7 @@ public class GameController {
     public ResponseEntity<SingleDeckShip> saveSingleShip(@RequestBody SingleDeckShip singleDeckShip) {
 
         if (singleDeckShip == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
 
         //this.shipService.saveSingleShip(singleDeckShip);
@@ -46,7 +46,7 @@ public class GameController {
     public ResponseEntity<DoubleDeckShip> saveDoubleShip(@RequestBody DoubleDeckShip doubleDeckShip) {
 
         if (doubleDeckShip == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
 
         this.shipService.addDoubleShipToMap(doubleDeckShip);
