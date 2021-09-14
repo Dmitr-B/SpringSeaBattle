@@ -1,5 +1,6 @@
 package com.seabattlespring.springseabattle.game;
 
+import com.seabattlespring.springseabattle.dto.SingleDeckShip;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +16,9 @@ public class Player {
 
     public boolean isEmptySinglePlace(int x, int y) {
         return battleMap.getOnceShip(x, y) == null;
+    }
+
+    public boolean isValidSingleShip(int x, int y) {
+        return isEmptySinglePlace(x, y) && SingleDeckShip.getCounter() != 4;
     }
 }

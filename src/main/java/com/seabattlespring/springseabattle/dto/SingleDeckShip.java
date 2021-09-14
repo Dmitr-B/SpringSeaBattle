@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document
 public class SingleDeckShip extends Ship{
-    private static int counter = 1;
+    private static int counter = 0;
 
     @Id
     private String id = this.toString() + SingleDeckShip.getCounter();
@@ -32,8 +32,14 @@ public class SingleDeckShip extends Ship{
     public SingleDeckShip(Coordinates coordinates) {
         this.coordinates = coordinates;
 
-        if (counter < 4)
-            counter++;
+        //if (counter < 4){
+        //    counter++;
+       // }
+
+    }
+
+    public static void setCounter(int counter) {
+        SingleDeckShip.counter = counter;
     }
 
     public static int getCounter() {

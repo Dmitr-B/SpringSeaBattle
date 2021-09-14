@@ -1,5 +1,6 @@
 package com.seabattlespring.springseabattle.controller;
 
+import com.seabattlespring.springseabattle.dto.DoubleDeckShip;
 import com.seabattlespring.springseabattle.dto.SingleDeckShip;
 import com.seabattlespring.springseabattle.service.ShipService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,23 @@ public class GameController {
             return ResponseEntity.notFound().build();
         }
 
-        this.shipService.saveSingleShip(singleDeckShip);
+        //this.shipService.saveSingleShip(singleDeckShip);
+        if (SingleDeckShip.getCounter() != 4) {
+            this.shipService.addSingleShipToMap(singleDeckShip);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(singleDeckShip);
+    }
+
+    @PostMapping("/double")
+    public ResponseEntity<DoubleDeckShip> saveDoubleShip(@RequestBody DoubleDeckShip doubleDeckShip) {
+
+        if (doubleDeckShip == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        this.shipService.addDoubleShipToMap(doubleDeckShip);
+        return ResponseEntity.status(HttpStatus.CREATED).body(doubleDeckShip);
     }
 
 }
