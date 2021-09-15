@@ -2,6 +2,7 @@ package com.seabattlespring.springseabattle.controller;
 
 import com.seabattlespring.springseabattle.dto.DoubleDeckShip;
 import com.seabattlespring.springseabattle.dto.SingleDeckShip;
+import com.seabattlespring.springseabattle.repository.domain.Ships;
 import com.seabattlespring.springseabattle.service.ShipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,19 +28,31 @@ public class GameController {
         return "play";
     }
 
-    @PostMapping()
-    public ResponseEntity<SingleDeckShip> saveSingleShip(@RequestBody SingleDeckShip singleDeckShip) {
+//    @PostMapping()
+//    public ResponseEntity<SingleDeckShip> saveSingleShip(@RequestBody SingleDeckShip singleDeckShip) {
+//
+//        if (singleDeckShip == null) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        //this.shipService.saveSingleShip(singleDeckShip);
+//        if (SingleDeckShip.getCounter() != 4) {
+//            this.shipService.addSingleShipToMap(singleDeckShip);
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(singleDeckShip);
+//    }
 
-        if (singleDeckShip == null) {
+    @PostMapping()
+    public ResponseEntity<Ships> saveShips(@RequestBody Ships ships) {
+
+        if (ships == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        //this.shipService.saveSingleShip(singleDeckShip);
-        if (SingleDeckShip.getCounter() != 4) {
-            this.shipService.addSingleShipToMap(singleDeckShip);
-        }
+        this.shipService.saveShip(ships);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(singleDeckShip);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ships);
     }
 
     @PostMapping("/double")

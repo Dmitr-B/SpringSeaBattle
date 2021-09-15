@@ -1,10 +1,7 @@
 package com.seabattlespring.springseabattle.game;
 
 import com.seabattlespring.springseabattle.dto.*;
-import com.seabattlespring.springseabattle.repository.SingleRepository;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -14,7 +11,7 @@ import java.util.Set;
 public class BattleMap {
     private Cell[][] shipsOnMap;
     private Set<SingleDeckShip> singleDeckShips;
-    private SingleRepository singleRepository;
+    //private SingleRepository singleRepository;
 
     public BattleMap() {
         shipsOnMap = new Cell[10][10];

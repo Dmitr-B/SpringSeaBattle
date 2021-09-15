@@ -11,12 +11,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Document
+//@Document
 public class SingleDeckShip extends Ship{
     private static int counter = 0;
 
-    @Id
-    private String id = this.toString() + SingleDeckShip.getCounter();
+    //@Id
+    //private String id = this.toString() + SingleDeckShip.getCounter();
 
     @JsonProperty("coordinates")
     private Coordinates coordinates;
