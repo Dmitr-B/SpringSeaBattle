@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -26,6 +28,7 @@ public class ShipService {
         Player player = new Player("loh");
         Player player1 = new Player("Pidar");
         game = new Game(player,player1);
+        //System.out.println(this.getAllShips());
     }
 
 
@@ -49,6 +52,10 @@ public class ShipService {
     public void saveShip(Ships ships) {
         if (ships.getShipType().equals(ShipType.SINGLE))
         shipsRepository.save(ships);
+    }
+
+    public List<Ships> getAllShips() {
+        return shipsRepository.findAll();
     }
 
     public void addSingleShipToMap(SingleDeckShip singleDeckShip) {
