@@ -18,6 +18,8 @@ public class Game {
     private FightField fightField2;
 
     public Game() {
-        state = State.ARRANGEMENT;
+        this.state = State.ARRANGEMENT;
+        this.fightField1 = new FightField(FightField.Owner.PLAYER1);
+        this.fightField2 = new FightField(FightField.Owner.PLAYER2);
     }
 }

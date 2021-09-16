@@ -1,20 +1,17 @@
 package com.seabattlespring.springseabattle.controller;
 
-import com.seabattlespring.springseabattle.dto.DoubleDeckShip;
-import com.seabattlespring.springseabattle.dto.SingleDeckShip;
+import com.seabattlespring.springseabattle.dto.Ship;
+import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
 import com.seabattlespring.springseabattle.repository.domain.Ships;
 import com.seabattlespring.springseabattle.service.GameService;
 import com.seabattlespring.springseabattle.service.ShipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Log4j2
 @Controller
@@ -70,15 +67,9 @@ public class GameController {
 //    }
 
     @PostMapping
-    public ResponseEntity<Game> createGame(@RequestBody Game game) {
-
-        if (game == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        this.gameService.saveGame(game);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(game);
+    public ResponseEntity<String> createGame() {
+        String id = gameService.createGame();
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @GetMapping("/{id}")
@@ -95,6 +86,19 @@ public class GameController {
         }
 
         return ResponseEntity.ok(game);
+    }
+
+    @PatchMapping("/{id}/fight_field/{owner}/ship")
+    public ResponseEntity<Void> addShip(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
+                                        @RequestBody Ship ship) {
+
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        gameService.addShip(id, owner, ship);
+
+        return ResponseEntity.ok().build();
     }
 
 }
