@@ -1,7 +1,9 @@
 package com.seabattlespring.springseabattle.service;
 
+import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.repository.GameRepository;
+import com.seabattlespring.springseabattle.repository.domain.Cell;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
 import com.seabattlespring.springseabattle.repository.domain.Ships;
@@ -37,10 +39,19 @@ public class GameService {
 
         //todo Ship(Controller layer) -> Ships(Model Layer)
         Ships ships = new Ships();
-        //ships.setShipType();
-        //ships.setCells();
+        ships.setShipType(ship.getShipType());
+        ships.setCells(ship.getCells());
+
+        for (int i = 0; i < ship.getCells().size(); i++) {
+
+            fightField.getCells().get(ship.getCells().get(i).getCoordinates().getX()).get(ship.getCells().get(i).getCoordinates().getY())
+                    .setCellState(ship.getCells().get(i).getCellState());
+
+        }
 
         fightField.getShips().add(ships);
+
+        gameRepository.save(game);
 
         //todo зберігти дані в БД
     }

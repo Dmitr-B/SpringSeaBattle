@@ -1,5 +1,6 @@
 package com.seabattlespring.springseabattle.repository;
 
+import com.seabattlespring.springseabattle.repository.domain.Cell;
 import com.seabattlespring.springseabattle.repository.domain.Game;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
