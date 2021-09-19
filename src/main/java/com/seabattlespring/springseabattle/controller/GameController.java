@@ -1,6 +1,8 @@
 package com.seabattlespring.springseabattle.controller;
 
 import com.seabattlespring.springseabattle.dto.Ship;
+import com.seabattlespring.springseabattle.dto.Shot;
+import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
 import com.seabattlespring.springseabattle.repository.domain.Ships;
@@ -99,6 +101,19 @@ public class GameController {
         gameService.addShip(id, owner, ship);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/fight_field/{owner}/shot")
+    public ResponseEntity<CellState> shot(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
+                                          @RequestBody Shot shot) {
+
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        CellState state = gameService.shot(id, owner, shot);
+
+        return ResponseEntity.ok(state);
     }
 
 }
