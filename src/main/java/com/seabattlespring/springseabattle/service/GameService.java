@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final ShipsRepository shipsRepository;
+    //private final ShipsRepository shipsRepository;
 
     public String createGame() {
         Game game = new Game();
@@ -72,7 +72,7 @@ public class GameService {
 
             case SHIP:
                 //return CellState.KNOCKED;
-                return resultOfShot(fightField, shot1.getCoordinates());
+                return resultOfShot(game, fightField, shot1.getCoordinates());
             case KNOCKED:
                 return CellState.SUNK;
         }
@@ -87,30 +87,47 @@ public class GameService {
         //return ships.getShipType();
    // }
 
-    private CellState resultOfShot(FightField fightField, Coordinates coordinates) {
+    private CellState resultOfShot(Game game, FightField fightField, Coordinates coordinates) {
 
-//        Ships ships1 = Stream.of(shipsList.iterator().next()).filter(ships -> ships.getCells().iterator().next().getCoordinates().equals(coordinates))
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("fuck"));
+//        Ships ships = new Ships();
 //
-//        log.info("suck " + ships1);
+//        for (Ships ship:fightField.getShips()) {
+//            for (Cell cell: ship.getCells()) {
+//                if (cell.getCoordinates().equals(coordinates)) {
+//                    ships = ship;
+//                    break;
+//                }
+//            }
+//        }
 
-
-        Ships ships = Stream.of(fightField.getShips().iterator().next())
-                //.filter(ship -> ship.iterator().next().getCells().iterator().next().getCoordinates().equals(coordinates))
-                .filter(ship -> ship.getCells().iterator().next().getCoordinates().equals(coordinates))
-                .findAny()
+        Ships ships = fightField.getShips().stream()
+                .filter(s -> s.getCells().stream().anyMatch(cell -> cell.getCoordinates().equals(coordinates)))
+                .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("ship not found"));
 
-        //Ships ships1 = ships.stream().findFirst().orElseThrow(() -> new NoSuchElementException("list of ships is empty"));
+        long count = ships.getCells().stream()
+                .filter(ship -> ship.getCellState().equals(CellState.SHIP))
+                .count();
 
-        long count = Stream.of(ships.getCells()).filter(s -> s.iterator().next().getCellState().equals(CellState.SHIP)).count();
+        if (count == 1) {
 
-        log.info("count " + count);
-
-        if (count == 1)
+            ships.getCells()
+                    .forEach(cell -> cell.setCellState(CellState.SUNK));
+            log.info("loh " + ships);
             return CellState.SUNK;
+        }
+            //fightField.getCells().forEach(cells -> cells.forEach(cell -> cell.getCoordinates().));
 
+
+        fightField.getCells().get(coordinates.getX()).get(coordinates.getY()).setCellState(CellState.KNOCKED);
+        //log.info("chlen " + fightField);
+        ships.getCells().stream()
+                .filter(cell1 -> cell1.getCoordinates().equals(coordinates))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("cell not found"))
+                .setCellState(CellState.KNOCKED);
+        //log.info("zalupa " + ships);
+        gameRepository.save(game);
         return CellState.KNOCKED;
     }
 }
