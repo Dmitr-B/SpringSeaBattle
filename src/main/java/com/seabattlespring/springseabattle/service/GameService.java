@@ -112,7 +112,7 @@ public class GameService {
         if (count == 1) {
 
             ships.getCells()
-                    .forEach(cell -> cell.setCellState(CellState.SUNK));
+                    .forEach(sunkCells -> sunkCells.setCellState(CellState.SUNK));
             log.info("loh " + ships);
             return CellState.SUNK;
         }
@@ -122,7 +122,7 @@ public class GameService {
         fightField.getCells().get(coordinates.getX()).get(coordinates.getY()).setCellState(CellState.KNOCKED);
         //log.info("chlen " + fightField);
         ships.getCells().stream()
-                .filter(cell1 -> cell1.getCoordinates().equals(coordinates))
+                .filter(knockedCell -> knockedCell.getCoordinates().equals(coordinates))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("cell not found"))
                 .setCellState(CellState.KNOCKED);
