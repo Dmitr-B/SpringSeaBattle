@@ -4,7 +4,7 @@ import com.seabattlespring.springseabattle.dto.Coordinates;
 import lombok.Data;
 
 @Data
-public class Shot {
+public class ShotDto {
 
     private Coordinates coordinates;
 }

@@ -2,13 +2,9 @@ package com.seabattlespring.springseabattle.repository.domain;
 
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -21,7 +17,7 @@ public class FightField {
 
     private Owner owner;
     private List<List<Cell>> cells;
-    private List<Ships> ships = Collections.emptyList();
+    private List<ShipDto> ships = Collections.emptyList();
 
     public FightField(Owner owner) {
         this.owner = owner;

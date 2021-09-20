@@ -1,43 +1,35 @@
 package com.seabattlespring.springseabattle.game;
 
-import com.seabattlespring.springseabattle.dto.Coordinates;
-import com.seabattlespring.springseabattle.repository.domain.Ships;
-import com.seabattlespring.springseabattle.service.ShipService;
+import com.seabattlespring.springseabattle.repository.domain.ShipDto;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @RequiredArgsConstructor
 //@Component
 public class Validator {
 
-    public boolean isValidShip(Ships ships) {
+    public boolean isValidShip(ShipDto shipDto) {
 
-        switch (ships.getShipType()) {
+        switch (shipDto.getShipType()) {
             case SINGLE:
-                return isValidSingleShip(ships);
+                return isValidSingleShip(shipDto);
             //break;
             case DOUBLE:
-                //return isValidDoubleShip(ships);
+                //return isValidDoubleShip(shipDto);
             break;
             case THREE:
-                ///return isValidThreeShip(ships);
+                ///return isValidThreeShip(shipDto);
             break;
             case FOUR:
-                //return isValidFourShip(ships);
+                //return isValidFourShip(shipDto);
             break;
         }
 
         return false;
     }
 
-    private boolean isValidSingleShip(Ships ships) {
+    private boolean isValidSingleShip(ShipDto shipDto) {
         return true;
     }
 }

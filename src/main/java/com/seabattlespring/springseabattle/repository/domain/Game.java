@@ -13,7 +13,7 @@ public class Game {
     @Id
     private String id;
 
-    private State state;
+    private State state;//todo
     private FightField fightField1;
     private FightField fightField2;
 

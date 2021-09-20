@@ -1,13 +1,12 @@
 package com.seabattlespring.springseabattle.service;
 
-import com.seabattlespring.springseabattle.dto.Cell;
 //import com.seabattlespring.springseabattle.dto.DoubleDeckShip;
 //import com.seabattlespring.springseabattle.dto.SingleDeckShip;
 //import com.seabattlespring.springseabattle.game.Game;
 //import com.seabattlespring.springseabattle.game.Player;
 import com.seabattlespring.springseabattle.repository.ShipsRepository;
 import com.seabattlespring.springseabattle.repository.domain.ShipType;
-import com.seabattlespring.springseabattle.repository.domain.Ships;
+import com.seabattlespring.springseabattle.repository.domain.ShipDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -49,12 +48,12 @@ public class ShipService {
 ////        System.out.println(player.getName());
 //    }
 
-    public void saveShip(Ships ships) {
-        if (ships.getShipType().equals(ShipType.SINGLE))
-        shipsRepository.save(ships);
+    public void saveShip(ShipDto shipDto) {
+        if (shipDto.getShipType().equals(ShipType.SINGLE))
+        shipsRepository.save(shipDto);
     }
 
-    public List<Ships> getAllShips() {
+    public List<ShipDto> getAllShips() {
         return shipsRepository.findAll();
     }
 

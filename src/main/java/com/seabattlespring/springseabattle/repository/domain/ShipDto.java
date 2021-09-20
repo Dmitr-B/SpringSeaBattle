@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class Ships extends Cell {
+public class ShipDto extends Cell {
 
     @JsonProperty("type")
     private ShipType shipType;

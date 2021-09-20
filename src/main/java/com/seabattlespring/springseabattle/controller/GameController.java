@@ -5,7 +5,6 @@ import com.seabattlespring.springseabattle.dto.Shot;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
-import com.seabattlespring.springseabattle.repository.domain.Ships;
 import com.seabattlespring.springseabattle.service.GameService;
 import com.seabattlespring.springseabattle.service.ShipService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +45,7 @@ public class GameController {
 //    }
 
 //    @PostMapping()
-//    public ResponseEntity<Ships> saveShips(@RequestBody Ships ships) {
+//    public ResponseEntity<ShipDto> saveShips(@RequestBody ShipDto ships) {
 //
 //        if (ships == null) {
 //            return ResponseEntity.badRequest().build();
