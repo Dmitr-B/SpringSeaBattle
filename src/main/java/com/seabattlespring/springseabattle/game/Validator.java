@@ -1,6 +1,7 @@
 package com.seabattlespring.springseabattle.game;
 
 import com.seabattlespring.springseabattle.repository.domain.ShipDto;
+import com.seabattlespring.springseabattle.repository.domain.ShipType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -38,5 +39,10 @@ public class Validator {
 
     private boolean isValidSingleShip(ShipDto shipDto) {
         return true;
+    }
+
+    public boolean isValidNumberOfCoordinates(ShipDto shipDto) {
+        return ShipType.SINGLE.getNumber() == shipDto.getCells().size() || ShipType.DOUBLE.getNumber() == shipDto.getCells().size()
+                || ShipType.THREE.getNumber() == shipDto.getCells().size() || ShipType.FOUR.getNumber() == shipDto.getCells().size();
     }
 }
