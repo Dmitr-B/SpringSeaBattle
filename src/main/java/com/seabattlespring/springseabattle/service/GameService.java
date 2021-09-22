@@ -49,6 +49,7 @@ public class GameService {
             }
 
             fightField.getShips().add(shipDto);
+            setCellArea(fightField, shipDto);
 
             log.info("stateFight " + isFightStateGame(game));
 
@@ -95,8 +96,6 @@ public class GameService {
             gameRepository.save(game);
         }
 
-
-//
         return newCellState;
     }
 
@@ -145,8 +144,8 @@ public class GameService {
     private boolean isFightStateGame(Game game) {
         FightField fightField1 = game.getFightField1();
         FightField fightField2 = game.getFightField2();
-        log.info("size1" + fightField1.getShips().size());
-        log.info("size1" + fightField2.getShips().size());
+        log.info("size1 " + fightField1.getShips().size());
+        log.info("size2 " + fightField2.getShips().size());
 
         return fightField1.getShips().size() == 1 && fightField2.getShips().size() == 1;
     }
@@ -165,4 +164,35 @@ public class GameService {
 
         return overPlayer1 || overPlayer2;
     }
+
+    private void setCellArea(FightField fightField, ShipDto shipDto) {
+        int fromX = Math.max((shipDto.getCells().get(0).getCoordinates().getX() - 1), 0);
+        int fromY = Math.max((shipDto.getCells().get(0).getCoordinates().getY() - 1), 0);
+        int toX = Math.min((shipDto.getCells().get(shipDto.getCells().size()-1).getCoordinates().getX() + 1), 9);
+        int toY = Math.min((shipDto.getCells().get(shipDto.getCells().size()-1).getCoordinates().getY() + 1), 9);
+
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = fromY; y <= toY; y++) {
+                if (CellState.EMPTY.equals(fightField.getCells().get(x).get(y).getCellState())) {
+                    fightField.getCells().get(x).get(y).setCellState(CellState.AREA);
+                }
+            }
+        }
+    }
+
+//    private int validFromX(int fromX) {
+//        return Math.max(fromX, 0);
+//    }
+//
+//    private int validFromY(int fromY) {
+//        return Math.max(fromY, 0);
+//    }
+//
+//    private int validToX(int toX) {
+//        return Math.min(toX, 9);
+//    }
+//
+//    private int validToY(int toY) {
+//        return Math.min(toY, 9);
+//    }
 }

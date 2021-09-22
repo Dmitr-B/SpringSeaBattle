@@ -8,6 +8,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 //@Component
 public class Validator {
+    //todo валідація
+    //1 кількість координат
+    //2 вірність координат валідність (від 0 до 9)
+    //3 чи гра доступна
+    //кількість існуючих кораблів на кожен тип
+    //чи знаїодяться координати по одній прямій і поруч
+    //чи вільна ячейка для розміщення корабля
 
     public boolean isValidShip(ShipDto shipDto) {
 

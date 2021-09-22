@@ -1,12 +1,21 @@
 package com.seabattlespring.springseabattle.repository.domain;
 
 public enum ShipType {
-    //todo розмір в єнам і кількість
-    //1 кількість координат
-    //2 вірність координат валідність (від 0 до 9)
-    //3 чи гра доступна
-    //кількість існуючих кораблів на кожен тип
-    //чи знаїодяться координати по одній прямій і поруч
-    //чи вільна ячейка для розміщення корабля
-    SINGLE, DOUBLE, THREE, FOUR
+    SINGLE(1,4), DOUBLE(2,3), THREE(3,2), FOUR(4,1);
+
+    private int size;
+    private int number;
+
+    ShipType(int size, int number) {
+        this.size = size;
+        this.number = number;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int getNumber() {
+        return number;
+    }
 }
