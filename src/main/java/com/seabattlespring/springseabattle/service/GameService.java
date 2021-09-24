@@ -3,6 +3,7 @@ package com.seabattlespring.springseabattle.service;
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
+import com.seabattlespring.springseabattle.game.validator.*;
 import com.seabattlespring.springseabattle.repository.GameRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,10 @@ public class GameService {
                     .filter(field -> owner.equals(field.getOwner()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("field not found"));
+
+            ShipValidator shipValidator = createValidator();
+
+            log.info("valid " + shipValidator.valid(fightField, ship));
 
             ShipDto shipDto = new ShipDto();
             shipDto.setShipType(ship.getShipType());
@@ -178,6 +183,12 @@ public class GameService {
                 }
             }
         }
+    }
+
+    private ShipValidator createValidator() {
+        return  new NumberOfCoordinatesValidator(new OneStraightLineValidator(
+                new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
+                        new CellEmptyValidator(null)))));
     }
 
 //    private int validFromX(int fromX) {

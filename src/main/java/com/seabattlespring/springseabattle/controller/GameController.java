@@ -12,7 +12,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Log4j2
 @Controller
@@ -91,10 +94,14 @@ public class GameController {
 
     @PatchMapping("/{id}/fight_field/{owner}/ship")
     public ResponseEntity<Void> addShip(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
-                                        @RequestBody Ship ship) {
+                                        @Valid @RequestBody Ship ship, BindingResult bindingResult) {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();
+        }
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         gameService.addShip(id, owner, ship);
@@ -104,11 +111,16 @@ public class GameController {
 
     @PatchMapping("/{id}/fight_field/{owner}/shot")
     public ResponseEntity<CellState> shot(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
-                                          @RequestBody Shot shot) {
+                                          @Valid @RequestBody Shot shot, BindingResult bindingResult) {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();
         }
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
 
         CellState state = gameService.shot(id, owner, shot);
 
