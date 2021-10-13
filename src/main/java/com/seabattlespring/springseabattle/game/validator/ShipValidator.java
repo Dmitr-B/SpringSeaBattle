@@ -5,7 +5,7 @@ import com.seabattlespring.springseabattle.repository.domain.FightField;
 
 public abstract class ShipValidator {
     //todo добавить валідатор чи той гравець ходе
-    private ShipValidator nextShipValidator;
+    private final ShipValidator nextShipValidator;
 
     public ShipValidator(ShipValidator nextShipValidator) {
         this.nextShipValidator = nextShipValidator;

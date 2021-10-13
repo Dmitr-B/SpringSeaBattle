@@ -190,20 +190,4 @@ public class GameService {
                 new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
                         new CellEmptyValidator(null)))));
     }
-
-//    private int validFromX(int fromX) {
-//        return Math.max(fromX, 0);
-//    }
-//
-//    private int validFromY(int fromY) {
-//        return Math.max(fromY, 0);
-//    }
-//
-//    private int validToX(int toX) {
-//        return Math.min(toX, 9);
-//    }
-//
-//    private int validToY(int toY) {
-//        return Math.min(toY, 9);
-//    }
 }
