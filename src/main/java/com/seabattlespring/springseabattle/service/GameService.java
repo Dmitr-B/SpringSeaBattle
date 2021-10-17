@@ -3,6 +3,7 @@ package com.seabattlespring.springseabattle.service;
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
+import com.seabattlespring.springseabattle.game.state.*;
 import com.seabattlespring.springseabattle.game.validator.*;
 import com.seabattlespring.springseabattle.repository.GameRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
@@ -18,6 +19,8 @@ import java.util.stream.Stream;
 public class GameService {
 
     private final GameRepository gameRepository;
+    //private final GameContext gameContext;
+    GameContext gameContext = new GameContext();
 
     public String createGame() {
         Game game = new Game();
@@ -31,6 +34,7 @@ public class GameService {
 
     public void addShip(String id, FightField.Owner owner, Ship ship) {
         Game game = gameRepository.findGameById(id);
+        getCurrentState(game);
         //todo перевірити стан гри
         if (State.ARRANGEMENT.equals(game.getState())) {
             FightField fightField = Stream.of(game.getFightField1(), game.getFightField2())
@@ -42,51 +46,69 @@ public class GameService {
 
             log.info("valid " + shipValidator.valid(fightField, ship));
 
-            ShipDto shipDto = new ShipDto();
-            shipDto.setShipType(ship.getShipType());
-            shipDto.setCells(ship.getCells());
+            if (shipValidator.valid(fightField, ship)) {
+                ShipDto shipDto = new ShipDto();
+                shipDto.setShipType(ship.getShipType());
+                shipDto.setCells(ship.getCells());
 
-            for (int i = 0; i < ship.getCells().size(); i++) {
+                for (int i = 0; i < ship.getCells().size(); i++) {
 
-                fightField.getCells().get(ship.getCells().get(i).getCoordinates().getX()).get(ship.getCells().get(i).getCoordinates().getY())
-                        .setCellState(ship.getCells().get(i).getCellState());
+                    fightField.getCells().get(ship.getCells().get(i).getCoordinates().getX()).get(ship.getCells().get(i).getCoordinates().getY())
+                            .setCellState(ship.getCells().get(i).getCellState());
 
-            }
+                }
 
-            fightField.getShips().add(shipDto);
-            setCellArea(fightField, shipDto);
+                fightField.getShips().add(shipDto);
+                setCellArea(fightField, shipDto);
 
-            log.info("stateFight " + isFightStateGame(game));
+                log.info("stateFight " + isFightStateGame(game));
 
-            if (isFightStateGame(game)) {
+            /*if (isFightStateGame(game)) {
                 game.setState(State.FIGHT);
+            }*/
+                gameContext.doChangeGameState(game);
+
+                //todo перевіряти що гра готова і змінити стан гри
+
+                gameRepository.save(game);
             }
-
-            //todo перевіряти що гра готова і змінити стан гри
-
-            gameRepository.save(game);
         }
 
     }
 
     public CellState shot(String id, FightField.Owner owner, Shot shot) {
         Game game = gameRepository.findGameById(id);
+        gameContext.getCurrentState(game);
         //todo перевірити стан гри
 
         CellState newCellState = null;
 
-        if (State.FIGHT.equals(game.getState())) {
             FightField fightField = Stream.of(game.getFightField1(), game.getFightField2())
                     .filter(field -> !owner.equals(field.getOwner()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("field not found"));
+
+        System.out.println("eblan " + fightField.getOwner());
+
+        if (/*State.FIGHT.equals(game.getState())*//*(gameContext.getGameState() instanceof Player1TurnState && State.PLAYER1TURN.equals(game.getState()) ||
+                (gameContext.getGameState() instanceof Player2TurnState && State.PLAYER2TURN.equals(game.getState())))*/
+                isValidShot(game, fightField)) {
+            //log.info("shot " + isValidShot(game, fightField));
+            log.info("state " + gameContext.getGameState());
+
             Cell cell = fightField.getCells().get(shot.getCoordinates().getX()).get(shot.getCoordinates().getY());
 
             //
             if (CellState.SHIP.equals(cell.getCellState())) {
                 newCellState = resultOfTheShot(fightField, shot.getCoordinates());
             } else {
+                //todo change turn player
                 newCellState = CellState.PAST;
+                if (gameContext.getGameState() instanceof Player1TurnState) {
+                    gameContext.changeGameState(new Player2TurnState(gameContext));
+                } else {
+                    gameContext.changeGameState(new Player1TurnState(gameContext));
+                }
             }
             cell.setCellState(newCellState);
 
@@ -94,9 +116,10 @@ public class GameService {
 
             log.info("gameOver " + isGameOver(game));
 
-            if (isGameOver(game)) {
-                game.setState(State.OVER);
-            }
+//            if (isGameOver(game)) {
+//                game.setState(State.OVER);
+//            }
+            gameContext.doChangeGameState(game);
 
             gameRepository.save(game);
         }
@@ -189,5 +212,28 @@ public class GameService {
         return  new NumberOfCoordinatesValidator(new OneStraightLineValidator(
                 new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
                         new CellEmptyValidator(null)))));
+    }
+
+    private boolean isValidShot(Game game, FightField fightField) {
+
+        switch (game.getState()) {
+            case PLAYER1TURN:
+                if (FightField.Owner.PLAYER2.equals(fightField.getOwner())) {
+                    log.info("shooot1 " + fightField.getOwner());
+                    return true;
+                }
+                break;
+            case PLAYER2TURN:
+                if (FightField.Owner.PLAYER1.equals(fightField.getOwner())) {
+                    log.info("shooot2 " + fightField.getOwner());
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    private void getCurrentState(Game game) {
+        gameContext.getCurrentState(game);
     }
 }
