@@ -35,6 +35,14 @@ public class GameContext {
         gameState.doChangeGameState(game);
     }
 
+    public void changeTurnPlayer() {
+        if (this.getGameState() instanceof Player1TurnState) {
+            this.changeGameState(new Player2TurnState(this));
+        } else {
+            this.changeGameState(new Player1TurnState(this));
+        }
+    }
+
     public GameState getGameState() {
         return gameState;
     }

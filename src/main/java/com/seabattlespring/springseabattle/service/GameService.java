@@ -4,11 +4,13 @@ import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
 import com.seabattlespring.springseabattle.game.state.*;
-import com.seabattlespring.springseabattle.game.validator.*;
+import com.seabattlespring.springseabattle.game.validator.ship.*;
+import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
 import com.seabattlespring.springseabattle.repository.GameRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Stream;
@@ -19,6 +21,8 @@ import java.util.stream.Stream;
 public class GameService {
 
     private final GameRepository gameRepository;
+    @Autowired
+    private ShotValidator shotValidator;
     //private final GameContext gameContext;
     GameContext gameContext = new GameContext();
 
@@ -89,10 +93,11 @@ public class GameService {
                     .orElseThrow(() -> new IllegalArgumentException("field not found"));
 
         System.out.println("eblan " + fightField.getOwner());
+        System.out.println("pidar " + gameContext.getGameState());
 
         if (/*State.FIGHT.equals(game.getState())*//*(gameContext.getGameState() instanceof Player1TurnState && State.PLAYER1TURN.equals(game.getState()) ||
                 (gameContext.getGameState() instanceof Player2TurnState && State.PLAYER2TURN.equals(game.getState())))*/
-                isValidShot(game, fightField)) {
+                shotValidator.valid(game, fightField)/*isValidShot(game, fightField)*/) {
             //log.info("shot " + isValidShot(game, fightField));
             log.info("state " + gameContext.getGameState());
 
@@ -104,11 +109,12 @@ public class GameService {
             } else {
                 //todo change turn player
                 newCellState = CellState.PAST;
-                if (gameContext.getGameState() instanceof Player1TurnState) {
-                    gameContext.changeGameState(new Player2TurnState(gameContext));
-                } else {
-                    gameContext.changeGameState(new Player1TurnState(gameContext));
-                }
+//                if (gameContext.getGameState() instanceof Player1TurnState) {
+//                    gameContext.changeGameState(new Player2TurnState(gameContext));
+//                } else {
+//                    gameContext.changeGameState(new Player1TurnState(gameContext));
+//                }
+                gameContext.changeTurnPlayer();
             }
             cell.setCellState(newCellState);
 
@@ -214,24 +220,24 @@ public class GameService {
                         new CellEmptyValidator(null)))));
     }
 
-    private boolean isValidShot(Game game, FightField fightField) {
-
-        switch (game.getState()) {
-            case PLAYER1TURN:
-                if (FightField.Owner.PLAYER2.equals(fightField.getOwner())) {
-                    log.info("shooot1 " + fightField.getOwner());
-                    return true;
-                }
-                break;
-            case PLAYER2TURN:
-                if (FightField.Owner.PLAYER1.equals(fightField.getOwner())) {
-                    log.info("shooot2 " + fightField.getOwner());
-                    return true;
-                }
-                break;
-        }
-        return false;
-    }
+//    private boolean isValidShot(Game game, FightField fightField) {
+//
+//        switch (game.getState()) {
+//            case PLAYER1TURN:
+//                if (FightField.Owner.PLAYER2.equals(fightField.getOwner())) {
+//                    log.info("shooot1 " + fightField.getOwner());
+//                    return true;
+//                }
+//                break;
+//            case PLAYER2TURN:
+//                if (FightField.Owner.PLAYER1.equals(fightField.getOwner())) {
+//                    log.info("shooot2 " + fightField.getOwner());
+//                    return true;
+//                }
+//                break;
+//        }
+//        return false;
+//    }
 
     private void getCurrentState(Game game) {
         gameContext.getCurrentState(game);

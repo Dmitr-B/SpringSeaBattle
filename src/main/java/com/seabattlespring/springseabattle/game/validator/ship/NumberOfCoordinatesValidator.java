@@ -1,10 +1,10 @@
-package com.seabattlespring.springseabattle.game.validator;
+package com.seabattlespring.springseabattle.game.validator.ship;
 
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.ShipType;
 
-public class NumberOfCoordinatesValidator extends ShipValidator{
+public class NumberOfCoordinatesValidator extends ShipValidator {
     public NumberOfCoordinatesValidator(ShipValidator nextShipValidator) {
         super(nextShipValidator);
     }
