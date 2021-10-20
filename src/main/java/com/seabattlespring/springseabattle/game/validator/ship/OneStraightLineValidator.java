@@ -2,9 +2,15 @@ package com.seabattlespring.springseabattle.game.validator.ship;
 
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+//@Component
 public class OneStraightLineValidator extends ShipValidator {
-    public OneStraightLineValidator(ShipValidator nextShipValidator) {
+
+    //@Autowired
+    public OneStraightLineValidator(/*@Qualifier("nearbyCoordinatesValidator")*/ ShipValidator nextShipValidator) {
         super(nextShipValidator);
     }
 

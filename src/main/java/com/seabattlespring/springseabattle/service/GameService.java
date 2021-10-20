@@ -11,6 +11,7 @@ import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Stream;
@@ -21,8 +22,13 @@ import java.util.stream.Stream;
 public class GameService {
 
     private final GameRepository gameRepository;
-    @Autowired
-    private ShotValidator shotValidator;
+    //@Autowired
+    private final ShotValidator shotValidator;
+    //@Qualifier("numberOfCoordinatesValidator")
+    //@Autowired
+    private final ShipValidator shipValidator = new NumberOfCoordinatesValidator(new OneStraightLineValidator(
+            new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
+                    new CellEmptyValidator(null)))));;
     //private final GameContext gameContext;
     GameContext gameContext = new GameContext();
 
@@ -46,7 +52,7 @@ public class GameService {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("field not found"));
 
-            ShipValidator shipValidator = createValidator();
+            //ShipValidator shipValidator = createValidator();
 
             log.info("valid " + shipValidator.valid(fightField, ship));
 
@@ -65,7 +71,7 @@ public class GameService {
                 fightField.getShips().add(shipDto);
                 setCellArea(fightField, shipDto);
 
-                log.info("stateFight " + isFightStateGame(game));
+                //log.info("stateFight " + isFightStateGame(game));
 
             /*if (isFightStateGame(game)) {
                 game.setState(State.FIGHT);
@@ -120,7 +126,7 @@ public class GameService {
 
             //todo чи гра завершена
 
-            log.info("gameOver " + isGameOver(game));
+            //log.info("gameOver " + isGameOver(game));
 
 //            if (isGameOver(game)) {
 //                game.setState(State.OVER);
@@ -175,29 +181,29 @@ public class GameService {
                 .setCellState(CellState.KNOCKED);
     }
 
-    private boolean isFightStateGame(Game game) {
-        FightField fightField1 = game.getFightField1();
-        FightField fightField2 = game.getFightField2();
-        log.info("size1 " + fightField1.getShips().size());
-        log.info("size2 " + fightField2.getShips().size());
+//    private boolean isFightStateGame(Game game) {
+//        FightField fightField1 = game.getFightField1();
+//        FightField fightField2 = game.getFightField2();
+//        log.info("size1 " + fightField1.getShips().size());
+//        log.info("size2 " + fightField2.getShips().size());
+//
+//        return fightField1.getShips().size() == 1 && fightField2.getShips().size() == 1;
+//    }
 
-        return fightField1.getShips().size() == 1 && fightField2.getShips().size() == 1;
-    }
-
-    private boolean isGameOver(Game game) {
-
-        boolean overPlayer1 = game.getFightField1().getShips().stream()
-                .filter(shipDto1 -> shipDto1.getCells().stream().anyMatch(cell -> cell.getCellState().equals(CellState.SHIP)))
-                .findAny()
-                .isEmpty();
-
-        boolean overPlayer2 = game.getFightField2().getShips().stream()
-                .filter(shipDto1 -> shipDto1.getCells().stream().anyMatch(cell -> cell.getCellState().equals(CellState.SHIP)))
-                .findAny()
-                .isEmpty();
-
-        return overPlayer1 || overPlayer2;
-    }
+//    private boolean isGameOver(Game game) {
+//
+//        boolean overPlayer1 = game.getFightField1().getShips().stream()
+//                .filter(shipDto1 -> shipDto1.getCells().stream().anyMatch(cell -> cell.getCellState().equals(CellState.SHIP)))
+//                .findAny()
+//                .isEmpty();
+//
+//        boolean overPlayer2 = game.getFightField2().getShips().stream()
+//                .filter(shipDto1 -> shipDto1.getCells().stream().anyMatch(cell -> cell.getCellState().equals(CellState.SHIP)))
+//                .findAny()
+//                .isEmpty();
+//
+//        return overPlayer1 || overPlayer2;
+//    }
 
     private void setCellArea(FightField fightField, ShipDto shipDto) {
         int fromX = Math.max((shipDto.getCells().get(0).getCoordinates().getX() - 1), 0);
@@ -214,11 +220,11 @@ public class GameService {
         }
     }
 
-    private ShipValidator createValidator() {
-        return  new NumberOfCoordinatesValidator(new OneStraightLineValidator(
-                new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
-                        new CellEmptyValidator(null)))));
-    }
+//    private ShipValidator createValidator() {
+//        return  new NumberOfCoordinatesValidator(new OneStraightLineValidator(
+//                new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
+//                        new CellEmptyValidator(null)))));
+//    }
 
 //    private boolean isValidShot(Game game, FightField fightField) {
 //

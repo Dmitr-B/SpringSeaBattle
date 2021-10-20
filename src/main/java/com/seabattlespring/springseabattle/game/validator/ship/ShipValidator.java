@@ -2,6 +2,7 @@ package com.seabattlespring.springseabattle.game.validator.ship;
 
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
+import org.springframework.stereotype.Component;
 
 public abstract class ShipValidator {
     //todo добавить валідатор чи той гравець ходе
