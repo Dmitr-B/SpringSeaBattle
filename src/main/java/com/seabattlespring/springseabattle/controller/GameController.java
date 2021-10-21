@@ -2,6 +2,7 @@ package com.seabattlespring.springseabattle.controller;
 
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
+import com.seabattlespring.springseabattle.exception.*;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
@@ -104,7 +105,12 @@ public class GameController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        gameService.addShip(id, owner, ship);
+        try {
+            gameService.addShip(id, owner, ship);
+        } catch (NumberOfCoordinatesException | OneStraightLineException | NearbyCoordinatesException |
+                NumberOfValidShipException | CellEmptyException e) {
+            e.printStackTrace();
+        }
 
         return ResponseEntity.ok().build();
     }

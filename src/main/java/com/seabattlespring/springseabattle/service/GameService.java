@@ -3,6 +3,7 @@ package com.seabattlespring.springseabattle.service;
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
+import com.seabattlespring.springseabattle.exception.*;
 import com.seabattlespring.springseabattle.game.state.*;
 import com.seabattlespring.springseabattle.game.validator.ship.*;
 import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
@@ -10,8 +11,6 @@ import com.seabattlespring.springseabattle.repository.GameRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Stream;
@@ -42,7 +41,8 @@ public class GameService {
         return gameRepository.findGameById(id);
     }
 
-    public void addShip(String id, FightField.Owner owner, Ship ship) {
+    public void addShip(String id, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,
+            NearbyCoordinatesException, NumberOfValidShipException, CellEmptyException {
         Game game = gameRepository.findGameById(id);
         getCurrentState(game);
         //todo перевірити стан гри
