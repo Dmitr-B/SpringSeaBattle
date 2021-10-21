@@ -2,7 +2,8 @@ package com.seabattlespring.springseabattle.controller;
 
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
-import com.seabattlespring.springseabattle.exception.*;
+import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
+import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
@@ -95,7 +96,8 @@ public class GameController {
 
     @PatchMapping("/{id}/fight_field/{owner}/ship")
     public ResponseEntity<Void> addShip(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
-                                        @Valid @RequestBody Ship ship, BindingResult bindingResult) {
+                                        @Valid @RequestBody Ship ship, BindingResult bindingResult) throws NearbyCoordinatesException,
+            CellEmptyException, NumberOfCoordinatesException, NumberOfValidShipException, OneStraightLineException {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();
@@ -105,19 +107,15 @@ public class GameController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        try {
             gameService.addShip(id, owner, ship);
-        } catch (NumberOfCoordinatesException | OneStraightLineException | NearbyCoordinatesException |
-                NumberOfValidShipException | CellEmptyException e) {
-            e.printStackTrace();
-        }
+
 
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/fight_field/{owner}/shot")
     public ResponseEntity<CellState> shot(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
-                                          @Valid @RequestBody Shot shot, BindingResult bindingResult) {
+                                          @Valid @RequestBody Shot shot, BindingResult bindingResult) throws ShotException {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();

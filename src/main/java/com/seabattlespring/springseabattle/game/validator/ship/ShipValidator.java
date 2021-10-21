@@ -1,7 +1,7 @@
 package com.seabattlespring.springseabattle.game.validator.ship;
 
 import com.seabattlespring.springseabattle.dto.Ship;
-import com.seabattlespring.springseabattle.exception.*;
+import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 
 public abstract class ShipValidator {

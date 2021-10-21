@@ -3,10 +3,11 @@ package com.seabattlespring.springseabattle.service;
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
-import com.seabattlespring.springseabattle.exception.*;
+import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.game.state.*;
 import com.seabattlespring.springseabattle.game.validator.ship.*;
 import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
+import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.GameRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -86,7 +87,7 @@ public class GameService {
 
     }
 
-    public CellState shot(String id, FightField.Owner owner, Shot shot) {
+    public CellState shot(String id, FightField.Owner owner, Shot shot) throws ShotException {
         Game game = gameRepository.findGameById(id);
         gameContext.getCurrentState(game);
         //todo перевірити стан гри

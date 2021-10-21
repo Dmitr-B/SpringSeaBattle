@@ -16,9 +16,7 @@ public class NearbyCoordinatesValidator extends ShipValidator {
     @Override
     boolean isValid(FightField fightField, Ship ship) {
         int startX = ship.getCells().get(0).getCoordinates().getX();
-        System.out.println("start " + startX);
         int startY = ship.getCells().get(0).getCoordinates().getY();
-        System.out.println("start1 " + startY);
 
         for (int i = 0; i < ship.getCells().size(); i++) {
             if (Math.abs(ship.getCells().get(i).getCoordinates().getX() - startX) != i

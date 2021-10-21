@@ -1,4 +1,4 @@
-package com.seabattlespring.springseabattle.exception;
+package com.seabattlespring.springseabattle.game.validator.ship.exception;
 
 public class NumberOfValidShipException extends Exception{
 
