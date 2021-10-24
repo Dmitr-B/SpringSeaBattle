@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -73,12 +74,14 @@ public class GameController {
 //    }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('players:write')")
     public ResponseEntity<String> createGame() {
         String id = gameService.createGame();
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('players:read')")
     public ResponseEntity<Game> getGame(@PathVariable("id") String id) {
 
         if (id == null) {
@@ -95,6 +98,7 @@ public class GameController {
     }
 
     @PatchMapping("/{id}/fight_field/{owner}/ship")
+    @PreAuthorize("hasAuthority('players:write')")
     public ResponseEntity<Void> addShip(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
                                         @Valid @RequestBody Ship ship, BindingResult bindingResult) throws NearbyCoordinatesException,
             CellEmptyException, NumberOfCoordinatesException, NumberOfValidShipException, OneStraightLineException {
@@ -114,6 +118,7 @@ public class GameController {
     }
 
     @PatchMapping("/{id}/fight_field/{owner}/shot")
+    @PreAuthorize("hasAuthority('players:write')")
     public ResponseEntity<CellState> shot(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
                                           @Valid @RequestBody Shot shot, BindingResult bindingResult) throws ShotException {
 
