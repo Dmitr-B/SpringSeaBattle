@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
@@ -35,31 +32,9 @@ public class UserController {
         return "success";
     }
 
-    @GetMapping("user")
+    @GetMapping("register")
     public String getRegistrationPage() {
         return "registration";
-    }
-
-    @PostMapping("user")
-    public ResponseEntity<IdLocationDto> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
-        IdLocationDto idLocationDto = null;
-
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        try {
-            idLocationDto = userService.createUser(userDto);
-            log.info("locator " + idLocationDto);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        if (idLocationDto.getId() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(idLocationDto);
     }
 
 }

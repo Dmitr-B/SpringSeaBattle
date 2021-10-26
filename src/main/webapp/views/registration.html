@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-registration" action="user" method="post" enctype="json">
+    <form class="form-registration" method="post">
         <h2 class="form-signing-heading">Registration</h2>
         <p>
             <label for="username">Username</label>
@@ -14,11 +14,34 @@
         </p>
         <p>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+            <input type="text" id="password" name="password">
         </p>
-        <button class="btn bth-rg" type="submit">Registered</button>
+        <button class="btn bth-rg" type="button" onclick="onSubmit()">Sing Up</button>
     </form>
 </div>
+<script>
+    function onSubmit() {
+        let name = document.querySelector("#username").value;
+        let pass = document.querySelector('#password').value;
+        let xhr = new XMLHttpRequest();
+        let url = '/user';
+        let user = {
+            userName: name.toString(),
+            password: pass.toString()
+        }
+
+        let data = JSON.stringify(user);
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+
+        alert("json " + data);
+        xhr.send(data);
+
+        //on success
+        // redirect /login
+    }
+</script>
 
 </body>
 </html>
