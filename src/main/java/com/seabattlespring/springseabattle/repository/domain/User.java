@@ -1,6 +1,7 @@
 package com.seabattlespring.springseabattle.repository.domain;
 
 import com.seabattlespring.springseabattle.player.Role;
+import com.seabattlespring.springseabattle.player.Status;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,5 +17,6 @@ public class User {
     private String userName;
     private String password;
 
-    private Set<Role> roles;
+    private Role role;
+    private Status status;
 }

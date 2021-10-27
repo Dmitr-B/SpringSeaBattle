@@ -1,4 +1,4 @@
-package com.seabattlespring.springseabattle.controller;
+package com.seabattlespring.springseabattle.controller.rest;
 
 import com.seabattlespring.springseabattle.dto.IdLocationDto;
 import com.seabattlespring.springseabattle.dto.UserDto;
@@ -21,7 +21,7 @@ import java.net.URISyntaxException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/")
-public class RegController {
+public class RegisterController {
 
     private final UserService userService;
 

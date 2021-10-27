@@ -3,6 +3,7 @@ package com.seabattlespring.springseabattle.service;
 import com.seabattlespring.springseabattle.dto.IdLocationDto;
 import com.seabattlespring.springseabattle.dto.UserDto;
 import com.seabattlespring.springseabattle.player.Role;
+import com.seabattlespring.springseabattle.player.Status;
 import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +29,14 @@ public class UserService {
         User user = new User();
         IdLocationDto idLocationDto = new IdLocationDto();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.USER);
+        //Set<Role> roles = new HashSet<>();
+        //roles.add(Role.USER);
 
         if (userRepository.findByUserName(userDto.getUserName()).isEmpty()) {
             user.setUserName(userDto.getUserName());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            user.setRoles(roles);
+            user.setRole(Role.USER);
+            user.setStatus(Status.ACTIVE);
             userRepository.save(user);
 
             idLocationDto.setId(user.getId());
