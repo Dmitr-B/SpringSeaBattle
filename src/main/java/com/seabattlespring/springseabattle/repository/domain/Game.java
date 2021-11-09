@@ -16,6 +16,8 @@ public class Game {
     private State state;//todo
     private FightField fightField1;
     private FightField fightField2;
+    private String user1;
+    private String user2;
 
     public Game() {
         this.state = State.ARRANGEMENT;

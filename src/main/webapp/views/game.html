@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create a new game</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Create game</h1>
+<div class="wrap">
+    <div class="battlefield">
+        <div class="field field-player">
+            <div id="field-player" class="shipDto"></div>
+        </div>
+
+        <div class="service-row">
+            <div id="service_text" class="service_text"></div>
+            <button id="play" type="button" class="btn-play" onclick="create()">Create game</button>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    function create() {
+        //let name = document.querySelector("#username").value;
+        //let pass = document.querySelector('#password').value;
+        let xhr = new XMLHttpRequest();
+        let url = '/game';
+        let userId = {
+            userId:sessionStorage.getItem("id")
+            //userName: name.toString(),
+            //password: pass.toString()
+        }
+
+        let data = JSON.stringify(game);
+
+        //alert("data " + xhr.getAllResponseHeaders());
+
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+        //xhr.setRequestHeader("Content-Type", "application/json");
+
+        alert("token " + sessionStorage.getItem("token"));
+
+        alert("token " + sessionStorage.getItem("id"));
+
+        //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+
+
+        //alert("json " + data);
+        xhr.send(data);
+    }
+</script>
+
+</body>
+</html>

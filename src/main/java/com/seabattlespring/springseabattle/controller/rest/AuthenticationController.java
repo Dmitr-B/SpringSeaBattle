@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -49,7 +50,8 @@ public class AuthenticationController {
                     () -> new UsernameNotFoundException("User doesn`t exists"));
             String token = jwtTokenProvider.createToken(userDto.getUserName(), user.getRole().name());
             Map<Object, Object> response = new HashMap<>();
-            response.put("userName", userDto.getUserName());
+            //response.put("userName", userDto.getUserName());
+            response.put("id", user.getId());
             response.put("token", token);
 
             return ResponseEntity.ok(response);

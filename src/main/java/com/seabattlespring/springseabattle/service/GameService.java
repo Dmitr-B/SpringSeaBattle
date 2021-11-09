@@ -32,8 +32,9 @@ public class GameService {
     //private final GameContext gameContext;
     GameContext gameContext = new GameContext();
 
-    public String createGame() {
+    public String createGame(String userId) {
         Game game = new Game();
+        game.setUser1(userId);
         gameRepository.save(game);
         return game.getId();
     }

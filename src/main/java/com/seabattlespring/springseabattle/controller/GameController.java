@@ -29,12 +29,16 @@ public class GameController {
     private final ShipService shipService;
     private final GameService gameService;
 
-    @GetMapping("/play")
+    @GetMapping("/welcome")
     //@ResponseBody
     public String index() {
-        return "play";
+        return "welcome";
     }
 
+    @GetMapping()
+    public String getCreatePage() {
+        return "game";
+    }
 //    @PostMapping()
 //    public ResponseEntity<SingleDeckShip> saveSingleShip(@RequestBody SingleDeckShip singleDeckShip) {
 //
@@ -74,9 +78,10 @@ public class GameController {
 //    }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('players:write')")
-    public ResponseEntity<String> createGame() {
-        String id = gameService.createGame();
+    @PreAuthorize("hasAuthority('players:read')")
+    public ResponseEntity<String> createGame(@RequestParam(required = false, name = "userId") String userId) {
+        log.info("id " + userId);
+        String id = gameService.createGame(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 

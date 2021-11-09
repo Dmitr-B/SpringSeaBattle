@@ -6,6 +6,12 @@
     background: url("/img/background.png") repeat;
 }
 
+header.top {
+    margin: 10px 10px 0 10px;
+    background-color: #675c47;
+    height: 108px;
+}
+
 .field {
     width: 366px;
     height: 363px;
