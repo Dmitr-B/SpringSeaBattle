@@ -4,11 +4,14 @@ import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
 import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
+import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
+import com.seabattlespring.springseabattle.repository.domain.User;
 import com.seabattlespring.springseabattle.service.GameService;
 import com.seabattlespring.springseabattle.service.ShipService;
+import com.seabattlespring.springseabattle.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,7 @@ public class GameController {
 
     private final ShipService shipService;
     private final GameService gameService;
+    private final UserService userService;
 
     @GetMapping("/welcome")
     //@ResponseBody
@@ -79,7 +83,7 @@ public class GameController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('players:read')")
-    public ResponseEntity<String> createGame(@RequestParam(required = false, name = "userId") String userId) {
+    public ResponseEntity<String> createGame(@RequestBody String userId) {
         log.info("id " + userId);
         String id = gameService.createGame(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);

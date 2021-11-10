@@ -14,9 +14,25 @@
             <div id="field-player" class="shipDto"></div>
         </div>
 
-        <div class="service-row">
-            <div id="service_text" class="service_text"></div>
-            <button id="play" type="button" class="btn-play" onclick="create()">Create game</button>
+        <div class="create-game">
+            <button id="play" type="button" class="btn-create" onclick="create()">Create game</button>
+        </div>
+
+        <br>
+
+        <div class="join-random">
+            <button id="join" type="button" class="btn-join" onclick="">Join a random game</button>
+        </div>
+
+        <br>
+
+        <p>
+            <label for="gameId">Game id:</label>
+            <input type="text" id="gameId" name="gameId">
+        </p>
+
+        <div class="join-id">
+            <button id="join-id" type="button" class="btn-joinId" onclick="">Join a specific game</button>
         </div>
 
 
@@ -25,33 +41,26 @@
 
 <script>
     function create() {
-        //let name = document.querySelector("#username").value;
-        //let pass = document.querySelector('#password').value;
+
         let xhr = new XMLHttpRequest();
         let url = '/game';
-        let userId = {
-            userId:sessionStorage.getItem("id")
-            //userName: name.toString(),
-            //password: pass.toString()
-        }
-
-        let data = JSON.stringify(game);
-
-        //alert("data " + xhr.getAllResponseHeaders());
+        let userId = sessionStorage.getItem("id");
 
         xhr.open('POST', url, true);
         xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
-        //xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
 
         alert("token " + sessionStorage.getItem("token"));
 
         alert("token " + sessionStorage.getItem("id"));
 
+        alert("userId " + userId);
+
         //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
 
 
         //alert("json " + data);
-        xhr.send(data);
+        xhr.send(userId);
     }
 </script>
 

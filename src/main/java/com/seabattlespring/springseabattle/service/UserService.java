@@ -46,4 +46,8 @@ public class UserService {
         return idLocationDto;
     }
 
+    public User getUserById(String userId) {
+        return userRepository.getById(userId);
+    }
+
 }
