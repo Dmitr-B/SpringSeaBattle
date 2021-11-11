@@ -54,6 +54,7 @@ public class AuthenticationController {
             response.put("id", user.getId());
             response.put("token", token);
 
+            log.info("A user named " + user.getUserName() + " is logged in");
             return ResponseEntity.ok(response);
 
         } catch (AuthenticationException e) {

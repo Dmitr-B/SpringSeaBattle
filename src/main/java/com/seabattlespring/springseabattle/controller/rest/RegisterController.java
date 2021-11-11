@@ -41,6 +41,7 @@ public class RegisterController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.info("A new user has appeared in the system");
         return ResponseEntity.status(HttpStatus.CREATED).body(idLocationDto);
     }
 }

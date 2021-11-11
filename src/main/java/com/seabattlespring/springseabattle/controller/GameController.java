@@ -84,9 +84,32 @@ public class GameController {
     @PostMapping
     @PreAuthorize("hasAuthority('players:read')")
     public ResponseEntity<String> createGame(@RequestBody String userId) {
-        log.info("id " + userId);
         String id = gameService.createGame(userId);
+
+        log.info("Game created by user: " + userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
+    }
+
+    @PatchMapping("/{id}/join")
+    public ResponseEntity<Void> joinId(@RequestBody String userId, @PathVariable("id") String id) {
+
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        gameService.joinToGameById(id, userId);
+
+        log.info("User " + userId + " is joining to game: " + id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/join")
+    public ResponseEntity<Void> joinRandom(@RequestBody String userId) {
+
+        gameService.joinToRandomGame(userId);
+
+        log.info("User " + userId + " is joining to random game");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -122,7 +145,7 @@ public class GameController {
 
             gameService.addShip(id, owner, ship);
 
-
+        log.info(owner + " is adding a new ship");
         return ResponseEntity.ok().build();
     }
 
@@ -142,6 +165,7 @@ public class GameController {
 
         CellState state = gameService.shot(id, owner, shot);
 
+        log.info(owner + " made  shot");
         return ResponseEntity.ok(state);
     }
 

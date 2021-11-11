@@ -21,7 +21,7 @@
         <br>
 
         <div class="join-random">
-            <button id="join" type="button" class="btn-join" onclick="">Join a random game</button>
+            <button id="join" type="button" class="btn-join" onclick="joinRandom()">Join a random game</button>
         </div>
 
         <br>
@@ -32,7 +32,7 @@
         </p>
 
         <div class="join-id">
-            <button id="join-id" type="button" class="btn-joinId" onclick="">Join a specific game</button>
+            <button id="join-id" type="button" class="btn-joinId" onclick="joinId()">Join a specific game</button>
         </div>
 
 
@@ -47,6 +47,53 @@
         let userId = sessionStorage.getItem("id");
 
         xhr.open('POST', url, true);
+        xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        alert("token " + sessionStorage.getItem("token"));
+
+        alert("token " + sessionStorage.getItem("id"));
+
+        alert("userId " + userId);
+
+        //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+
+
+        //alert("json " + data);
+        xhr.send(userId);
+    }
+
+    function joinId() {
+        let gameId = document.querySelector("#gameId").value;
+        let xhr = new XMLHttpRequest();
+        let userId = sessionStorage.getItem("id");
+        let url = '/game/' + gameId + '/join';
+
+        xhr.open('PATCH', url, true);
+        xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        alert("token " + sessionStorage.getItem("token"));
+
+        alert("token " + sessionStorage.getItem("id"));
+
+        alert("gameId " + gameId);
+
+        alert("userId " + userId);
+
+        //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+
+
+        //alert("json " + data);
+        xhr.send(userId);
+    }
+
+    function joinRandom() {
+        let xhr = new XMLHttpRequest();
+        let userId = sessionStorage.getItem("id");
+        let url = '/game/join';
+
+        xhr.open('PATCH', url, true);
         xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
         xhr.setRequestHeader("Content-Type", "application/json");
 

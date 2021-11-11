@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -28,19 +31,48 @@ public class GameService {
     //@Autowired
     private final ShipValidator shipValidator = new NumberOfCoordinatesValidator(new OneStraightLineValidator(
             new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
-                    new CellEmptyValidator(null)))));;
+                    new CellEmptyValidator(null)))));
     //private final GameContext gameContext;
     GameContext gameContext = new GameContext();
 
     public String createGame(String userId) {
         Game game = new Game();
+
         game.setUser1(userId);
+
         gameRepository.save(game);
         return game.getId();
     }
 
     public Game getGameById(String id) {
         return gameRepository.findGameById(id);
+    }
+
+    public void joinToGameById(String id, String userId) {
+        Game game = getGameById(id);
+
+        if (!game.getUser1().equals(userId) && game.getUser1()!= null && game.getUser2()!= null) {
+            game.setUser2(userId);
+        }
+
+        gameRepository.save(game);
+    }
+
+    public void joinToRandomGame(String userId) {
+        List<Game> games = gameRepository.findAllByUser1IsNotNull().stream()
+                .filter(user -> user.getUser2() == null)
+                .collect(Collectors.toList());
+
+        if (games.size() > 0) {
+            Random random = new Random();
+
+            Game game = games.get(random.nextInt(games.size()));
+            game.setUser2(userId);
+            gameRepository.save(game);
+            log.info("updated game: " + game);
+        }
+
+        //log.info(games);
     }
 
     public void addShip(String id, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,
