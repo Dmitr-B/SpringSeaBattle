@@ -12,6 +12,10 @@ header.top {
     height: 108px;
 }
 
+.login {
+    color: chocolate;
+}
+
 .field {
     width: 366px;
     height: 363px;

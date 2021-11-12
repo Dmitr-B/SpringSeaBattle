@@ -34,7 +34,6 @@ public class GameController {
     private final UserService userService;
 
     @GetMapping("/welcome")
-    //@ResponseBody
     public String index() {
         return "welcome";
     }
@@ -43,43 +42,6 @@ public class GameController {
     public String getCreatePage() {
         return "game";
     }
-//    @PostMapping()
-//    public ResponseEntity<SingleDeckShip> saveSingleShip(@RequestBody SingleDeckShip singleDeckShip) {
-//
-//        if (singleDeckShip == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        //this.shipService.saveSingleShip(singleDeckShip);
-//        if (SingleDeckShip.getCounter() != 4) {
-//            this.shipService.addSingleShipToMap(singleDeckShip);
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(singleDeckShip);
-//    }
-
-//    @PostMapping()
-//    public ResponseEntity<ShipDto> saveShips(@RequestBody ShipDto ships) {
-//
-//        if (ships == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        this.shipService.saveShip(ships);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(ships);
-//    }
-
-//    @PostMapping("/double")
-//    public ResponseEntity<DoubleDeckShip> saveDoubleShip(@RequestBody DoubleDeckShip doubleDeckShip) {
-//
-//        if (doubleDeckShip == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        this.shipService.addDoubleShipToMap(doubleDeckShip);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(doubleDeckShip);
-//    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('players:read')")
