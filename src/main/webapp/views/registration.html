@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-<div class="container">
-    <form class="form-registration" method="post">
-        <h2 class="form-signing-heading">Registration</h2>
-        <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="userName">
-        </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="text" id="password" name="password">
-        </p>
-        <button class="btn bth-rg" type="button" onclick="onSubmit()">Sing Up</button>
-    </form>
+<body id="register_page">
+<div class="register_container">
+    <div class="register_container_tab"></div>
+    <div class="register_container_title">
+        <div class="register_image"></div>
+        <h2 class="register_h2">REGISTER</h2>
+    </div>
+
+    <div class="register_box">
+        <form class="form-register" method="post">
+            <p class="field_register">
+                <label for="username">USERNAME</label>
+                <input type="text" id="username" name="userName">
+            </p>
+            <p class="field_register">
+                <label for="password">PASSWORD</label>
+                <input type="password" id="password" name="password">
+            </p>
+            <button class="btn_register" type="button" onclick="onSubmit()">Sign up</button>
+        </form>
+    </div>
 </div>
 <script>
     function onSubmit() {

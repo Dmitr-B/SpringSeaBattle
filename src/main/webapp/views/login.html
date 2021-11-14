@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-<div class="container">
-    <form class="form-signing" method="post">
-        <h2 class="form-signing-heading">Login</h2>
-        <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username">
-        </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password">
-        </p>
-        <button class="btn bth-lg btn-primary btn-block" type="button" onclick="onLogin()">Sign in</button>
-    </form>
+<body id="login_page">
+<div class="login_container">
+    <div class="login_container_tab"></div>
+        <div class="login_container_title">
+            <div class="login_image"></div>
+            <h2 class="login_h2">LOGIN</h2>
+        </div>
+
+    <div class="login_box">
+        <form class="form-signing" method="post">
+            <p class="field_login">
+                <label for="username">USERNAME</label>
+                <input type="text" id="username" name="username">
+            </p>
+            <p class="field_login">
+                <label for="password">PASSWORD</label>
+                <input type="password" id="password" name="password">
+            </p>
+            <button class="btn_login" type="button" onclick="onLogin()">Sign in</button>
+        </form>
+    </div>
 </div>
+
 <script>
     function onLogin() {
         let name = document.querySelector("#username").value;
