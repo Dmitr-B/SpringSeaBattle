@@ -17,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -44,38 +45,43 @@ public class GameController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('players:read')")
-    public ResponseEntity<String> createGame(@RequestBody String userId) {
-        String id = gameService.createGame(userId);
+    //@PreAuthorize("hasAuthority('players:read')")
+    public ResponseEntity<String> createGame(Authentication authentication) {
+        String id = gameService.createGame(authentication.getName());
 
-        log.info("Game created by user: " + userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @PatchMapping("/{id}/join")
-    public ResponseEntity<Void> joinId(@RequestBody String userId, @PathVariable("id") String id) {
+    public ResponseEntity<Void> joinId(Authentication authentication, @PathVariable("id") String id) {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        gameService.joinToGameById(id, userId);
+        gameService.joinGameById(id, authentication.getName());
 
-        log.info("User " + userId + " is joining to game: " + id);
+        log.info("User " + authentication.getName() + " is joining to game: " + id);
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> getUserNameFromToken(Authentication authentication) {
+        String name = authentication.getName();
+
+        return ResponseEntity.ok(name);
+    }
+
     @PatchMapping("/join")
-    public ResponseEntity<Void> joinRandom(@RequestBody String userId) {
+    public ResponseEntity<Void> joinRandom(Authentication authentication) {
 
-        gameService.joinToRandomGame(userId);
+        gameService.joinToRandomGame(authentication.getName());
 
-        log.info("User " + userId + " is joining to random game");
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('players:read')")
+    //@PreAuthorize("hasAuthority('players:read')")
     public ResponseEntity<Game> getGame(@PathVariable("id") String id) {
 
         if (id == null) {
@@ -92,9 +98,10 @@ public class GameController {
     }
 
     @PatchMapping("/{id}/fight_field/{owner}/ship")
-    @PreAuthorize("hasAuthority('players:write')")
+    //@PreAuthorize("hasAuthority('players:write')")
     public ResponseEntity<Void> addShip(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
-                                        @Valid @RequestBody Ship ship, BindingResult bindingResult) throws NearbyCoordinatesException,
+                                        @Valid @RequestBody Ship ship, Authentication authentication,
+                                        BindingResult bindingResult) throws NearbyCoordinatesException,
             CellEmptyException, NumberOfCoordinatesException, NumberOfValidShipException, OneStraightLineException {
 
         if (id == null) {
@@ -105,15 +112,16 @@ public class GameController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-            gameService.addShip(id, owner, ship);
+            gameService.addShip(id, authentication.getName(), owner, ship);
 
         log.info(owner + " is adding a new ship");
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/fight_field/{owner}/shot")
-    @PreAuthorize("hasAuthority('players:write')")
+    //@PreAuthorize("hasAuthority('players:write')")
     public ResponseEntity<CellState> shot(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
+                                          Authentication authentication,
                                           @Valid @RequestBody Shot shot, BindingResult bindingResult) throws ShotException {
 
         if (id == null) {
@@ -125,7 +133,7 @@ public class GameController {
         }
 
 
-        CellState state = gameService.shot(id, owner, shot);
+        CellState state = gameService.shot(id, authentication.getName(), owner, shot);
 
         log.info(owner + " made  shot");
         return ResponseEntity.ok(state);

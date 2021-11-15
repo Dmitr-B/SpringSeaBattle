@@ -9,6 +9,7 @@ import com.seabattlespring.springseabattle.game.validator.ship.*;
 import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.GameRepository;
+import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,6 +26,7 @@ import java.util.stream.Stream;
 public class GameService {
 
     private final GameRepository gameRepository;
+    private final UserRepository userRepository;
     //@Autowired
     private final ShotValidator shotValidator;
     //@Qualifier("numberOfCoordinatesValidator")
@@ -35,12 +37,14 @@ public class GameService {
     //private final GameContext gameContext;
     GameContext gameContext = new GameContext();
 
-    public String createGame(String userId) {
+    public String createGame(String userName) {
         Game game = new Game();
+        String userId = getUserIdByUserName(userName);
 
         game.setUser1(userId);
 
         gameRepository.save(game);
+        log.info("Game created by user: " + userId);
         return game.getId();
     }
 
@@ -48,39 +52,45 @@ public class GameService {
         return gameRepository.findGameById(id);
     }
 
-    public void joinToGameById(String id, String userId) {
+    public void joinGameById(String id, String userName) {
         Game game = getGameById(id);
+        String userId = getUserIdByUserName(userName);
 
-        if (!game.getUser1().equals(userId) && game.getUser1()!= null && game.getUser2()!= null) {
+        if (!game.getUser1().equals(userId) && (game.getUser1()!= null && game.getUser2() == null)) {
             game.setUser2(userId);
-        }
+        } else throw new IllegalArgumentException("This game is already taken");
 
         gameRepository.save(game);
     }
 
-    public void joinToRandomGame(String userId) {
+    public void joinToRandomGame(String userName) {
+        String userId = getUserIdByUserName(userName);
         List<Game> games = gameRepository.findAllByUser1IsNotNull().stream()
                 .filter(user -> user.getUser2() == null)
                 .collect(Collectors.toList());
 
         if (games.size() > 0) {
-            Random random = new Random();
+            //Random random = new Random();
 
-            Game game = games.get(random.nextInt(games.size()));
+            //Game game = games.get(random.nextInt(games.size()));
+            Game game = games.stream()
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("There are no free games now"));
             game.setUser2(userId);
             gameRepository.save(game);
-            log.info("updated game: " + game);
+            log.info("User: " + userId + " is joining to random game by id: " + game.getId());
         }
 
         //log.info(games);
     }
 
-    public void addShip(String id, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,
+    public void addShip(String id, String userName, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,
             NearbyCoordinatesException, NumberOfValidShipException, CellEmptyException {
         Game game = gameRepository.findGameById(id);
+        String userId = getUserIdByUserName(userName);
         getCurrentState(game);
         //todo перевірити стан гри
-        if (State.ARRANGEMENT.equals(game.getState())) {
+        if (State.ARRANGEMENT.equals(game.getState()) && isValidUserId(game, userId)) {
             FightField fightField = Stream.of(game.getFightField1(), game.getFightField2())
                     .filter(field -> owner.equals(field.getOwner()))
                     .findFirst()
@@ -120,8 +130,9 @@ public class GameService {
 
     }
 
-    public CellState shot(String id, FightField.Owner owner, Shot shot) throws ShotException {
+    public CellState shot(String id, String userName, FightField.Owner owner, Shot shot) throws ShotException {
         Game game = gameRepository.findGameById(id);
+        String userId = getUserIdByUserName(userName);
         gameContext.getCurrentState(game);
         //todo перевірити стан гри
 
@@ -137,7 +148,7 @@ public class GameService {
 
         if (/*State.FIGHT.equals(game.getState())*//*(gameContext.getGameState() instanceof Player1TurnState && State.PLAYER1TURN.equals(game.getState()) ||
                 (gameContext.getGameState() instanceof Player2TurnState && State.PLAYER2TURN.equals(game.getState())))*/
-                shotValidator.valid(game, fightField)/*isValidShot(game, fightField)*/) {
+                shotValidator.valid(game, fightField) && isValidUserId(game, userId)/*isValidShot(game, fightField)*/) {
             //log.info("shot " + isValidShot(game, fightField));
             log.info("state " + gameContext.getGameState());
 
@@ -281,5 +292,16 @@ public class GameService {
 
     private void getCurrentState(Game game) {
         gameContext.getCurrentState(game);
+    }
+
+    private boolean isValidUserId(Game game, String userId) {
+        if (game.getUser1().equals(userId) || game.getUser2().equals(userId)) {
+            return true;
+        } else throw new IllegalArgumentException("User not found in game");
+    }
+
+    private String getUserIdByUserName(String userName) {
+        User user = userRepository.getByUserName(userName);
+        return user.getId();
     }
 }
