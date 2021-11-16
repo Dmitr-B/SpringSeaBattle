@@ -85,7 +85,7 @@ public class GameService {
     }
 
     public void addShip(String id, String userName, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,
-            NearbyCoordinatesException, NumberOfValidShipException, CellEmptyException {
+            NearbyCoordinatesException, NumberOfValidShipException, CellEmptyException, PlayerException {
         Game game = gameRepository.findGameById(id);
         String userId = getUserIdByUserName(userName);
         getCurrentState(game);
@@ -130,7 +130,7 @@ public class GameService {
 
     }
 
-    public CellState shot(String id, String userName, FightField.Owner owner, Shot shot) throws ShotException {
+    public CellState shot(String id, String userName, FightField.Owner owner, Shot shot) throws ShotException, PlayerException {
         Game game = gameRepository.findGameById(id);
         String userId = getUserIdByUserName(userName);
         gameContext.getCurrentState(game);
@@ -294,10 +294,10 @@ public class GameService {
         gameContext.getCurrentState(game);
     }
 
-    private boolean isValidUserId(Game game, String userId) {
+    private boolean isValidUserId(Game game, String userId) throws PlayerException {
         if (game.getUser1().equals(userId) || game.getUser2().equals(userId)) {
             return true;
-        } else throw new IllegalArgumentException("User not found in game");
+        } else throw new PlayerException("User not found in game");
     }
 
     private String getUserIdByUserName(String userName) {

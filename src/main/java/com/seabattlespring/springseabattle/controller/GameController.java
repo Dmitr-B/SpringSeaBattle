@@ -102,7 +102,7 @@ public class GameController {
     public ResponseEntity<Void> addShip(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
                                         @Valid @RequestBody Ship ship, Authentication authentication,
                                         BindingResult bindingResult) throws NearbyCoordinatesException,
-            CellEmptyException, NumberOfCoordinatesException, NumberOfValidShipException, OneStraightLineException {
+            CellEmptyException, NumberOfCoordinatesException, NumberOfValidShipException, OneStraightLineException, PlayerException {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();
@@ -122,7 +122,7 @@ public class GameController {
     //@PreAuthorize("hasAuthority('players:write')")
     public ResponseEntity<CellState> shot(@PathVariable("id") String id, @PathVariable("owner") FightField.Owner owner,
                                           Authentication authentication,
-                                          @Valid @RequestBody Shot shot, BindingResult bindingResult) throws ShotException {
+                                          @Valid @RequestBody Shot shot, BindingResult bindingResult) throws ShotException, PlayerException {
 
         if (id == null) {
             return ResponseEntity.badRequest().build();

@@ -53,6 +53,13 @@ public class ValidExceptionHandler{
         return new ResponseEntity<>(validException, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = {PlayerException.class})
+    public ResponseEntity<Object> handlePlayerException(PlayerException e) {
+        ValidException validException = createExceptionObject(e);
+
+        return new ResponseEntity<>(validException, HttpStatus.BAD_REQUEST);
+    }
+
     private ValidException createExceptionObject(Exception e) {
         return new ValidException(
                 e.getMessage(),

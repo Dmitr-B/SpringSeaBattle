@@ -23,9 +23,11 @@ body#login_page, body#register_page{
     color: chocolate;
 }
 
-.field {
+.play_field {
     width: 366px;
     height: 363px;
+    left: 5px;
+    top: 7px;
     position: relative;
     background: url("/img/play_field.png") no-repeat;
 }
@@ -287,4 +289,23 @@ input[type=password] {
     border: 1px #87314e solid;
     opacity: 1;
     cursor: pointer;
+}
+
+/* battlefield table */
+.battlefield_player {
+    /*table-layout: fixed;*/
+    width: 331px;
+    height: 332px;
+    border-collapse: collapse;
+    border: 3px solid purple;
+}
+
+.table1 {
+    position: relative;
+    bottom: 497px;
+    left: 556px;
+}
+
+th{
+    border: 1px solid lightblue;
 }
