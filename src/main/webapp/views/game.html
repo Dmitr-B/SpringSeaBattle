@@ -20,7 +20,7 @@
 <div class="table1">
     <table class="battlefield_player">
         <tr>
-            <th>0</th>
+            <th id="test1">0</th>
             <th>1</th>
             <th>2</th>
             <th>3</th>
@@ -141,6 +141,58 @@
         </tr>
     </table>
 </div>
+
+<div class="singleDeck" id="singleDeck1">
+    <table class="singleDeckShip">
+        <tr>
+            <th>1</th>
+        </tr>
+    </table>
+</div>
+
+<script>
+    let ship = document.getElementById("singleDeck1");
+
+    ship.onmousedown = function (e) {
+
+        let coords = getCoords(ship);
+        let shiftX = e.pageX - coords.left;
+        let shiftY = e.pageY - coords.top;
+
+        ship.style.position = "absolute";
+        moveAt(e)
+        document.body.appendChild(ship);
+        ship.style.zIndex = "1000";
+
+        function moveAt(e) {
+            ship.style.left = e.pageX - shiftX + "px";
+            ship.style.top = e.pageY - shiftY + "px";
+        }
+
+        document.onmousemove = function (e) {
+            moveAt(e);
+        }
+
+        ship.onmouseup = function () {
+            document.onmousemove = null;
+            ship.onmouseup = null;
+            let cell = document.getElementById("test1");
+            alert("penis " + cell.);
+        }
+    }
+
+    ship.ondragstart = function() {
+        return false;
+    }
+
+    function getCoords(elem) {
+        let box = elem.getBoundingClientRect();
+        return {
+            top: box.top + pageYOffset,
+            left: box.left + pageXOffset
+        }
+    }
+</script>
 
 </body>
 </html>

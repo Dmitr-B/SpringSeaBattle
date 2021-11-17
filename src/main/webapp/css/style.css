@@ -309,3 +309,17 @@ input[type=password] {
 th{
     border: 1px solid lightblue;
 }
+
+.singleDeck {
+    position: absolute;
+    bottom: 400px;
+    left: 580px;
+    cursor: move;
+}
+
+.singleDeckShip {
+    width: 35px;
+    height: 35px;
+    border-collapse: collapse;
+    border: 2px solid yellow;
+}
