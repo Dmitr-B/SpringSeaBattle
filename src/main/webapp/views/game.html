@@ -176,8 +176,9 @@
         ship.onmouseup = function () {
             document.onmousemove = null;
             ship.onmouseup = null;
-            let cell = document.getElementById("test1");
-            alert("penis " + cell.);
+            let cell = document.getElementById("test1").innerText;
+            //let cell = document.getElementsByTagName("battlefield_player")[0][0].innerHTML;
+            alert("penis " + cell);
         }
     }
 

@@ -303,7 +303,7 @@ input[type=password] {
 .table1 {
     position: relative;
     bottom: 497px;
-    left: 556px;
+    left: /*556*/180px;
 }
 
 th{
@@ -321,5 +321,5 @@ th{
     width: 35px;
     height: 35px;
     border-collapse: collapse;
-    border: 2px solid yellow;
+    border: 2px solid darkblue;
 }
