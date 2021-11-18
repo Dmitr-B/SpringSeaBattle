@@ -142,7 +142,49 @@
     </table>
 </div>
 
-<div class="singleDeck" id="singleDeck1">
+<div class="test" id="test_1"></div>
+
+<div class="test_div">
+    <table class="test_table">
+        <tr>
+            <th id="fuck" data-x="1000" data-y="0"></th>
+            <th data-x="0" data-y="1"></th>
+            <th data-x="0" data-y="3"></th>
+            <th data-x="0" data-y="4"></th>
+            <th data-x="0" data-y="5"></th>
+        </tr>
+        <tr>
+            <th data-x="1" data-y="0"></th>
+            <th data-x="1" data-y="1"></th>
+            <th data-x="1" data-y="3"></th>
+            <th data-x="1" data-y="4"></th>
+            <th data-x="1" data-y="5"></th>
+        </tr>
+        <tr>
+            <th data-x="2" data-y="0"></th>
+            <th data-x="2" data-y="1"></th>
+            <th data-x="2" data-y="3"></th>
+            <th data-x="2" data-y="4"></th>
+            <th data-x="2" data-y="5"></th>
+        </tr>
+        <tr>
+            <th data-x="3" data-y="0"></th>
+            <th data-x="3" data-y="1"></th>
+            <th data-x="3" data-y="3"></th>
+            <th data-x="3" data-y="4"></th>
+            <th data-x="3" data-y="5"></th>
+        </tr>
+        <tr>
+            <th data-x="4" data-y="0"></th>
+            <th data-x="4" data-y="1"></th>
+            <th data-x="4" data-y="3"></th>
+            <th data-x="4" data-y="4"></th>
+            <th data-x="4" data-y="5"></th>
+        </tr>
+    </table>
+</div>
+
+<div class="ship singleDeck" id="singleDeck1">
     <table class="singleDeckShip">
         <tr>
             <th>1</th>
@@ -151,13 +193,38 @@
 </div>
 
 <script>
-    let ship = document.getElementById("singleDeck1");
+    //let ship = document.getElementById("singleDeck1");
+    let ship = document.querySelector("#singleDeck1");
+    //let fuck = document.getElementsByClassName("test_table");
 
     ship.onmousedown = function (e) {
+        //const FIELD = getCoords(fuck);
+
 
         let coords = getCoords(ship);
         let shiftX = e.pageX - coords.left;
         let shiftY = e.pageY - coords.top;
+        //alert("ueban " + coords);
+
+        /*const e1 = e.target.closest(".ship");
+        if (!e1) {
+            return;
+        }
+
+        this.dragObject = {
+            e1,
+            parent: e1.parentElement,
+            next: e1.nextElementSibling,
+
+            downX: e.pageX,
+            downY: e.pageY,
+
+            left: e1.offsetLeft,
+            top: e1.offsetTop,
+
+            kx: 0,
+            ky: 1
+        };*/
 
         ship.style.position = "absolute";
         moveAt(e)
@@ -170,15 +237,23 @@
         }
 
         document.onmousemove = function (e) {
+            //if (!this.dragObject.elem){
+            //    return;
+           // }
             moveAt(e);
         }
 
         ship.onmouseup = function () {
             document.onmousemove = null;
             ship.onmouseup = null;
+            let x = document.getElementById("fuck");
+            let x1 = x.dataset.x;
             let cell = document.getElementById("test1").innerText;
+            let table = document.getElementsByClassName("test_table");
+            let suka = table.length;
             //let cell = document.getElementsByTagName("battlefield_player")[0][0].innerHTML;
-            alert("penis " + cell);
+            alert("penis " + cell + " " + x1);
+            alert("suka " + suka);
         }
     }
 
@@ -190,7 +265,9 @@
         let box = elem.getBoundingClientRect();
         return {
             top: box.top + pageYOffset,
-            left: box.left + pageXOffset
+            left: box.left + pageXOffset,
+            bottom: box.bottom,
+            right: box.right
         }
     }
 </script>

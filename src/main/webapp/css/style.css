@@ -323,3 +323,57 @@ th{
     border-collapse: collapse;
     border: 2px solid darkblue;
 }
+
+.test {
+    width: 31px;
+    height: 31px;
+    border-collapse: collapse;
+    border: 2px solid darkcyan;
+    cursor: move;
+    position: absolute;
+    bottom: 400px;
+    left: 620px;
+}
+
+/* test table */
+/*.battlefield_table_placeholder {
+    min-height: 340px;
+    min-width: 340px;
+}
+
+.battlefield_table {
+    margin: 0;
+    border-collapse: collapse;
+    cursor: default;
+    display: inline-block;
+    position: relative;
+}
+
+table {
+    border-spacing: 0;
+}
+
+.battlefield_cell {
+    border: 1px solid #b4b4ff;
+    padding: 0;
+}
+
+.battlefield_cell_content {
+    position: relative;
+    height: 2em;
+    width: 2em;
+}*/
+
+.test_table {
+    /*table-layout: fixed;*/
+    width: 165px;
+    height: 166px;
+    border-collapse: collapse;
+    border: 1px solid darkblue;
+}
+
+.test_div {
+    position: relative;
+    bottom: 297px;
+    left: /*556*/180px;
+}
