@@ -329,7 +329,7 @@ th{
     height: 31px;
     border-collapse: collapse;
     border: 2px solid darkcyan;
-    cursor: move;
+    /*cursor: move;*/
     position: absolute;
     bottom: 400px;
     left: 620px;
@@ -375,5 +375,5 @@ table {
 .test_div {
     position: relative;
     bottom: 297px;
-    left: /*556*/180px;
+    left: /*556*/60px;
 }
