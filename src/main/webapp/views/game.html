@@ -71,6 +71,7 @@
     //let ship = document.getElementById("singleDeck1");
     let ship = document.querySelector("#test_1");
     let currentDroppable = null;
+    let droppableBelow = null;
     let startX = null;
     let startY = null;
     //const player1Field = document.getElementById("table_player1");
@@ -107,7 +108,6 @@
             kx: 0,
             ky: 1
         };*/
-
         ship.style.position = "absolute";
         moveAt(e)
         document.body.appendChild(ship);
@@ -129,7 +129,7 @@
             console.log("suka " + elemBelow);
             console.log("X " + e.clientX);
             console.log("Y " + e.clientY);
-            let droppableBelow = elemBelow.closest(".test_table");
+            droppableBelow = elemBelow.closest(".test_table");
             console.log("pisun " + droppableBelow);
             if (currentDroppable !== droppableBelow) {
                 if (currentDroppable) {
@@ -149,6 +149,10 @@
             ship.onmouseup = null;
             let x = document.getElementById("fuck");
             let x1 = x.dataset.x;
+            alert(currentDroppable + "penis " + droppableBelow);
+            if (currentDroppable === droppableBelow) {
+                moveToStart();
+            }
             //let cell = document.getElementById("test1").innerText;
             //let table = document.getElementsByClassName("test_table");
             //let cell = document.getElementsByTagName("battlefield_player")[0][0].innerHTML;
@@ -179,6 +183,11 @@
 
     function leaveDroppable(elem) {
         elem.style.background = '';
+    }
+
+    function moveToStart() {
+        ship.style.left = startX + "px";
+        ship.style.top = startY + "px";
     }
 </script>
 
