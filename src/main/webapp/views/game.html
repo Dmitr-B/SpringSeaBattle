@@ -22,18 +22,18 @@
 <div class="test_div">
     <table class="test_table" id="table_player1">
         <tr>
-            <th id="fuck" data-x="1000" data-y="0"></th>
-            <th data-x="0" data-y="1"></th>
-            <th data-x="0" data-y="2"></th>
-            <th data-x="0" data-y="3"></th>
-            <th data-x="0" data-y="4"></th>
+            <th id="cell_0_0" data-x="1000" data-y="0"></th>
+            <th id="cell_0_1" data-x="0" data-y="1"></th>
+            <th id="cell_0_2" data-x="0" data-y="2"></th>
+            <th id="cell_0_3" data-x="0" data-y="3"></th>
+            <th id="cell_0_4" data-x="0" data-y="4"></th>
         </tr>
         <tr>
-            <th data-x="1" data-y="0"></th>
-            <th data-x="1" data-y="1"></th>
-            <th data-x="1" data-y="2"></th>
-            <th data-x="1" data-y="3"></th>
-            <th data-x="1" data-y="4"></th>
+            <th id="cell_1_0" data-x="1" data-y="0"></th>
+            <th id="cell_1_1" data-x="1" data-y="1"></th>
+            <th id="cell_1_2" data-x="1" data-y="2"></th>
+            <th id="cell_1_3" data-x="1" data-y="3"></th>
+            <th id="cell_1_4" data-x="1" data-y="4"></th>
         </tr>
         <tr>
             <th data-x="2" data-y="0"></th>
@@ -130,9 +130,11 @@
             console.log("suka " + elemBelow.clientLeft);
             suka = document.getElementById(elemBelow.id);
             //moveCell(ship, suka);
-            console.log("vagina " + f(suka).top.valueOf());
-            console.log("anus " + f(suka).left.valueOf());
-            moveToCell(suka);
+            if (suka!==null) {
+                console.log("vagina " + f(suka).top.valueOf());
+                console.log("anus " + f(suka).left.valueOf());
+                moveToCell(suka);
+            }
             console.log("X " + e.clientX);
             console.log("Y " + e.clientY);
             let droppableBelow = elemBelow.closest(".test_table");
@@ -154,7 +156,7 @@
         ship.onmouseup = function () {
             document.onmousemove = null;
             ship.onmouseup = null;
-            let x = document.getElementById("fuck");
+            let x = document.getElementById("cell_0_0");
             let x1 = x.dataset.x;
             alert(currentDroppable + "penis ");
             //if (currentDroppable === droppableBelow) {
