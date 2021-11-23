@@ -71,7 +71,7 @@
     //let ship = document.getElementById("singleDeck1");
     let ship = document.querySelector("#test_1");
     let currentDroppable = null;
-    let droppableBelow = null;
+    //let droppableBelow = null;
     let startX = null;
     let startY = null;
     //const player1Field = document.getElementById("table_player1");
@@ -82,8 +82,8 @@
 
 
         let coords = getCoords(ship);
-        startX = e.pageX;
-        startY = e.pageY;
+        startX = coords.left;
+        startY = coords.top;
         let shiftX = e.pageX - coords.left;
         let shiftY = e.pageY - coords.top;
         //const curr = e.target;
@@ -125,21 +125,28 @@
             moveAt(e);
             ship.hidden = true;
             let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+            let suka = null;
             ship.hidden = false;
-            console.log("suka " + elemBelow);
+            console.log("suka " + elemBelow.clientLeft);
+            suka = document.getElementById(elemBelow.id);
+            //moveCell(ship, suka);
+            console.log("vagina " + f(suka).top.valueOf());
+            console.log("anus " + f(suka).left.valueOf());
+            moveToCell(suka);
             console.log("X " + e.clientX);
             console.log("Y " + e.clientY);
-            droppableBelow = elemBelow.closest(".test_table");
+            let droppableBelow = elemBelow.closest(".test_table");
             console.log("pisun " + droppableBelow);
             if (currentDroppable !== droppableBelow) {
                 if (currentDroppable) {
-                    leaveDroppable(currentDroppable);
+                    leaveDroppable(ship);
                 }
 
+                //moveToCell(elemBelow);
                 currentDroppable = droppableBelow;
 
                 if (currentDroppable) {
-                    enterDroppable(currentDroppable);
+                    enterDroppable(ship);
                 }
             }
         }
@@ -149,10 +156,12 @@
             ship.onmouseup = null;
             let x = document.getElementById("fuck");
             let x1 = x.dataset.x;
-            alert(currentDroppable + "penis " + droppableBelow);
-            if (currentDroppable === droppableBelow) {
+            alert(currentDroppable + "penis ");
+            //if (currentDroppable === droppableBelow) {
                 moveToStart();
-            }
+            //}
+            alert("1_1 " + ship.style.left + " " + startX);
+            alert("2_1 " + ship.style.top + " " + startY);
             //let cell = document.getElementById("test1").innerText;
             //let table = document.getElementsByClassName("test_table");
             //let cell = document.getElementsByTagName("battlefield_player")[0][0].innerHTML;
@@ -177,18 +186,47 @@
         }
     }
 
+    function f(elem) {
+        let box = elem.getBoundingClientRect();
+        return {
+            top: box.top,
+            left: box.left
+        }
+    }
+
     function enterDroppable(elem) {
-        elem.style.background = 'pink';
+        //elem.style.background = 'lightgreen';
+        elem.style.backgroundColor = 'rgba(144,238,144,0.3)';
+        //elem.style.opacity = '.3';
+        elem.style.borderColor = 'green';
+       // elem.style.border = 'blue';
     }
 
     function leaveDroppable(elem) {
         elem.style.background = '';
+        //elem.style.ba
+        elem.style.opacity = '1';
+        elem.style.borderColor = 'darkcyan';
     }
 
     function moveToStart() {
         ship.style.left = startX + "px";
         ship.style.top = startY + "px";
+        leaveDroppable(ship);
+        alert("1 " + ship.style.left + " " + startX);
+        alert("2 " + ship.style.top + " " + startY);
     }
+
+    function moveCell(ship, cell) {
+        ship.style.left = cell.style.left + "px";
+        ship.style.top = cell.style.top + "px";
+    }
+
+    function moveToCell(element) {
+        ship.style.left = f(element).left.valueOf() + "px";
+        ship.style.top = f(element).top.valueOf() + "px";
+    }
+
 </script>
 
 </body>
