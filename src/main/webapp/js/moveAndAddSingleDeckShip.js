@@ -1,4 +1,4 @@
-const activeShip = null; /* add change active ship with cursor */
+let activeShipId = null; /* add change active ship with cursor */
 let ship = document.querySelector("#test_1");
 let startShipCell = null;
 let currentDroppable = null;
@@ -12,6 +12,7 @@ ship.onmousedown = function (e) {
     let coords = getCoords(ship);
     let shiftX = e.pageX - coords.left;
     let shiftY = e.pageY - coords.top;
+    console.log("suka " + activeShipId);
 
     startX = coords.left;
     startY = coords.top;
@@ -167,4 +168,9 @@ function addSingleDeckShip(cell) {
     leaveDroppable(ship);
     hideApplyButton();
     //}
+}
+
+function getId(obj) {
+    activeShipId = obj.id;
+    alert("id " + obj.id);
 }
