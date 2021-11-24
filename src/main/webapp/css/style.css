@@ -328,7 +328,7 @@ th{
     width: 31px;
     height: 31px;
     border-collapse: collapse;
-    border: 2px solid darkcyan;
+    border: 2px solid mediumblue;
     /*cursor: move;*/
     position: absolute;
     bottom: 400px;
@@ -376,4 +376,8 @@ table {
     position: relative;
     bottom: 297px;
     left: /*556*/60px;
+}
+
+.singleDeckButton {
+    position: absolute;
 }

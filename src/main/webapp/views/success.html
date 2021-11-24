@@ -39,7 +39,6 @@
 
         alert("token " + sessionStorage.getItem("token"));
 
-        alert("token " + sessionStorage.getItem("id"));
 
         //alert("userId " + userId);
 
@@ -48,6 +47,17 @@
 
         //alert("json " + data);
         xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                sessionStorage.setItem("gameId", xhr.responseText);
+                sessionStorage.setItem("owner", "PLAYER1");
+                //sessionStorage.setItem("id", id);
+
+                alert("gameId " + sessionStorage.getItem("gameId"));
+                //window.location.replace("/auth/success");
+            }
+        }
     }
 
     function joinId() {
@@ -73,6 +83,8 @@
 
         //alert("json " + data);
         xhr.send();
+
+        sessionStorage.setItem("owner", "PLAYER2");
     }
 
     function joinRandom() {
@@ -95,6 +107,8 @@
 
         //alert("json " + data);
         xhr.send(userId);
+
+        sessionStorage.setItem("owner", "PLAYER2");
     }
 </script>
 
