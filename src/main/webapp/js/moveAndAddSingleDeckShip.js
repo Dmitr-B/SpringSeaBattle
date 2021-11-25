@@ -1,11 +1,34 @@
 let activeShipId = null; /* add change active ship with cursor */
-let ship = document.querySelector("#test_1");
+let ship1 = document.querySelectorAll('.test');
+let ship = document.getElementById(ship1[activeShipId].id);
+// window.onmousemove = function (e) {
+//     if (document.elementFromPoint(e.clientX, e.clientY).className === "test") {
+//         let id = document.elementFromPoint(e.clientX, e.clientY);
+//         ship = document.querySelector('#'+id.id);
+//         ship = document.getElementById(id.id);
+//         console.log("dasddfcds " + ship.id + " " + id.id);
+//     }
+
+//}
+// switch (activeShipId) {
+//     case 0:
+//         ship = document.querySelector("#test_1");
+//         console.log("id1 " + ship.id);
+//         break;
+//     case 1:
+//         ship = document.querySelector("#test_2");
+//         console.log("id2 " + ship.id);
+//         break;
+// }
+
 let startShipCell = null;
 let currentDroppable = null;
 let startX = null;
 let startY = null;
 let buttonX = null;
 let buttonY = null;
+
+//console.log("sdasfds " + ship[0].id);
 
 ship.onmousedown = function (e) {
 
@@ -27,6 +50,7 @@ ship.onmousedown = function (e) {
     }
 
     document.onmousemove = function (e) {
+        console.log("sadsfds " + activeShipId);
 
         moveAt(e);
         ship.hidden = true;
@@ -73,7 +97,6 @@ ship.onmousedown = function (e) {
         //}
     }
 }
-
 ship.ondragstart = function() {
     return false;
 }
@@ -170,7 +193,16 @@ function addSingleDeckShip(cell) {
     //}
 }
 
-function getId(obj) {
-    activeShipId = obj.id;
-    alert("id " + obj.id);
+function changeActiveShip(value) {
+    activeShipId = value;
+    // switch (activeShipId) {
+    //     case 0:
+    //         ship = document.querySelector("#test_1");
+    //         console.log("id1 " + ship.id);
+    //         break;
+    //     case 1:
+    //         ship = document.querySelector("#test_2");
+    //         console.log("id2 " + ship.id);
+    //         break;
+    // }
 }

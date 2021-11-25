@@ -330,9 +330,21 @@ th{
     border-collapse: collapse;
     border: 2px solid mediumblue;
     /*cursor: move;*/
+
+    /*bottom: 400px;
+    left: 620px;*/
+}
+
+#test_1 {
     position: absolute;
-    bottom: 400px;
-    left: 620px;
+    bottom: 390px;
+    left: 530px;
+}
+
+#test_2 {
+    position: absolute;
+    bottom: 390px;
+    left: 630px;
 }
 
 /* test table */
