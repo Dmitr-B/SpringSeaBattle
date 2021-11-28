@@ -468,72 +468,99 @@
 </div>
 
 <script>
-    //let ship = document.getElementById("singleDeck1");
-    let ship = document.querySelector("#singleDeck1");
-    //let fuck = document.getElementsByClassName("test_table");
+    let activeSingleShip = null; /* add change active ship with cursor */
+    let allSingleDeckShips = document.querySelectorAll('.singleDeckShip');
+    let singleDeckShip = null;
+    let startSingleDeckCell = null;
+    let currentDroppable = null;
+    let startX = null;
+    let startY = null;
+    let buttonX = null;
+    let buttonY = null;
 
-    ship.onmousedown = function (e) {
-        //const FIELD = getCoords(fuck);
+    window.onmousemove = function (e) {
 
-
-        let coords = getCoords(ship);
-        let shiftX = e.pageX - coords.left;
-        let shiftY = e.pageY - coords.top;
-        //alert("ueban " + coords);
-
-        /*const e1 = e.target.closest(".ship");
-        if (!e1) {
-            return;
+        switch (document.elementFromPoint(e.clientX, e.clientY).id) {
+            case "singleDeckShip_1":
+                activeSingleShip = 0;
+                break;
+            case "singleDeckShip_2":
+                activeSingleShip = 1;
+                break;
+            case "singleDeckShip_3":
+                activeSingleShip = 2;
+                break;
+            case "singleDeckShip_4":
+                activeSingleShip = 3;
+                break;
         }
 
-        this.dragObject = {
-            e1,
-            parent: e1.parentElement,
-            next: e1.nextElementSibling,
+        if (activeSingleShip != null) {
+            singleDeckShip = document.getElementById(allSingleDeckShips[activeSingleShip].id)
+            singleDeckShip.onmousedown = function (e) {
 
-            downX: e.pageX,
-            downY: e.pageY,
+                let coords = getCoords(singleDeckShip);
+                let shiftX = e.pageX - coords.left;
+                let shiftY = e.pageY - coords.top;
 
-            left: e1.offsetLeft,
-            top: e1.offsetTop,
+                startX = coords.left;
+                startY = coords.top;
+                singleDeckShip.style.position = "absolute";
+                hideApplyButton();
+                moveAt(e)
+                document.body.appendChild(singleDeckShip);
+                singleDeckShip.style.zIndex = "1000";
 
-            kx: 0,
-            ky: 1
-        };*/
+                function moveAt(e) {
+                    singleDeckShip.style.left = e.pageX - shiftX + "px";
+                    singleDeckShip.style.top = e.pageY - shiftY + "px";
+                }
 
-        ship.style.position = "absolute";
-        moveAt(e)
-        document.body.appendChild(ship);
-        ship.style.zIndex = "1000";
+                document.onmousemove = function (e) {
 
-        function moveAt(e) {
-            ship.style.left = e.pageX - shiftX + "px";
-            ship.style.top = e.pageY - shiftY + "px";
+                    moveAt(e);
+                    singleDeckShip.hidden = true;
+                    const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+                    singleDeckShip.hidden = false;
+                    let cell = document.getElementById(elemBelow.id);
+
+                    if (cell !== null) {
+                        startSingleDeckCell = cell;
+                        moveToCellAndSetButtonCoordinates(cell);
+                    }
+
+                    let droppableBelow = elemBelow.closest(".test_table");
+
+                    if (currentDroppable !== droppableBelow) {
+                        if (currentDroppable) {
+                            leaveDroppable(singleDeckShip);
+                        }
+
+                        currentDroppable = droppableBelow;
+
+                        if (currentDroppable) {
+                            enterDroppable(singleDeckShip);
+                        }
+                    }
+                }
+
+                singleDeckShip.onmouseup = function () {
+                    document.onmousemove = null;
+                    singleDeckShip.onmouseup = null;
+
+                    if (currentDroppable != null) {
+                        if (document.getElementById(currentDroppable.id).className === "test_table") {
+                            showApplyButton();
+                        }
+                    } else {
+                        moveToStart();
+                    }
+                }
+            }
+            singleDeckShip.ondragstart = function() {
+                return false;
+            }
         }
-
-        document.onmousemove = function (e) {
-            //if (!this.dragObject.elem){
-            //    return;
-            // }
-            moveAt(e);
-        }
-
-        ship.onmouseup = function () {
-            document.onmousemove = null;
-            ship.onmouseup = null;
-            let x = document.getElementById("fuck");
-            let x1 = x.dataset.x;
-            let cell = document.getElementById("test1").innerText;
-            let table = document.getElementsByClassName("test_table");
-            let suka = table.length;
-            //let cell = document.getElementsByTagName("battlefield_player")[0][0].innerHTML;
-            alert("penis " + cell + " " + x1);
-            alert("suka " + suka);
-        }
-    }
-
-    ship.ondragstart = function() {
-        return false;
     }
 
     function getCoords(elem) {
@@ -544,6 +571,89 @@
             bottom: box.bottom,
             right: box.right
         }
+    }
+
+    function getCellCoords(elem) {
+        let box = elem.getBoundingClientRect();
+        return {
+            top: box.top,
+            left: box.left
+        }
+    }
+
+    function enterDroppable(elem) {
+        elem.style.backgroundColor = 'rgba(144,238,144,0.3)';
+        elem.style.borderColor = 'green';
+    }
+
+    function leaveDroppable(elem) {
+        elem.style.background = '';
+        elem.style.opacity = '1';
+        elem.style.borderColor = 'mediumblue';
+        currentDroppable = null;
+    }
+
+    function moveToStart() {
+        singleDeckShip.style.left = startX + "px";
+        singleDeckShip.style.top = startY + "px";
+        leaveDroppable(singleDeckShip);
+        alert("1 " + singleDeckShip.style.left + " " + startX);
+        alert("2 " + singleDeckShip.style.top + " " + startY);
+    }
+
+    function moveToCellAndSetButtonCoordinates(element) {
+        singleDeckShip.style.left = getCellCoords(element).left.valueOf()-1 + "px";
+        singleDeckShip.style.top = getCellCoords(element).top.valueOf() + "px";
+        buttonX = (Number.parseInt(singleDeckShip.style.left) - 55).toString() + "px";
+        console.log("buttonX " + buttonX);
+        buttonY = singleDeckShip.style.top;
+        console.log("buttonY " + buttonY);
+    }
+
+    function showApplyButton() {
+        const button = document.getElementById("applySingleDeckButton");
+        button.style.left = buttonX;
+        button.style.top = buttonY;
+        button.hidden = false;
+    }
+
+    function hideApplyButton() {
+        const button = document.getElementById("applySingleDeckButton");
+        button.hidden = true;
+    }
+
+    function addSingleDeckShip(cell) {
+        //let xhr = new XMLHttpRequest();
+        //let url = '/game/' + sessionStorage.getItem("gameId") + '/fight_field/' + sessionStorage.getItem("owner") + '/ship';
+        let singleDeckShipJSON = {
+            type: "SINGLE",
+            cells: [
+                {
+                    cellState: "SHIP",
+                    coordinates: {
+                        x: cell.dataset.x,
+                        y: cell.dataset.y
+                    }
+                }
+            ]
+        }
+
+        let data = JSON.stringify(singleDeckShipJSON);
+
+        //xhr.open('PATCH', url, true);
+        //xhr.setRequestHeader("Content-Type", "application/json");
+        //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+
+        //alert("x " + singleDeckShip.cells.coordinates.x);
+        //alert("y " + singleDeckShip.cells.coordinates.y);
+        alert("ship " + data);
+
+        //xhr.send(data);
+
+        //xhr.onreadystatechange = function () {
+        leaveDroppable(singleDeckShip);
+        hideApplyButton();
+        //}
     }
 </script>
 

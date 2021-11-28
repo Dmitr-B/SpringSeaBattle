@@ -317,14 +317,8 @@ th{
     cursor: move;
 }
 
+/* singleDeckShip style */
 .singleDeckShip {
-    width: 35px;
-    height: 35px;
-    border-collapse: collapse;
-    border: 2px solid darkblue;
-}
-
-.test {
     width: 31px;
     height: 31px;
     border-collapse: collapse;
@@ -335,16 +329,100 @@ th{
     left: 620px;*/
 }
 
-#test_1 {
+#singleDeckShip_1 {
     position: absolute;
     bottom: 390px;
     left: 530px;
 }
 
-#test_2 {
+#singleDeckShip_2 {
     position: absolute;
     bottom: 390px;
     left: 630px;
+}
+
+#singleDeckShip_3 {
+    position: absolute;
+    bottom: 390px;
+    left: 730px;
+}
+
+#singleDeckShip_4 {
+    position: absolute;
+    bottom: 390px;
+    left: 830px;
+}
+
+/* doubleDeckShip style */
+.doubleDeckShip {
+    width: 62px;
+    height: 31px;
+    border-collapse: collapse;
+    border: 2px solid mediumblue;
+    /*cursor: move;*/
+
+    /*bottom: 400px;
+    left: 620px;*/
+}
+
+#doubleDeckShip_1 {
+    position: absolute;
+    bottom: 290px;
+    left: 530px;
+}
+
+#doubleDeckShip_2 {
+    position: absolute;
+    bottom: 290px;
+    left: 630px;
+}
+
+#doubleDeckShip_3 {
+    position: absolute;
+    bottom: 290px;
+    left: 730px;
+}
+
+/* tripleDeckShip style */
+.tripleDeckShip {
+    width: 95px;
+    height: 31px;
+    border-collapse: collapse;
+    border: 2px solid mediumblue;
+    /*cursor: move;*/
+
+    /*bottom: 400px;
+    left: 620px;*/
+}
+
+#tripleDeckShip_1 {
+    position: absolute;
+    bottom: 190px;
+    left: 530px;
+}
+
+#tripleDeckShip_2 {
+    position: absolute;
+    bottom: 190px;
+    left: 630px;
+}
+
+/* fourDeckShip style */
+.fourDeckShip {
+    width: 128px;
+    height: 31px;
+    border-collapse: collapse;
+    border: 2px solid mediumblue;
+    /*cursor: move;*/
+
+    /*bottom: 400px;
+    left: 620px;*/
+}
+
+#fourDeckShip_1 {
+    position: absolute;
+    bottom: 90px;
+    left: 530px;
 }
 
 /* test table */
@@ -378,15 +456,15 @@ table {
 
 .test_table {
     /*table-layout: fixed;*/
-    width: 165px;
-    height: 166px;
+    width: 330px;
+    height: 332px;
     border-collapse: collapse;
     border: 1px solid darkblue;
 }
 
 .test_div {
-    position: relative;
-    bottom: 297px;
+    position: fixed;
+    bottom: 497px;
     left: /*556*/60px;
 }
 

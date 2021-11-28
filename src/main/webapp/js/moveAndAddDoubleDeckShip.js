@@ -1,36 +1,33 @@
-let activeSingleShip = null; /* add change active ship with cursor */
-let allSingleDeckShips = document.querySelectorAll('.singleDeckShip');
-let singleDeckShip = null;
-let startSingleDeckCell = null;
-let currentDroppable = null;
-let startX = null;
-let startY = null;
-let buttonX = null;
-let buttonY = null;
+let activeDoubleShip = null; /* add change active ship with cursor */
+let allDoubleDeckShips = document.querySelectorAll('.doubleDeckShip');
+let doubleDeckShip = null;
+let startDoubleDeckCell = null;
+let currentDoubleDroppable = null;
+let startDoubleX = null;
+let startDoubleY = null;
+let buttonDoubleX = null;
+let buttonDoubleY = null;
 
 window.onmousemove = function (e) {
 
     switch (document.elementFromPoint(e.clientX, e.clientY).id) {
-        case "singleDeckShip_1":
-            activeSingleShip = 0;
+        case "doubleDeckShip_1":
+            activeDoubleShip = 0;
             break;
-        case "singleDeckShip_2":
-            activeSingleShip = 1;
+        case "doubleDeckShip_2":
+            activeDoubleShip = 1;
             break;
-        case "singleDeckShip_3":
-            activeSingleShip = 2;
-            break;
-        case "singleDeckShip_4":
-            activeSingleShip = 3;
+        case "doubleDeckShip_3":
+            activeDoubleShip = 2;
             break;
     }
 
-    if (activeSingleShip != null) {
-        moveShip(allSingleDeckShips, activeSingleShip, singleDeckShip);
+    if (activeDoubleShip != null) {
+        moveDoubleShip(allDoubleDeckShips, activeDoubleShip, doubleDeckShip);
     }
 }
 
-function moveShip(allShips, activeShip, ship) {
+function moveDoubleShip(allShips, activeShip, ship) {
 
     ship = document.getElementById(allShips[activeShip].id)
     ship.onmousedown = function (e) {
@@ -39,8 +36,8 @@ function moveShip(allShips, activeShip, ship) {
         let shiftX = e.pageX - coords.left;
         let shiftY = e.pageY - coords.top;
 
-        startX = coords.left;
-        startY = coords.top;
+        startDoubleX = coords.left;
+        startDoubleY = coords.top;
         ship.style.position = "absolute";
         hideApplyButton();
         moveAt(e)
@@ -61,20 +58,20 @@ function moveShip(allShips, activeShip, ship) {
             let cell = document.getElementById(elemBelow.id);
 
             if (cell !== null) {
-                startSingleDeckCell = cell;
+                startDoubleDeckCell = cell;
                 moveToCellAndSetButtonCoordinates(cell, ship);
             }
 
             let droppableBelow = elemBelow.closest(".test_table");
 
-            if (currentDroppable !== droppableBelow) {
-                if (currentDroppable) {
+            if (currentDoubleDroppable !== droppableBelow) {
+                if (currentDoubleDroppable) {
                     leaveDroppable(ship);
                 }
 
-                currentDroppable = droppableBelow;
+                currentDoubleDroppable = droppableBelow;
 
-                if (currentDroppable) {
+                if (currentDoubleDroppable) {
                     enterDroppable(ship);
                 }
             }
@@ -84,8 +81,8 @@ function moveShip(allShips, activeShip, ship) {
             document.onmousemove = null;
             ship.onmouseup = null;
 
-            if (currentDroppable != null) {
-                if (document.getElementById(currentDroppable.id).className === "test_table") {
+            if (currentDoubleDroppable != null) {
+                if (document.getElementById(currentDoubleDroppable.id).className === "test_table") {
                     showApplyButton();
                 }
             } else {
@@ -96,7 +93,7 @@ function moveShip(allShips, activeShip, ship) {
     ship.ondragstart = function() {
         return false;
     }
-    singleDeckShip = ship;
+    doubleDeckShip = ship;
 }
 
 function getCoords(elem) {
@@ -126,7 +123,7 @@ function leaveDroppable(elem) {
     elem.style.background = '';
     elem.style.opacity = '1';
     elem.style.borderColor = 'mediumblue';
-    currentDroppable = null;
+    currentDoubleDroppable = null;
 }
 
 function moveToStart(ship) {
@@ -140,9 +137,9 @@ function moveToStart(ship) {
 function moveToCellAndSetButtonCoordinates(element, ship) {
     ship.style.left = getCellCoords(element).left.valueOf()-1 + "px";
     ship.style.top = getCellCoords(element).top.valueOf() + "px";
-    buttonX = (Number.parseInt(ship.style.left) - 55).toString() + "px";
+    buttonDoubleX = (Number.parseInt(ship.style.left) - 55).toString() + "px";
     console.log("buttonX " + buttonX);
-    buttonY = ship.style.top;
+    buttonDoubleY = ship.style.top;
     console.log("buttonY " + buttonY);
 }
 
@@ -191,4 +188,3 @@ function addSingleDeckShip(cell, ship) {
     hideApplyButton();
     //}
 }
-
