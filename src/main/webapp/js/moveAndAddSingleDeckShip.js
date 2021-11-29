@@ -8,26 +8,63 @@ let startY = null;
 let buttonX = null;
 let buttonY = null;
 
+let rotateShip = 0;
+let activeDoubleShip = null; /* add change active ship with cursor */
+let allDoubleDeckShips = document.querySelectorAll('.doubleDeckShip');
+let doubleDeckShip = null;
+let startDoubleDeckCell = null;
+let currentDoubleDroppable = null;
+let startDoubleX = null;
+let startDoubleY = null;
+let buttonDoubleX = null;
+let buttonDoubleY = null;
+
 window.onmousemove = function (e) {
+    console.log("X " + e.clientX + " " + "Y " +  e.clientY);
 
     switch (document.elementFromPoint(e.clientX, e.clientY).id) {
         case "singleDeckShip_1":
             activeSingleShip = 0;
+            activeDoubleShip = null;
             break;
         case "singleDeckShip_2":
             activeSingleShip = 1;
+            activeDoubleShip = null;
             break;
         case "singleDeckShip_3":
             activeSingleShip = 2;
+            activeDoubleShip = null;
             break;
         case "singleDeckShip_4":
             activeSingleShip = 3;
+            activeDoubleShip = null;
+            break;
+        case "doubleDeckShip_1":
+            activeDoubleShip = 0;
+            activeSingleShip = null;
+            break;
+        case "doubleDeckShip_2":
+            activeDoubleShip = 1;
+            activeSingleShip = null;
+            break;
+        case "doubleDeckShip_3":
+            activeDoubleShip = 2;
+            activeSingleShip = null;
             break;
     }
 
     if (activeSingleShip != null) {
+        console.log("loshok " + activeSingleShip);
+        console.log("ebanui penis1 " + activeDoubleShip);
         moveShip(allSingleDeckShips, activeSingleShip, singleDeckShip);
     }
+
+     if (activeDoubleShip != null) {
+         console.log("ebanui penis " + activeDoubleShip);
+         console.log("loshok1 " + activeSingleShip);
+         moveShip(allDoubleDeckShips, activeDoubleShip, doubleDeckShip);
+         //moveDoubleShip(allDoubleDeckShips, activeDoubleShip, doubleDeckShip);
+     }
 }
 
 function moveShip(allShips, activeShip, ship) {
@@ -59,6 +96,11 @@ function moveShip(allShips, activeShip, ship) {
             const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
             ship.hidden = false;
             let cell = document.getElementById(elemBelow.id);
+            console.log("top " + coords.top);
+            console.log("left " + coords.left);
+            console.log("right " + coords.right);
+            console.log("bottom " + coords.bottom);
+
 
             if (cell !== null) {
                 startSingleDeckCell = cell;
@@ -91,12 +133,21 @@ function moveShip(allShips, activeShip, ship) {
             } else {
                 moveToStart(ship);
             }
+            rotate(ship);
         }
     }
     ship.ondragstart = function() {
         return false;
     }
-    singleDeckShip = ship;
+
+    if (activeSingleShip != null) {
+        singleDeckShip = ship;
+    }
+
+    if (activeDoubleShip != null) {
+        doubleDeckShip = ship;
+    }
+
 }
 
 function getCoords(elem) {
@@ -144,6 +195,21 @@ function moveToCellAndSetButtonCoordinates(element, ship) {
     console.log("buttonX " + buttonX);
     buttonY = ship.style.top;
     console.log("buttonY " + buttonY);
+}
+
+function rotate(ship) {
+    let tempWidth = ship.offsetWidth-4;
+    let tempHeight = ship.offsetHeight-4;
+
+    ship.style.height = tempWidth.toString() + "px";
+    ship.style.width = tempHeight.toString() + "px";
+
+    if (rotateShip === 0) {
+        rotateShip = 1;
+    } else {
+        rotateShip = 0;
+    }
+    alert("zalupa " + rotateShip);
 }
 
 function showApplyButton() {
