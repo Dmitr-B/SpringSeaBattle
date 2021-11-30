@@ -468,6 +468,20 @@ table {
     left: /*556*/60px;
 }
 
-.singleDeckButton {
+.applyShip {
+    width: 46px;
+    height: 22px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    position: absolute;
+}
+
+.rotateShip {
+    width: 46px;
+    height: 22px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
     position: absolute;
 }

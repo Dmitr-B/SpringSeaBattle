@@ -1,7 +1,14 @@
 let activeSingleShip = null; /* add change active ship with cursor */
+let activeDoubleShip = null; /* add change active ship with cursor */
+let activeTripleShip = null; /* add change active ship with cursor */
+let activeFourShip = null; /* add change active ship with cursor */
 let allSingleDeckShips = document.querySelectorAll('.singleDeckShip');
-let singleDeckShip = null;
-let startSingleDeckCell = null;
+let allDoubleDeckShips = document.querySelectorAll('.doubleDeckShip');
+let allTripleDeckShips = document.querySelectorAll('.tripleDeckShip');
+let allFourDeckShips = document.querySelectorAll('.fourDeckShip');
+//let singleDeckShip = null;
+let shipOnMove = null;
+let startShipCell = null;
 let currentDroppable = null;
 let startX = null;
 let startY = null;
@@ -9,8 +16,8 @@ let buttonX = null;
 let buttonY = null;
 
 let rotateShip = 0;
-let activeDoubleShip = null; /* add change active ship with cursor */
-let allDoubleDeckShips = document.querySelectorAll('.doubleDeckShip');
+
+
 let doubleDeckShip = null;
 let startDoubleDeckCell = null;
 let currentDoubleDroppable = null;
@@ -24,47 +31,52 @@ window.onmousemove = function (e) {
 
     switch (document.elementFromPoint(e.clientX, e.clientY).id) {
         case "singleDeckShip_1":
-            activeSingleShip = 0;
-            activeDoubleShip = null;
+            setActiveShip("single", 0);
             break;
         case "singleDeckShip_2":
-            activeSingleShip = 1;
-            activeDoubleShip = null;
+            setActiveShip("single", 1);
             break;
         case "singleDeckShip_3":
-            activeSingleShip = 2;
-            activeDoubleShip = null;
+            setActiveShip("single", 2);
             break;
         case "singleDeckShip_4":
-            activeSingleShip = 3;
-            activeDoubleShip = null;
+            setActiveShip("single", 3);
             break;
         case "doubleDeckShip_1":
-            activeDoubleShip = 0;
-            activeSingleShip = null;
+            setActiveShip("double", 0);
             break;
         case "doubleDeckShip_2":
-            activeDoubleShip = 1;
-            activeSingleShip = null;
+            setActiveShip("double", 1);
             break;
         case "doubleDeckShip_3":
-            activeDoubleShip = 2;
-            activeSingleShip = null;
+            setActiveShip("double", 2);
+            break;
+        case "tripleDeckShip_1":
+            setActiveShip("triple", 0);
+            break;
+        case "tripleDeckShip_2":
+            setActiveShip("triple", 1);
+            break;
+        case "fourDeckShip_1":
+            setActiveShip("four", 0);
             break;
     }
 
     if (activeSingleShip != null) {
-        console.log("loshok " + activeSingleShip);
-        console.log("ebanui penis1 " + activeDoubleShip);
-        moveShip(allSingleDeckShips, activeSingleShip, singleDeckShip);
+        moveShip(allSingleDeckShips, activeSingleShip, shipOnMove);
     }
 
      if (activeDoubleShip != null) {
-         console.log("ebanui penis " + activeDoubleShip);
-         console.log("loshok1 " + activeSingleShip);
-         moveShip(allDoubleDeckShips, activeDoubleShip, doubleDeckShip);
-         //moveDoubleShip(allDoubleDeckShips, activeDoubleShip, doubleDeckShip);
+         moveShip(allDoubleDeckShips, activeDoubleShip, shipOnMove);
      }
+
+    if (activeTripleShip != null) {
+        moveShip(allTripleDeckShips, activeTripleShip, shipOnMove);
+    }
+
+    if (activeFourShip != null) {
+        moveShip(allFourDeckShips, activeFourShip, shipOnMove);
+    }
 }
 
 function moveShip(allShips, activeShip, ship) {
@@ -96,14 +108,10 @@ function moveShip(allShips, activeShip, ship) {
             const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
             ship.hidden = false;
             let cell = document.getElementById(elemBelow.id);
-            console.log("top " + coords.top);
-            console.log("left " + coords.left);
-            console.log("right " + coords.right);
-            console.log("bottom " + coords.bottom);
 
 
             if (cell !== null) {
-                startSingleDeckCell = cell;
+                startShipCell = cell;
                 moveToCellAndSetButtonCoordinates(cell, ship);
             }
 
@@ -133,20 +141,20 @@ function moveShip(allShips, activeShip, ship) {
             } else {
                 moveToStart(ship);
             }
-            rotate(ship);
         }
     }
     ship.ondragstart = function() {
         return false;
     }
 
-    if (activeSingleShip != null) {
-        singleDeckShip = ship;
-    }
-
-    if (activeDoubleShip != null) {
-        doubleDeckShip = ship;
-    }
+    // if (activeSingleShip != null) {
+    //     singleDeckShip = ship;
+    // }
+    //
+    // if (activeDoubleShip != null) {
+    //     doubleDeckShip = ship;
+    // }
+    shipOnMove = ship;
 
 }
 
@@ -209,38 +217,270 @@ function rotate(ship) {
     } else {
         rotateShip = 0;
     }
-    alert("zalupa " + rotateShip);
 }
 
 function showApplyButton() {
-    const button = document.getElementById("applySingleDeckButton");
-    button.style.left = buttonX;
-    button.style.top = buttonY;
-    button.hidden = false;
+    const applyButton = document.getElementById("applyButton");
+    const rotateButton = document.getElementById("rotateButton");
+
+    applyButton.style.left = buttonX;
+    applyButton.style.top = buttonY;
+
+    rotateButton.style.left = buttonX;
+    rotateButton.style.top = (Number.parseInt(buttonY) + 24) + "px";
+
+    applyButton.hidden = false;
+
+    if (document.getElementById(shipOnMove.id).className !== "singleDeckShip") {
+        rotateButton.hidden = false;
+    }
 }
 
 function hideApplyButton() {
-    const button = document.getElementById("applySingleDeckButton");
-    button.hidden = true;
+    const applyButton = document.getElementById("applyButton");
+    const rotateButton = document.getElementById("rotateButton");
+
+    applyButton.hidden = true;
+    rotateButton.hidden = true;
 }
 
-function addSingleDeckShip(cell, ship) {
+function setActiveShip(type, value) {
+    switch (type) {
+        case "single":
+            activeSingleShip = value;
+            activeDoubleShip = null;
+            activeTripleShip = null;
+            activeFourShip = null;
+            break;
+        case "double":
+            activeSingleShip = null;
+            activeDoubleShip = value;
+            activeTripleShip = null;
+            activeFourShip = null;
+            break;
+        case "triple":
+            activeSingleShip = null;
+            activeDoubleShip = null;
+            activeTripleShip = value;
+            activeFourShip = null;
+            break;
+        case "four":
+            activeSingleShip = null;
+            activeDoubleShip = null;
+            activeTripleShip = null;
+            activeFourShip = value;
+            break;
+    }
+}
+
+function addShipToField(cell, ship) {
+    let shipJSON = null;
     //let xhr = new XMLHttpRequest();
     //let url = '/game/' + sessionStorage.getItem("gameId") + '/fight_field/' + sessionStorage.getItem("owner") + '/ship';
-    let singleDeckShipJSON = {
-        type: "SINGLE",
-        cells: [
-            {
-                cellState: "SHIP",
-                coordinates: {
-                    x: cell.dataset.x,
-                    y: cell.dataset.y
+    switch (document.getElementById(ship.id).className) {
+        case "singleDeckShip":
+            shipJSON = {
+                type: "SINGLE",
+                cells: [
+                    {
+                        cellState: "SHIP",
+                        coordinates: {
+                            x: cell.dataset.x,
+                            y: cell.dataset.y
+                        }
+                    }
+                ]
+            }
+        break;
+
+        case "doubleDeckShip":
+            if (rotateShip === 0) {
+                shipJSON = {
+                    type: "DOUBLE",
+                    cells: [
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: Number.parseInt(cell.dataset.x)+1,
+                                y: cell.dataset.y
+                            }
+                        }
+                    ]
+                }
+            } else {
+                shipJSON = {
+                    type: "DOUBLE",
+                    cells: [
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: Number.parseInt(cell.dataset.y)+1
+                            }
+                        }
+                    ]
                 }
             }
-        ]
-    }
+            break;
 
-    let data = JSON.stringify(singleDeckShipJSON);
+        case "tripleDeckShip":
+            if (rotateShip === 0) {
+                shipJSON = {
+                    type: "THREE",
+                    cells: [
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: Number.parseInt(cell.dataset.x)+1,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: Number.parseInt(cell.dataset.x)+2,
+                                y: cell.dataset.y
+                            }
+                        }
+                    ]
+                }
+            } else {
+                shipJSON = {
+                    type: "THREE",
+                    cells: [
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: Number.parseInt(cell.dataset.y)+1
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: Number.parseInt(cell.dataset.y)+2
+                            }
+                        }
+                    ]
+                }
+            }
+            break;
+
+        case "fourDeckShip":
+            if (rotateShip === 0) {
+                shipJSON = {
+                    type: "FOUR",
+                    cells: [
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: Number.parseInt(cell.dataset.x)+1,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: Number.parseInt(cell.dataset.x)+2,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: Number.parseInt(cell.dataset.x)+3,
+                                y: cell.dataset.y
+                            }
+                        }
+                    ]
+                }
+            } else {
+                shipJSON = {
+                    type: "FOUR",
+                    cells: [
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: cell.dataset.y
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: Number.parseInt(cell.dataset.y)+1
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: Number.parseInt(cell.dataset.y)+2
+                            }
+                        },
+                        {
+                            cellState: "SHIP",
+                            coordinates: {
+                                x: cell.dataset.x,
+                                y: Number.parseInt(cell.dataset.y)+3
+                            }
+                        }
+                    ]
+                }
+            }
+            break;
+    }
+    // let singleDeckShipJSON = {
+    //     type: "SINGLE",
+    //     cells: [
+    //         {
+    //             cellState: "SHIP",
+    //             coordinates: {
+    //                 x: cell.dataset.x,
+    //                 y: cell.dataset.y
+    //             }
+    //         }
+    //     ]
+    // }
+
+    let data = JSON.stringify(shipJSON);
 
     //xhr.open('PATCH', url, true);
     //xhr.setRequestHeader("Content-Type", "application/json");
@@ -257,4 +497,3 @@ function addSingleDeckShip(cell, ship) {
     hideApplyButton();
     //}
 }
-
