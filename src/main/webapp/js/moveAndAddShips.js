@@ -19,12 +19,6 @@ let rotateShip = 0;
 
 
 let doubleDeckShip = null;
-let startDoubleDeckCell = null;
-let currentDoubleDroppable = null;
-let startDoubleX = null;
-let startDoubleY = null;
-let buttonDoubleX = null;
-let buttonDoubleY = null;
 
 window.onmousemove = function (e) {
     console.log("X " + e.clientX + " " + "Y " +  e.clientY);
@@ -105,9 +99,18 @@ function moveShip(allShips, activeShip, ship) {
 
             moveAt(e);
             ship.hidden = true;
+            let testCoords = getCoords(ship);
             const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
             ship.hidden = false;
             let cell = document.getElementById(elemBelow.id);
+            let coords = getCoords(ship);
+            let shipTail = document.elementFromPoint(coords.right, coords.bottom);
+            console.log("celllll " + cell);
+            console.log("test suka " + shipTail.tagName);
+            console.log("top " + coords.top);
+            console.log("left " + coords.left);
+            console.log("bottom " + coords.bottom);
+            console.log("right " + coords.right);
 
 
             if (cell !== null) {
@@ -172,13 +175,25 @@ function getCellCoords(elem) {
     let box = elem.getBoundingClientRect();
     return {
         top: box.top,
-        left: box.left
+        left: box.left,
+        bottom: box.bottom,
+        right: box.right
     }
 }
 
 function enterDroppable(elem) {
     elem.style.backgroundColor = 'rgba(144,238,144,0.3)';
     elem.style.borderColor = 'green';
+}
+
+function enterErrorRotate(elem) {
+    elem.style.backgroundColor = 'rgba(242,38,19,0.3)';
+    elem.style.borderColor = 'red';
+    sleep(1000).then(() => enterDroppable(elem));
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function leaveDroppable(elem) {
@@ -197,8 +212,27 @@ function moveToStart(ship) {
 }
 
 function moveToCellAndSetButtonCoordinates(element, ship) {
-    ship.style.left = getCellCoords(element).left.valueOf()-1 + "px";
-    ship.style.top = getCellCoords(element).top.valueOf() + "px";
+
+    //const shipHead = document.elementFromPoint(getCoords(ship).left, getCoords(ship).top);
+
+    //console.log("tail " + shipTail.closest('.test_table'));
+    //console.log("head " + shipHead.id);
+    console.log("right " + getCoords(ship).right);
+    console.log("bottom " + getCoords(ship).bottom);
+
+    // if (shipHead.closest('.test_table') !== null) {
+    //     ship.style.right = getCellCoords(element).left.valueOf()-1 + "px";
+    //     ship.style.bottom = getCellCoords(element).top.valueOf() + "px";
+    // }
+
+     //if (shipTail.closest('.test_table')) {
+         ship.style.left = getCellCoords(element).left.valueOf()-1 + "px";
+         ship.style.top = getCellCoords(element).top.valueOf() + "px";
+     //} //else {
+    //     ship.style.right = getCellCoords(element).left.valueOf()-1 + "px";
+    //     ship.style.bottom = getCellCoords(element).top.valueOf() + "px";
+    // }
+
     buttonX = (Number.parseInt(ship.style.left) - 55).toString() + "px";
     console.log("buttonX " + buttonX);
     buttonY = ship.style.top;
@@ -212,6 +246,17 @@ function rotate(ship) {
     ship.style.height = tempWidth.toString() + "px";
     ship.style.width = tempHeight.toString() + "px";
 
+    const coords = getCoords(ship);
+
+    if (document.elementFromPoint(coords.right, coords.bottom).tagName !== "TH") {
+        ship.style.height = tempHeight.toString() + "px";
+        ship.style.width = tempWidth.toString() + "px";
+        enterErrorRotate(ship);
+    } else setRotateShip();
+
+}
+
+function setRotateShip() {
     if (rotateShip === 0) {
         rotateShip = 1;
     } else {
