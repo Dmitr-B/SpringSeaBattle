@@ -16,6 +16,7 @@ let buttonX = null;
 let buttonY = null;
 
 let rotateShip = 0;
+let shipTail = null;
 
 
 let doubleDeckShip = null;
@@ -103,19 +104,24 @@ function moveShip(allShips, activeShip, ship) {
             const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
             ship.hidden = false;
             let cell = document.getElementById(elemBelow.id);
-            let coords = getCoords(ship);
-            let shipTail = document.elementFromPoint(coords.right, coords.bottom);
-            console.log("celllll " + cell);
-            console.log("test suka " + shipTail.tagName);
-            console.log("top " + coords.top);
-            console.log("left " + coords.left);
-            console.log("bottom " + coords.bottom);
-            console.log("right " + coords.right);
+            // let coords = getCoords(ship);
+            // shipTail = document.elementFromPoint(coords.right, coords.bottom);
+            // console.log("celllll " + cell);
+            // console.log("test suka " + shipTail.tagName);
+            // console.log("top " + coords.top);
+            // console.log("left " + coords.left);
+            // console.log("bottom " + coords.bottom);
+            // console.log("right " + coords.right);
 
 
             if (cell !== null) {
                 startShipCell = cell;
-                moveToCellAndSetButtonCoordinates(cell, ship);
+                let coords = getCoords(shipOnMove);
+                shipTail = document.elementFromPoint(coords.right, coords.bottom);
+                console.log("test suka " + coords.right + " " + coords.bottom);
+                if (shipTail.tagName === "TH") {
+                    moveToCellAndSetButtonCoordinates(cell, ship);
+                }
             }
 
             let droppableBelow = elemBelow.closest(".test_table");
@@ -137,7 +143,7 @@ function moveShip(allShips, activeShip, ship) {
             document.onmousemove = null;
             ship.onmouseup = null;
 
-            if (currentDroppable != null) {
+            if (currentDroppable != null && shipTail.tagName === "TH") {
                 if (document.getElementById(currentDroppable.id).className === "test_table") {
                     showApplyButton();
                 }
@@ -164,10 +170,10 @@ function moveShip(allShips, activeShip, ship) {
 function getCoords(elem) {
     let box = elem.getBoundingClientRect();
     return {
-        top: box.top + pageYOffset,
-        left: box.left + pageXOffset,
-        bottom: box.bottom,
-        right: box.right
+        top: box.top + window.pageYOffset,
+        left: box.left + window.pageXOffset,
+        bottom: box.bottom + window.pageYOffset,
+        right: box.right + window.pageXOffset
     }
 }
 
@@ -213,6 +219,7 @@ function moveToStart(ship) {
 
 function moveToCellAndSetButtonCoordinates(element, ship) {
 
+
     //const shipHead = document.elementFromPoint(getCoords(ship).left, getCoords(ship).top);
 
     //console.log("tail " + shipTail.closest('.test_table'));
@@ -225,10 +232,14 @@ function moveToCellAndSetButtonCoordinates(element, ship) {
     //     ship.style.bottom = getCellCoords(element).top.valueOf() + "px";
     // }
 
-     //if (shipTail.closest('.test_table')) {
-         ship.style.left = getCellCoords(element).left.valueOf()-1 + "px";
-         ship.style.top = getCellCoords(element).top.valueOf() + "px";
+     //if (shipTail.tagName === "TH") {
+         ship.style.left = getCoords(element).left.valueOf()-1 + "px";
+         ship.style.top = getCoords(element).top.valueOf() + "px";
+
      //} //else {
+    // let coords = getCoords(shipOnMove);
+    // shipTail = document.elementFromPoint(coords.right, coords.bottom);
+    // console.log("test suka " + coords.right + " " + coords.bottom);
     //     ship.style.right = getCellCoords(element).left.valueOf()-1 + "px";
     //     ship.style.bottom = getCellCoords(element).top.valueOf() + "px";
     // }
