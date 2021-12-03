@@ -1,3 +1,5 @@
+let user1Cells = null;
+
 function onStartGame() {
     let xhr = new XMLHttpRequest();
     let url = '/game/' + sessionStorage.getItem("gameId");
@@ -18,8 +20,18 @@ function onStartGame() {
             alert("gameeee " + respText);
             sessionStorage.setItem("game", respText);
             alert("gameInSessionStorage " + sessionStorage.getItem("game"));
-            // let jData = JSON.parse(respText);
-            // let token = jData["token"];
+            let jData = JSON.parse(respText);
+
+            //alert("field1 " + JSON.stringify(fightField1));
+            // user1Cells = JSON.stringify(jData["fightField1"]["cells"]);
+            // alert("celllllls " + user1Cells);
+            let zalupaCells = jData["fightField1"]["cells"];
+            alert("zalupaCells " + JSON.stringify(zalupaCells[0][0]["cellState"]));
+
+            // for (let i = 0; i < user1Cells.length; i++) {
+            //     alert(user1Cells[i]);
+            // }
+
             // let id = jData["id"];
             // sessionStorage.setItem("token", token);
             // //sessionStorage.setItem("id", id);
