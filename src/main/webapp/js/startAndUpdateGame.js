@@ -25,8 +25,9 @@ function onStartGame() {
             //alert("field1 " + JSON.stringify(fightField1));
             // user1Cells = JSON.stringify(jData["fightField1"]["cells"]);
             // alert("celllllls " + user1Cells);
-            let zalupaCells = jData["fightField1"]["cells"];
-            alert("zalupaCells " + JSON.stringify(zalupaCells[0][0]["cellState"]));
+             user1Cells = jData["fightField1"]["cells"];
+             changeCellStyle();
+            // alert("user1Cells " + user1Cells[0][0]["cellState"]);
 
             // for (let i = 0; i < user1Cells.length; i++) {
             //     alert(user1Cells[i]);
@@ -41,4 +42,20 @@ function onStartGame() {
             // window.location.replace("/auth/success");
         }
     }
+}
+
+function changeCellStyle() {
+    let cell;
+
+    for (let i = 0; i <= 9; i++) {
+        for (let j = 0; j <= 9; j++) {
+            switch (user1Cells[i][j]["cellState"]) {
+                case "EMPTY":
+                    cell = document.getElementById("cell_" + i +"_" + j);
+                    cell.style.backgroundColor = "#fce38a";
+                break;
+            }
+        }
+    }
+
 }
