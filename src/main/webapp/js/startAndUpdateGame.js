@@ -47,8 +47,8 @@ function onStartGame() {
 function changeCellStyle() {
     let cell;
 
-    for (let i = 0; i <= 9; i++) {
-        for (let j = 0; j <= 9; j++) {
+    for (let x = 0; x <= 9; x++) {
+        for (let y = 0; y <= 9; y++) {
             switch (user1Cells[i][j]["cellState"]) {
                 case "EMPTY":
                     cell = document.getElementById("cell_" + i +"_" + j);
