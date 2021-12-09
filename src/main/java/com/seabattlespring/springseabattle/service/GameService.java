@@ -9,6 +9,7 @@ import com.seabattlespring.springseabattle.game.validator.ship.*;
 import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.GameRepository;
+import com.seabattlespring.springseabattle.repository.StatRepository;
 import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
+    private final StatRepository statRepository;
     //@Autowired
     private final ShotValidator shotValidator;
     //@Qualifier("numberOfCoordinatesValidator")
@@ -122,7 +124,7 @@ public class GameService {
             }*/
                 gameContext.doChangeGameState(game);
 
-                //todo перевіряти що гра готова і змінити стан гри
+                //todo якщо гра завершилася, то змінити статистику
 
                 gameRepository.save(game);
             }
@@ -143,13 +145,8 @@ public class GameService {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("field not found"));
 
-        System.out.println("eblan " + fightField.getOwner());
-        System.out.println("pidar " + gameContext.getGameState());
+        if (shotValidator.valid(game, fightField) && isValidUserId(game, userId)) {
 
-        if (/*State.FIGHT.equals(game.getState())*//*(gameContext.getGameState() instanceof Player1TurnState && State.PLAYER1TURN.equals(game.getState()) ||
-                (gameContext.getGameState() instanceof Player2TurnState && State.PLAYER2TURN.equals(game.getState())))*/
-                shotValidator.valid(game, fightField) && isValidUserId(game, userId)/*isValidShot(game, fightField)*/) {
-            //log.info("shot " + isValidShot(game, fightField));
             log.info("state " + gameContext.getGameState());
 
             Cell cell = fightField.getCells().get(shot.getCoordinates().getX()).get(shot.getCoordinates().getY());
@@ -160,22 +157,12 @@ public class GameService {
             } else {
                 //todo change turn player
                 newCellState = CellState.PAST;
-//                if (gameContext.getGameState() instanceof Player1TurnState) {
-//                    gameContext.changeGameState(new Player2TurnState(gameContext));
-//                } else {
-//                    gameContext.changeGameState(new Player1TurnState(gameContext));
-//                }
                 gameContext.changeTurnPlayer();
             }
             cell.setCellState(newCellState);
 
             //todo чи гра завершена
 
-            //log.info("gameOver " + isGameOver(game));
-
-//            if (isGameOver(game)) {
-//                game.setState(State.OVER);
-//            }
             gameContext.doChangeGameState(game);
 
             gameRepository.save(game);
@@ -304,4 +291,12 @@ public class GameService {
         User user = userRepository.getByUserName(userName);
         return user.getId();
     }
+
+//    private void changeStat(String winner, Game game) {
+//
+//        switch (winner) {
+//            case "PLAYER1":
+//                statRepository.saveWin(game.getUser1(),userRepository.getById(game.getUser1()),);
+//        }
+//    }
 }

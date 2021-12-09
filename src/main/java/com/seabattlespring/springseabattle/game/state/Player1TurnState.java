@@ -1,6 +1,7 @@
 package com.seabattlespring.springseabattle.game.state;
 
 import com.seabattlespring.springseabattle.repository.domain.CellState;
+import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
 import com.seabattlespring.springseabattle.repository.domain.State;
 
@@ -16,6 +17,7 @@ public class Player1TurnState extends GameState{
         if (isPlayer1Win(game)) {
             gameContext.changeGameState(new OverState(gameContext));
             gameContext.doChangeGameState(game);
+            game.setWinner(FightField.Owner.PLAYER1.name());
             //game.setState(State.OVER);
         }
     }

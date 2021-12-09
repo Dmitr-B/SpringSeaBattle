@@ -49,9 +49,9 @@ function changeCellStyle() {
 
     for (let x = 0; x <= 9; x++) {
         for (let y = 0; y <= 9; y++) {
-            switch (user1Cells[i][j]["cellState"]) {
+            switch (user1Cells[i][y]["cellState"]) {
                 case "EMPTY":
-                    cell = document.getElementById("cell_" + i +"_" + j);
+                    cell = document.getElementById("cell_" + i +"_" + y);
                     cell.style.backgroundColor = "#fce38a";
                 break;
             }

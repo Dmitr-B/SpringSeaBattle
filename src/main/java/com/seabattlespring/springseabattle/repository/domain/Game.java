@@ -1,12 +1,10 @@
 package com.seabattlespring.springseabattle.repository.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-//@NoArgsConstructor
 @Document(collection = "game")
 public class Game {
 
@@ -18,6 +16,7 @@ public class Game {
     private FightField fightField2;
     private String user1;
     private String user2;
+    private String winner;
 
     public Game() {
         this.state = State.ARRANGEMENT;
