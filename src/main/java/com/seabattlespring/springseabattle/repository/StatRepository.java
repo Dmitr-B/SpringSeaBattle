@@ -13,8 +13,8 @@ public class StatRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void saveWin(String key, String value, long winCounter) {
-        redisTemplate.opsForZSet().incrementScore(key, value, winCounter);
+    public void saveWin(String key, String value) {
+        redisTemplate.opsForZSet().add(key, value, 1);
     }
 
 }

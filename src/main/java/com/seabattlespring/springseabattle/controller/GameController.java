@@ -4,6 +4,7 @@ import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
 import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
+import com.seabattlespring.springseabattle.repository.StatRepository;
 import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
@@ -33,6 +34,7 @@ public class GameController {
     private final ShipService shipService;
     private final GameService gameService;
     private final UserService userService;
+    private final StatRepository statRepository;
 
     @GetMapping("/welcome")
     public String index() {
@@ -66,10 +68,11 @@ public class GameController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<String> getUserNameFromToken(Authentication authentication) {
+    public ResponseEntity<Void> getUserNameFromToken(Authentication authentication) {
         String name = authentication.getName();
+        statRepository.saveWin("loh", "suka");
 
-        return ResponseEntity.ok(name);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/join")

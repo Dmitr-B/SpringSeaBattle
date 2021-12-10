@@ -292,11 +292,11 @@ public class GameService {
         return user.getId();
     }
 
-//    private void changeStat(String winner, Game game) {
-//
-//        switch (winner) {
-//            case "PLAYER1":
-//                statRepository.saveWin(game.getUser1(),userRepository.getById(game.getUser1()),);
-//        }
-//    }
+    private void changeStat(String winner, Game game) {
+
+        switch (winner) {
+            case "PLAYER1":
+                statRepository.saveWin("win",game.getUser1());
+        }
+    }
 }
