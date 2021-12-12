@@ -13,8 +13,24 @@ public class StatRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void saveWin(String key, String value) {
-        redisTemplate.opsForZSet().add(key, value, 1);
+    public void save(String key, String value, double score) {
+        redisTemplate.opsForZSet().add(key, value, score);
+    }
+
+    public Boolean saveIfNotPresent(String key, String value) {
+        return redisTemplate.opsForZSet().addIfAbsent(key, value, 1);
+    }
+
+    public void incrementScore(String key, String value) {
+        redisTemplate.opsForZSet().incrementScore(key, value, 1);
+    }
+
+    public void delete(String key, String value) {
+        redisTemplate.opsForZSet().remove(key, value);
+    }
+
+    public Double getScoreByValue(String key, String value) {
+        return redisTemplate.opsForZSet().score(key, value);
     }
 
 }

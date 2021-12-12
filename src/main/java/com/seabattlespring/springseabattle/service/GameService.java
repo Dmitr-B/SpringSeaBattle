@@ -292,11 +292,49 @@ public class GameService {
         return user.getId();
     }
 
-    private void changeStat(String winner, Game game) {
+    public void testChangeStat(String winner, Game game) {
+        if (winner != null)
+        defineWinner(winner, game);
+    }
+
+    private void defineWinner(String winner, Game game) {
 
         switch (winner) {
             case "PLAYER1":
-                statRepository.saveWin("win",game.getUser1());
+                //statRepository.save("win",game.getUser1());
+                //statRepository.save("lose", game.getUser2());
+                changeStat(game.getUser1(), game.getUser2());
+                //log.info("chlen " + statRepository.anotherSave("win", game.getUser2()));
+            break;
+            case "PLAYER2":
+                changeStat(game.getUser2(), game.getUser1());
+                //statRepository.save("win",game.getUser2());
+                //statRepository.save("lose", game.getUser1());
+            break;
+        }
+    }
+
+    private void changeStat(String winner, String looser) {
+        if (!statRepository.saveIfNotPresent("win", winner)) {
+            statRepository.incrementScore("win", winner);
+            statRepository.incrementScore("game", winner);
+        } else {
+            statRepository.save("game", winner, 1);
+        }
+
+        if (statRepository.getScoreByValue("lose", winner) == null) {
+            statRepository.save("lose", winner, 0);
+        }
+
+        if (!statRepository.saveIfNotPresent("lose", looser)) {
+            statRepository.incrementScore("lose", looser);
+            statRepository.incrementScore("game", looser);
+        } else {
+            statRepository.save("game", looser, 1);
+        }
+
+        if (statRepository.getScoreByValue("win", looser) == null) {
+            statRepository.save("win", looser, 0);
         }
     }
 }

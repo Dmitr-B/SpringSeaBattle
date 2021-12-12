@@ -67,10 +67,13 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Void> getUserNameFromToken(Authentication authentication) {
+    @GetMapping("/test/{id}")
+    public ResponseEntity<Void> getUserNameFromToken(Authentication authentication, @PathVariable("id") String id) {
         String name = authentication.getName();
-        statRepository.saveWin("loh", "suka");
+        Game game = gameService.getGameById(id);
+        log.info(game);
+        //statRepository.saveWin("loh", "suka");
+        gameService.testChangeStat("PLAYER2", game);
 
         return ResponseEntity.ok().build();
     }
