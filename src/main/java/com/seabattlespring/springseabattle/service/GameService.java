@@ -9,6 +9,7 @@ import com.seabattlespring.springseabattle.game.validator.ship.*;
 import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.GameRepository;
+import com.seabattlespring.springseabattle.repository.RedisGameRepository;
 import com.seabattlespring.springseabattle.repository.StatRepository;
 import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
@@ -31,6 +32,7 @@ public class GameService {
     private final StatRepository statRepository;
     //@Autowired
     private final ShotValidator shotValidator;
+    private final RedisGameRepository redisGameRepository;
     //@Qualifier("numberOfCoordinatesValidator")
     //@Autowired
     private final ShipValidator shipValidator = new NumberOfCoordinatesValidator(new OneStraightLineValidator(
@@ -84,6 +86,12 @@ public class GameService {
         }
 
         //log.info(games);
+    }
+
+    public String testMethod() {
+        String test = redisGameRepository.getAvailableGame("available_games");
+        String[] data = test.split("::");
+        return data[1];
     }
 
     public void addShip(String id, String userName, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,

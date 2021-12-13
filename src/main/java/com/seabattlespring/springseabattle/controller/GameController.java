@@ -4,6 +4,7 @@ import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
 import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
+import com.seabattlespring.springseabattle.repository.RedisGameRepository;
 import com.seabattlespring.springseabattle.repository.StatRepository;
 import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
@@ -36,6 +37,7 @@ public class GameController {
     private final GameService gameService;
     private final UserService userService;
     private final StatRepository statRepository;
+    private final RedisGameRepository redisGameRepository;
 
     @GetMapping("/welcome")
     public String index() {
@@ -76,8 +78,10 @@ public class GameController {
         //log.info(game);
         //statRepository.saveWin("loh", "suka");
         //gameService.testChangeStat("PLAYER2", game);
-        Date date = new Date();
-        System.out.println("Date " + date.getTime());
+        //Date date = new Date();
+        //System.out.println("Date " + date.getTime());
+        redisGameRepository.addAvailableGame("available_games", "id", 6000);
+        log.info("id " + gameService.testMethod());
 
         return ResponseEntity.ok().build();
     }
