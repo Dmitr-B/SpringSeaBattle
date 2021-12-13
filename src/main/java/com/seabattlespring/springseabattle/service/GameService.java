@@ -165,6 +165,10 @@ public class GameService {
 
             gameContext.doChangeGameState(game);
 
+            if (game.getWinner() != null) {
+                defineWinner(game);
+            }
+
             gameRepository.save(game);
         }
 
@@ -213,30 +217,6 @@ public class GameService {
                 .setCellState(CellState.KNOCKED);
     }
 
-//    private boolean isFightStateGame(Game game) {
-//        FightField fightField1 = game.getFightField1();
-//        FightField fightField2 = game.getFightField2();
-//        log.info("size1 " + fightField1.getShips().size());
-//        log.info("size2 " + fightField2.getShips().size());
-//
-//        return fightField1.getShips().size() == 1 && fightField2.getShips().size() == 1;
-//    }
-
-//    private boolean isGameOver(Game game) {
-//
-//        boolean overPlayer1 = game.getFightField1().getShips().stream()
-//                .filter(shipDto1 -> shipDto1.getCells().stream().anyMatch(cell -> cell.getCellState().equals(CellState.SHIP)))
-//                .findAny()
-//                .isEmpty();
-//
-//        boolean overPlayer2 = game.getFightField2().getShips().stream()
-//                .filter(shipDto1 -> shipDto1.getCells().stream().anyMatch(cell -> cell.getCellState().equals(CellState.SHIP)))
-//                .findAny()
-//                .isEmpty();
-//
-//        return overPlayer1 || overPlayer2;
-//    }
-
     private void setCellArea(FightField fightField, ShipDto shipDto) {
         int fromX = Math.max((shipDto.getCells().get(0).getCoordinates().getX() - 1), 0);
         int fromY = Math.max((shipDto.getCells().get(0).getCoordinates().getY() - 1), 0);
@@ -251,31 +231,6 @@ public class GameService {
             }
         }
     }
-
-//    private ShipValidator createValidator() {
-//        return  new NumberOfCoordinatesValidator(new OneStraightLineValidator(
-//                new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
-//                        new CellEmptyValidator(null)))));
-//    }
-
-//    private boolean isValidShot(Game game, FightField fightField) {
-//
-//        switch (game.getState()) {
-//            case PLAYER1TURN:
-//                if (FightField.Owner.PLAYER2.equals(fightField.getOwner())) {
-//                    log.info("shooot1 " + fightField.getOwner());
-//                    return true;
-//                }
-//                break;
-//            case PLAYER2TURN:
-//                if (FightField.Owner.PLAYER1.equals(fightField.getOwner())) {
-//                    log.info("shooot2 " + fightField.getOwner());
-//                    return true;
-//                }
-//                break;
-//        }
-//        return false;
-//    }
 
     private void getCurrentState(Game game) {
         gameContext.getCurrentState(game);
@@ -292,29 +247,20 @@ public class GameService {
         return user.getId();
     }
 
-    public void testChangeStat(String winner, Game game) {
-        if (winner != null)
-        defineWinner(winner, game);
-    }
+    private void defineWinner(Game game) {
 
-    private void defineWinner(String winner, Game game) {
-
-        switch (winner) {
+        switch (game.getWinner()) {
             case "PLAYER1":
-                //statRepository.save("win",game.getUser1());
-                //statRepository.save("lose", game.getUser2());
                 changeStat(game.getUser1(), game.getUser2());
-                //log.info("chlen " + statRepository.anotherSave("win", game.getUser2()));
             break;
             case "PLAYER2":
                 changeStat(game.getUser2(), game.getUser1());
-                //statRepository.save("win",game.getUser2());
-                //statRepository.save("lose", game.getUser1());
             break;
         }
     }
 
     private void changeStat(String winner, String looser) {
+
         if (!statRepository.saveIfNotPresent("win", winner)) {
             statRepository.incrementScore("win", winner);
             statRepository.incrementScore("game", winner);

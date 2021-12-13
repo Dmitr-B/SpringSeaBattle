@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Log4j2
 @Controller
@@ -67,13 +68,16 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/test/{id}")
-    public ResponseEntity<Void> getUserNameFromToken(Authentication authentication, @PathVariable("id") String id) {
+    //@GetMapping("/test/{id}")
+    @GetMapping("/test")
+    public ResponseEntity<Void> getUserNameFromToken(Authentication authentication/*, @PathVariable("id") String id*/) {
         String name = authentication.getName();
-        Game game = gameService.getGameById(id);
-        log.info(game);
+        //Game game = gameService.getGameById(id);
+        //log.info(game);
         //statRepository.saveWin("loh", "suka");
-        gameService.testChangeStat("PLAYER2", game);
+        //gameService.testChangeStat("PLAYER2", game);
+        Date date = new Date();
+        System.out.println("Date " + date.getTime());
 
         return ResponseEntity.ok().build();
     }
