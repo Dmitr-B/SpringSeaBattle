@@ -80,8 +80,9 @@ public class GameController {
         //gameService.testChangeStat("PLAYER2", game);
         //Date date = new Date();
         //System.out.println("Date " + date.getTime());
-        redisGameRepository.addAvailableGame("available_games", "id", 6000);
-        log.info("id " + gameService.testMethod());
+        //redisGameRepository.addAvailableGame("available_games", "id", 6000);
+        //log.info("id " + gameService.getAvailableId());
+        log.info("stat " + statRepository.getRangeByScore("win", 0, 1000000));
 
         return ResponseEntity.ok().build();
     }

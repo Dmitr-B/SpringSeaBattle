@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -48,6 +49,7 @@ public class GameService {
         game.setUser1(userId);
 
         gameRepository.save(game);
+        redisGameRepository.addAvailableGame("available_games", game.getId(), 6000);
         log.info("Game created by user: " + userId);
         return game.getId();
     }
@@ -68,30 +70,51 @@ public class GameService {
     }
 
     public void joinToRandomGame(String userName) {
+//        String userId = getUserIdByUserName(userName);
+//        List<Game> games = gameRepository.findAllByUser1IsNotNull().stream()
+//                .filter(user -> user.getUser2() == null)
+//                .collect(Collectors.toList());
+//
+//        if (games.size() > 0) {
+//            //Random random = new Random();
+//
+//            //Game game = games.get(random.nextInt(games.size()));
+//            Game game = games.stream()
+//                    .findFirst()
+//                    .orElseThrow(() -> new IllegalArgumentException("There are no free games now"));
+//            game.setUser2(userId);
+//            gameRepository.save(game);
+//            log.info("User: " + userId + " is joining to random game by id: " + game.getId());
+//        }
+
         String userId = getUserIdByUserName(userName);
-        List<Game> games = gameRepository.findAllByUser1IsNotNull().stream()
-                .filter(user -> user.getUser2() == null)
-                .collect(Collectors.toList());
+        String availableId = getAvailableId();
 
-        if (games.size() > 0) {
-            //Random random = new Random();
-
-            //Game game = games.get(random.nextInt(games.size()));
-            Game game = games.stream()
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("There are no free games now"));
+        if (availableId != null) {
+            Game game = gameRepository.findGameById(availableId);
             game.setUser2(userId);
             gameRepository.save(game);
             log.info("User: " + userId + " is joining to random game by id: " + game.getId());
-        }
+        } else  throw new IllegalArgumentException("There are no free games now");
 
         //log.info(games);
     }
 
-    public String testMethod() {
-        String test = redisGameRepository.getAvailableGame("available_games");
-        String[] data = test.split("::");
-        return data[1];
+    public String getAvailableId() {
+        String test;
+        String[] data;
+        Date date = new Date();
+        do {
+            test = redisGameRepository.getAvailableGame("available_games");
+
+            if (test == null)
+                return null;
+
+            data = test.split("::");
+
+        } while (Long.parseLong(data[1]) < date.getTime());
+
+        return data[0];
     }
 
     public void addShip(String id, String userName, FightField.Owner owner, Ship ship) throws NumberOfCoordinatesException, OneStraightLineException,
@@ -256,13 +279,15 @@ public class GameService {
     }
 
     private void defineWinner(Game game) {
+        User user1 = userRepository.getById(game.getUser1());
+        User user2 = userRepository.getById(game.getUser2());
 
         switch (game.getWinner()) {
             case "PLAYER1":
-                changeStat(game.getUser1(), game.getUser2());
+                changeStat(user1.getUserName(), user2.getUserName());
             break;
             case "PLAYER2":
-                changeStat(game.getUser2(), game.getUser1());
+                changeStat(user2.getUserName(), user1.getUserName());
             break;
         }
     }

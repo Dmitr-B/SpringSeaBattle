@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
+
+import java.util.Set;
 
 @Repository
 @Data
@@ -31,6 +34,14 @@ public class StatRepository {
 
     public Double getScoreByValue(String key, String value) {
         return redisTemplate.opsForZSet().score(key, value);
+    }
+
+    public Set<ZSetOperations.TypedTuple<String>> getRangeWithScore(String key, int start, int end) {
+        return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
+    }
+
+    public Set<String> getRangeByScore(String key, int min, int max) {
+        return redisTemplate.opsForZSet().reverseRangeByScore(key, min, max);
     }
 
 }
