@@ -8,10 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +22,18 @@ public class StatService {
 //        Set<ZSetOperations.TypedTuple<String>> wonData = statRepository.getRangeWithScore("win", 0, -1);
 //
 //    }
+
+    public Map<String, Long> getStat(String key) {
+        Map<String, Long> stat = new LinkedHashMap<>();
+        Set<String> data = statRepository.getRangeByScore(key, 0, 1000000);
+        log.info("data " + data);
+
+        for (String won:data) {
+            long winScore = Math.round(statRepository.getScoreByValue(key, won));
+            stat.put(won, winScore);
+        }
+
+        return stat;
+    }
 
 }

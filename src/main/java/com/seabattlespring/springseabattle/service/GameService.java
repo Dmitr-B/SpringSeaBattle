@@ -49,8 +49,8 @@ public class GameService {
         game.setUser1(userId);
 
         gameRepository.save(game);
-        redisGameRepository.addAvailableGame("available_games", game.getId(), 6000);
-        log.info("Game created by user: " + userId);
+        redisGameRepository.addAvailableGame("available_games", game.getId(), 60000);
+        log.info("Game:" + game.getId() + " created by user: " + userId);
         return game.getId();
     }
 

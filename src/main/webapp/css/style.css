@@ -16,7 +16,6 @@ body#login_page, body#register_page{
     height: 530px;
     position: relative;
     margin: 0 auto;
-    background: url("/img/background.png") repeat;
 }
 
 .login {

@@ -13,6 +13,7 @@ import com.seabattlespring.springseabattle.repository.domain.Game;
 import com.seabattlespring.springseabattle.repository.domain.User;
 import com.seabattlespring.springseabattle.service.GameService;
 import com.seabattlespring.springseabattle.service.ShipService;
+import com.seabattlespring.springseabattle.service.StatService;
 import com.seabattlespring.springseabattle.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -38,6 +39,7 @@ public class GameController {
     private final UserService userService;
     private final StatRepository statRepository;
     private final RedisGameRepository redisGameRepository;
+    private final StatService statService;
 
     @GetMapping("/welcome")
     public String index() {
@@ -82,7 +84,7 @@ public class GameController {
         //System.out.println("Date " + date.getTime());
         //redisGameRepository.addAvailableGame("available_games", "id", 6000);
         //log.info("id " + gameService.getAvailableId());
-        log.info("stat " + statRepository.getRangeByScore("win", 0, 1000000));
+        log.info("stat " + statService.getStat("win"));
 
         return ResponseEntity.ok().build();
     }
