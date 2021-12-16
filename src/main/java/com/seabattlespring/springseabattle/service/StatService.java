@@ -28,9 +28,9 @@ public class StatService {
         Set<String> data = statRepository.getRangeByScore(key, 0, 1000000);
         log.info("data " + data);
 
-        for (String won:data) {
-            long winScore = Math.round(statRepository.getScoreByValue(key, won));
-            stat.put(won, winScore);
+        for (String statData:data) {
+            long winScore = Math.round(statRepository.getScoreByValue(key, statData));
+            stat.put(statData, winScore);
         }
 
         return stat;

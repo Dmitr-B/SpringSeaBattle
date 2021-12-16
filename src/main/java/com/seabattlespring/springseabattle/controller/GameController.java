@@ -51,6 +51,11 @@ public class GameController {
         return "game";
     }
 
+    @GetMapping("/stat/win")
+    public String getStatPage() {
+        return "stat";
+    }
+
     @PostMapping
     //@PreAuthorize("hasAuthority('players:read')")
     public ResponseEntity<String> createGame(Authentication authentication) {
