@@ -42,7 +42,7 @@ window.onload = function () {
      xhr.onreadystatechange = function () {
          if (xhr.readyState === XMLHttpRequest.DONE) {
              let responseData = xhr.responseText;
-             statData = responseData.split('\n').length;
+             statData = responseData.split(',');
              // statData = JSON.parse(responseData);
               console.log("text " + statData);
              console.log("resp" + responseData);
