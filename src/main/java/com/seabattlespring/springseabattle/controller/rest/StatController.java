@@ -15,7 +15,7 @@ import java.util.Map;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/game/stat")
+@RequestMapping("/stat")
 public class StatController {
 
     private final StatService statService;

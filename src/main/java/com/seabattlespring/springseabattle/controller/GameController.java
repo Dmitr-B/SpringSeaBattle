@@ -52,7 +52,17 @@ public class GameController {
     }
 
     @GetMapping("/stat/win")
-    public String getStatPage() {
+    public String getWinStatPage() {
+        return "stat";
+    }
+
+    @GetMapping("/stat/lose")
+    public String getLoseStatPage() {
+        return "stat";
+    }
+
+    @GetMapping("/stat/game")
+    public String getGameStatPage() {
         return "stat";
     }
 

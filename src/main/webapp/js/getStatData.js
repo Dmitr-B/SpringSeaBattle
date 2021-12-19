@@ -1,65 +1,42 @@
-let stat = null;
 let users = [];
 let score = [];
-
-function statWon() {
-    stat = "win";
-}
-
-function statLose() {
-    stat = "lose";
-}
-
-function statGame() {
-    stat = "game";
-}
-
-function redirectToStatPage() {
-    window.location.replace("");
-}
-
+let splitUrl;
 
 window.onload = function () {
+    splitUrl = document.URL.split("/");
+
+    switch (splitUrl[splitUrl.length-1]) {
+        case "win":
+            getStatData("/stat/won");
+        break;
+        case "lose":
+            getStatData("/stat/lose");
+        break
+        case "game":
+            getStatData("/stat/game");
+        break;
+    }
+
+}
+
+function getStatData(url) {
     let xhr = new XMLHttpRequest();
-    let url = '/game/stat/won';
-    //let userId = sessionStorage.getItem("id");
 
     xhr.open('GET', url, true);
-    //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
-    // xhr.setRequestHeader("Content-Type", "application/json");
-
-    //alert("token " + sessionStorage.getItem("token"));
-
-
-    //alert("userId " + userId);
-
-    //xhr.setRequestHeader("Authorization", sessionStorage.getItem("token"));
-
-
-
     xhr.send();
-    //alert("stat " + stat);
 
-     xhr.onreadystatechange = function () {
-         if (xhr.readyState === XMLHttpRequest.DONE) {
-             let responseData = JSON.parse(xhr.responseText);
-             //statData = responseData.split(',');
-             users = Object.keys(responseData);
-             score = Object.values(responseData);
-             // statData = JSON.parse(responseData);
-             console.log("users " + users);
-             console.log("score " + score);
-             console.log("resp" + responseData);
-             tableCreate();
-             //sessionStorage.setItem("gameId", xhr.responseText);
-             //sessionStorage.setItem("owner", "PLAYER1");
-             //sessionStorage.setItem("id", id);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            let responseData = JSON.parse(xhr.responseText);
+            users = Object.keys(responseData);
+            score = Object.values(responseData);
+            tableCreate();
+        }
+    }
+}
 
-             //alert("gameId " + sessionStorage.getItem("gameId"));
-             //window.location.replace("/game");
-         }
-     }
-};
+
+
 
 function tableCreate() {
     //body reference
@@ -121,7 +98,7 @@ function tableCreate() {
                     cellTableText = score[tRow];
                 break;
             }
-            //let cellText = document.createTextNode("cell is row " + tRow + ", column " + tData);
+
             let cellText = document.createTextNode(cellTableText);
 
             cell.appendChild(cellText);
