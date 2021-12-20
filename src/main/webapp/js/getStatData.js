@@ -8,15 +8,26 @@ window.onload = function () {
     switch (splitUrl[splitUrl.length-1]) {
         case "win":
             getStatData("/stat/won");
+            addH1("Win Rating");
         break;
         case "lose":
             getStatData("/stat/lose");
+            addH1("Lose Rating");
         break
         case "game":
             getStatData("/stat/game");
+            addH1("Count of Game Rating");
         break;
     }
 
+}
+
+function addH1(text) {
+    let h1 = document.createElement("h1");
+    let textNode = document.createTextNode(text);
+    h1.appendChild(textNode);
+    document.body.appendChild(h1);
+    h1.setAttribute('class', 'statHeader');
 }
 
 function getStatData(url) {
