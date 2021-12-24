@@ -49,11 +49,23 @@ function changeCellStyle() {
 
     for (let x = 0; x <= 9; x++) {
         for (let y = 0; y <= 9; y++) {
-            switch (user1Cells[i][y]["cellState"]) {
-                case "EMPTY":
-                    cell = document.getElementById("cell_" + i +"_" + y);
-                    cell.style.backgroundColor = "#fce38a";
+            switch (user1Cells[x][y]["cellState"]) {
+                case "PAST":
+                    cell = document.getElementById("cell_" + x +"_" + y);
+                    cell.className = "battlefield_cell_past";
+                    //cell.style.backgroundColor = "#fce38a";
+                    //setSunkStyle(cell);
                 break;
+                case "KNOCKED":
+                    cell = document.getElementById("cell_" + x +"_" + y);
+                    cell.className = "battlefield_cell_knocked";
+                break;
+                case "SUNK":
+                    cell = document.getElementById("cell_" + x +"_" + y);
+                    cell.className = "battlefield_cell_sunk";
+                break;
+
+
             }
         }
     }

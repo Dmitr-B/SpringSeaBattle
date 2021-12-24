@@ -486,13 +486,13 @@ table {
 }
 
 /* style to sunk ship */
-/*#cell_0_0 {
+.battlefield_cell_sunk {
     background-color: lightgray;
     position: relative;
     border: 1px solid red;
 }
 
-#cell_0_0:before {
+.battlefield_cell_sunk:before {
     left: 50%;
     width: 1px;
     top: -22%;
@@ -505,7 +505,7 @@ table {
     transform: rotate(-45deg);
 }
 
-#cell_0_0:after {
+.battlefield_cell_sunk:after {
     top: 50%;
     height: 1px;
     left: -18%;
@@ -516,15 +516,15 @@ table {
     position: absolute;
     background: red;
     transform: rotate(-45deg);
-}*/
+}
 
 /* style to knocked ship */
-/*#cell_0_0 {
+.battlefield_cell_knocked {
     background-color: lightgray;
     position: relative;
 }
 
-#cell_0_0:before {
+.battlefield_cell_knocked:before {
     left: 50%;
     width: 1px;
     top: -22%;
@@ -537,7 +537,7 @@ table {
     transform: rotate(-45deg);
 }
 
-#cell_0_0:after {
+.battlefield_cell_knocked:after {
     top: 50%;
     height: 1px;
     left: -18%;
@@ -548,16 +548,16 @@ table {
     position: absolute;
     background: red;
     transform: rotate(-45deg);
-}*/
+}
 
 /* style to past shot */
 
-/*#cell_0_0 {
+.battlefield_cell_past {
     background-color: lightgray;
     position: relative;
 }
 
-#cell_0_0:before {
+.battlefield_cell_past:before {
     content: "";
     top: 50%;
     left: 50%;
@@ -569,7 +569,7 @@ table {
     margin-left: -2px;
     position: absolute;
     background: black;
-}*/
+}
 
 /* Stat tables style */
 
