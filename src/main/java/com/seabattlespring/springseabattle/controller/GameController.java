@@ -6,27 +6,22 @@ import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.RedisGameRepository;
 import com.seabattlespring.springseabattle.repository.StatRepository;
-import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
-import com.seabattlespring.springseabattle.repository.domain.User;
 import com.seabattlespring.springseabattle.service.GameService;
-import com.seabattlespring.springseabattle.service.ShipService;
 import com.seabattlespring.springseabattle.service.StatService;
 import com.seabattlespring.springseabattle.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @Log4j2
 @Controller
@@ -34,7 +29,6 @@ import java.util.Date;
 @RequestMapping("/game")
 public class GameController {
 
-    private final ShipService shipService;
     private final GameService gameService;
     private final UserService userService;
     private final StatRepository statRepository;

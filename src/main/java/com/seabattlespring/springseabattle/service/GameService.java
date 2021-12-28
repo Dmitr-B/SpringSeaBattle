@@ -48,10 +48,10 @@ public class GameService {
 
         game.setUser1(userId);
 
-        gameRepository.save(game);
-        redisGameRepository.addAvailableGame("available_games", game.getId(), 60000);
-        log.info("Game:" + game.getId() + " created by user: " + userId);
-        return game.getId();
+        Game updatedGame = gameRepository.save(game);
+        redisGameRepository.addAvailableGame("available_games", updatedGame.getId(), 60000);
+        log.info("Game:" + updatedGame.getId() + " created by user: " + userId);
+        return updatedGame.getId();
     }
 
     public Game getGameById(String id) {

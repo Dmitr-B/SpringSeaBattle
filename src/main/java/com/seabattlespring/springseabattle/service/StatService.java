@@ -17,12 +17,6 @@ public class StatService {
 
     private final StatRepository statRepository;
 
-//    public Map<String, Integer> getWonStat() {
-//        Map<String, Integer> wonStat = new HashMap<>();
-//        Set<ZSetOperations.TypedTuple<String>> wonData = statRepository.getRangeWithScore("win", 0, -1);
-//
-//    }
-
     public Map<String, Long> getStat(String key) {
         Map<String, Long> stat = new LinkedHashMap<>();
         Set<String> data = statRepository.getRangeByScore(key, 0, 1000000);
