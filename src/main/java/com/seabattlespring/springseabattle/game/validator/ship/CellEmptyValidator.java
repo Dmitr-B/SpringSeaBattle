@@ -18,11 +18,11 @@ public class CellEmptyValidator extends ShipValidator {
     boolean isValid(FightField fightField, Ship ship) {
 
         for (int i = 0; i < ship.getCells().size(); i++) {
-            if (CellState.EMPTY.equals(fightField.getCells().get(ship.getCells().get(i).getCoordinates().getX()).
+            if (!CellState.EMPTY.equals(fightField.getCells().get(ship.getCells().get(i).getCoordinates().getX()).
                     get(ship.getCells().get(i).getCoordinates().getY()).getCellState())) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }

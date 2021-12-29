@@ -17,7 +17,7 @@ public class FightField {
 
     private Owner owner;
     private List<List<Cell>> cells;
-    private List<ShipDto> ships = Collections.emptyList();
+    private List<ShipDto> ships = /*Collections.emptyList()*/new ArrayList<>();
 
     public FightField(Owner owner) {
         this.owner = owner;

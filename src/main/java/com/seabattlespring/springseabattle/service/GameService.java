@@ -70,23 +70,6 @@ public class GameService {
     }
 
     public void joinToRandomGame(String userName) {
-//        String userId = getUserIdByUserName(userName);
-//        List<Game> games = gameRepository.findAllByUser1IsNotNull().stream()
-//                .filter(user -> user.getUser2() == null)
-//                .collect(Collectors.toList());
-//
-//        if (games.size() > 0) {
-//            //Random random = new Random();
-//
-//            //Game game = games.get(random.nextInt(games.size()));
-//            Game game = games.stream()
-//                    .findFirst()
-//                    .orElseThrow(() -> new IllegalArgumentException("There are no free games now"));
-//            game.setUser2(userId);
-//            gameRepository.save(game);
-//            log.info("User: " + userId + " is joining to random game by id: " + game.getId());
-//        }
-
         String userId = getUserIdByUserName(userName);
         String availableId = getAvailableId();
 
@@ -97,20 +80,19 @@ public class GameService {
             log.info("User: " + userId + " is joining to random game by id: " + game.getId());
         } else  throw new IllegalArgumentException("There are no free games now");
 
-        //log.info(games);
     }
 
     public String getAvailableId() {
-        String test;
+        String availableGame;
         String[] data;
         Date date = new Date();
         do {
-            test = redisGameRepository.getAvailableGame("available_games");
+            availableGame = redisGameRepository.getAvailableGame("available_games");
 
-            if (test == null)
+            if (availableGame == null)
                 return null;
 
-            data = test.split("::");
+            data = availableGame.split("::");
 
         } while (Long.parseLong(data[1]) < date.getTime());
 
