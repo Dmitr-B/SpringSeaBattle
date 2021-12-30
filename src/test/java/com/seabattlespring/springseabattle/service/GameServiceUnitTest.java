@@ -2,9 +2,13 @@ package com.seabattlespring.springseabattle.service;
 
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
+import com.seabattlespring.springseabattle.dto.Shot;
 import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
+import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
+import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.GameRepository;
 import com.seabattlespring.springseabattle.repository.RedisGameRepository;
+import com.seabattlespring.springseabattle.repository.StatRepository;
 import com.seabattlespring.springseabattle.repository.UserRepository;
 import com.seabattlespring.springseabattle.repository.domain.*;
 import org.junit.jupiter.api.Test;
@@ -37,6 +41,10 @@ public class GameServiceUnitTest {
     private UserRepository userRepository;
     @Mock
     private RedisGameRepository redisGameRepository;
+    @Mock
+    private ShotValidator shotValidator;
+    @Mock
+    private StatRepository statRepository;
 
     @Test
     void createGame_whenCreate_theOk() {
@@ -366,4 +374,208 @@ public class GameServiceUnitTest {
 
         assertEquals(expectedMessage, actual.getMessage());
     }
+
+    @Test
+    void addShip_whenDoesNotExists_thenThrowPlayerException() {
+        String expectedMessage = "User not found in a game";
+        Game testGame = new Game();
+        testGame.setId(gameId);
+        testGame.setUser1(userId1);
+        testGame.setUser2("61768b15d9e3d602d1a9934c");
+
+        User testUser = new User();
+        testUser.setUserName(userName1);
+        testUser.setId(userId2);
+
+        List<Cell> testCells = new ArrayList<>();
+
+        Coordinates testCoordinates = new Coordinates(0,0);
+
+        Cell testCell = new Cell();
+        testCell.setCellState(CellState.SHIP);
+        testCell.setCoordinates(testCoordinates);
+        testCells.add(testCell);
+
+        Ship testShip = new Ship(ShipType.SINGLE, testCells);
+
+        when(gameRepository.findGameById(gameId)).thenReturn(testGame);
+        when(userRepository.getByUserName(userName1)).thenReturn(testUser);
+
+        PlayerException actual = assertThrows(PlayerException.class,
+                () -> gameService.addShip(gameId, userName1, FightField.Owner.PLAYER1, testShip));
+
+        assertEquals(expectedMessage, actual.getMessage());
+    }
+
+    @Test
+    void shot_whenExists_thenReturnPastState() throws ShotException, PlayerException {
+        CellState expected = CellState.PAST;
+
+        Game testGame = new Game();
+
+        testGame.setId(gameId);
+        testGame.setUser1(userId1);
+        testGame.setUser2(userId2);
+        testGame.setState(State.PLAYER1TURN);
+
+        User testUser = new User();
+        testUser.setUserName(userName1);
+        testUser.setId(userId1);
+
+        List<Cell> testCells = new ArrayList<>();
+        List<ShipDto> testShips = new ArrayList<>();
+
+        Coordinates testCoordinates = new Coordinates(0,0);
+
+        Cell testCell = new Cell();
+        testCell.setCellState(CellState.SHIP);
+        testCell.setCoordinates(testCoordinates);
+        testCells.add(testCell);
+
+        ShipDto testShip = new ShipDto();
+        testShip.setShipType(ShipType.SINGLE);
+        testShip.setCells(testCells);
+        testShips.add(testShip);
+
+        testGame.getFightField1().setShips(testShips);
+        testGame.getFightField2().setShips(testShips);
+
+        Shot testShot = new Shot(testCoordinates);
+
+        when(gameRepository.findGameById(gameId)).thenReturn(testGame);
+        when(userRepository.getByUserName(userName1)).thenReturn(testUser);
+        when(shotValidator.valid(testGame, testGame.getFightField2())).thenReturn(true);
+
+        CellState actual = gameService.shot(gameId, userName1, FightField.Owner.PLAYER1, testShot);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shot_whenExists_thenReturnKnockedState() throws ShotException, PlayerException {
+        CellState expected = CellState.KNOCKED;
+
+        Game testGame = new Game();
+
+        testGame.setId(gameId);
+        testGame.setUser1(userId1);
+        testGame.setUser2(userId2);
+        testGame.setState(State.PLAYER1TURN);
+
+        User testUser = new User();
+        testUser.setUserName(userName1);
+        testUser.setId(userId1);
+
+        List<Cell> testCells = new ArrayList<>();
+        List<ShipDto> testShips = new ArrayList<>();
+
+        Coordinates testCoordinates1 = new Coordinates(0,0);
+        Coordinates testCoordinates2 = new Coordinates(0,1);
+
+        Cell testCell1 = new Cell();
+        testCell1.setCellState(CellState.SHIP);
+        testCell1.setCoordinates(testCoordinates1);
+        testCells.add(testCell1);
+
+        Cell testCell2 = new Cell();
+        testCell2.setCellState(CellState.SHIP);
+        testCell2.setCoordinates(testCoordinates2);
+        testCells.add(testCell2);
+
+
+        ShipDto testShip = new ShipDto();
+        testShip.setShipType(ShipType.DOUBLE);
+        testShip.setCells(testCells);
+
+
+        testShips.add(testShip);
+
+        testGame.getFightField1().setShips(testShips);
+        testGame.getFightField2().setShips(testShips);
+        testGame.getFightField2().getCells().get(0).get(0).setCellState(CellState.SHIP);
+        testGame.getFightField2().getCells().get(0).get(0).setCoordinates(testCoordinates1);
+        testGame.getFightField2().getCells().get(0).get(1).setCellState(CellState.SHIP);
+        testGame.getFightField2().getCells().get(0).get(1).setCoordinates(testCoordinates2);
+
+        Shot testShot = new Shot(testCoordinates1);
+
+
+        when(gameRepository.findGameById(gameId)).thenReturn(testGame);
+        when(userRepository.getByUserName(userName1)).thenReturn(testUser);
+        when(shotValidator.valid(testGame, testGame.getFightField2())).thenReturn(true);
+
+        CellState actual = gameService.shot(gameId, userName1, FightField.Owner.PLAYER1, testShot);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shot_whenExists_thenReturnSunkState() throws ShotException, PlayerException {
+        CellState expected = CellState.SUNK;
+
+        Game testGame = new Game();
+
+        testGame.setId(gameId);
+        testGame.setUser1(userId1);
+        testGame.setUser2(userId2);
+        testGame.setState(State.PLAYER1TURN);
+
+        User testUser1 = new User();
+        testUser1.setUserName(userName1);
+        testUser1.setId(userId1);
+
+        User testUser2 = new User();
+        testUser1.setUserName(userName2);
+        testUser1.setId(userId2);
+
+        List<Cell> testCells = new ArrayList<>();
+        List<ShipDto> testShips = new ArrayList<>();
+
+        Coordinates testCoordinates1 = new Coordinates(0,0);
+        Coordinates testCoordinates2 = new Coordinates(0,2);
+
+        Cell testCell1 = new Cell();
+        testCell1.setCellState(CellState.SHIP);
+        testCell1.setCoordinates(testCoordinates1);
+        testCells.add(testCell1);
+
+        Cell testCell2 = new Cell();
+        testCell2.setCellState(CellState.SHIP);
+        testCell2.setCoordinates(testCoordinates2);
+        testCells.add(testCell2);
+
+        ShipDto testShip1 = new ShipDto();
+        testShip1.setShipType(ShipType.SINGLE);
+        testShip1.setCells(testCells);
+
+        ShipDto testShip2 = new ShipDto();
+        testShip2.setShipType(ShipType.SINGLE);
+        testShip2.setCells(testCells);
+
+        testShips.add(testShip1);
+        testShips.add(testShip2);
+
+        testGame.getFightField1().setShips(testShips);
+        testGame.getFightField2().setShips(testShips);
+        testGame.getFightField2().getCells().get(0).get(0).setCellState(CellState.SHIP);
+        testGame.getFightField2().getCells().get(0).get(0).setCoordinates(testCoordinates1);
+        testGame.getFightField2().getCells().get(0).get(2).setCellState(CellState.SHIP);
+        testGame.getFightField2().getCells().get(0).get(2).setCoordinates(testCoordinates2);
+
+        System.out.println(testGame);
+
+        Shot testShot = new Shot(testCoordinates1);
+
+
+        when(gameRepository.findGameById(gameId)).thenReturn(testGame);
+        when(userRepository.getByUserName(userName1)).thenReturn(testUser1);
+        //when(userRepository.getByUserName(userName2)).thenReturn(testUser2);
+        when(shotValidator.valid(testGame, testGame.getFightField2())).thenReturn(true);
+
+        CellState actual = gameService.shot(gameId, userName1, FightField.Owner.PLAYER1, testShot);
+
+        assertEquals(expected, actual);
+    }
+
+
 }

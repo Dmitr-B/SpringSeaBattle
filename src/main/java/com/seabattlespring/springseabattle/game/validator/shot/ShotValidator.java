@@ -14,6 +14,8 @@ public class ShotValidator {
 
         switch (game.getState()) {
             case PLAYER1TURN:
+                System.out.println("gameee " + game);
+                System.out.println("fieeeeeld " + fightField);
                 if (FightField.Owner.PLAYER2.equals(fightField.getOwner())) {
                     log.info("shooot1 " + fightField.getOwner());
                     return true;
@@ -21,6 +23,8 @@ public class ShotValidator {
                     throw  new ShotException("The move must be made by Player1");
                 }
             case PLAYER2TURN:
+                System.out.println("gameee " + game);
+                System.out.println("fieeeeeld " + fightField);
                 if (FightField.Owner.PLAYER1.equals(fightField.getOwner())) {
                     log.info("shooot2 " + fightField.getOwner());
                     return true;

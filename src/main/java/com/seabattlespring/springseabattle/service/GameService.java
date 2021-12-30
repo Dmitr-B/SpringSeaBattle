@@ -153,10 +153,10 @@ public class GameService {
 
         CellState newCellState = null;
 
-            FightField fightField = Stream.of(game.getFightField1(), game.getFightField2())
-                    .filter(field -> !owner.equals(field.getOwner()))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("field not found"));
+        FightField fightField = Stream.of(game.getFightField1(), game.getFightField2())
+                .filter(field -> !owner.equals(field.getOwner()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("field not found"));
 
         if (shotValidator.valid(game, fightField) && isValidUserId(game, userId)) {
 
@@ -252,7 +252,7 @@ public class GameService {
     private boolean isValidUserId(Game game, String userId) throws PlayerException {
         if (game.getUser1().equals(userId) || game.getUser2().equals(userId)) {
             return true;
-        } else throw new PlayerException("User not found in game");
+        } else throw new PlayerException("User not found in a game");
     }
 
     private String getUserIdByUserName(String userName) {
