@@ -2,7 +2,6 @@ package com.seabattlespring.springseabattle.game.state;
 
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.Game;
-import com.seabattlespring.springseabattle.repository.domain.State;
 
 import java.util.Random;
 

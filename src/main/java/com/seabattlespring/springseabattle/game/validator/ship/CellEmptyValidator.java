@@ -3,11 +3,7 @@ package com.seabattlespring.springseabattle.game.validator.ship;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.repository.domain.CellState;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-//@Component
 public class CellEmptyValidator extends ShipValidator {
 
     public CellEmptyValidator(ShipValidator nextShipValidator) {

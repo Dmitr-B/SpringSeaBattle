@@ -13,7 +13,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @ComponentScan("com.seabattlespring.springseabattle")
-//@EnableWebMvc
 public class GameConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

@@ -3,17 +3,14 @@ package com.seabattlespring.springseabattle.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.seabattlespring.springseabattle.repository.domain.ShipType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-//@AllArgsConstructor
 public class Ship extends Cell{
 
     @JsonProperty("type")

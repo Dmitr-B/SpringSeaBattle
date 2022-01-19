@@ -30,10 +30,6 @@ import javax.validation.Valid;
 public class GameController {
 
     private final GameService gameService;
-    private final UserService userService;
-    private final StatRepository statRepository;
-    private final RedisGameRepository redisGameRepository;
-    private final StatService statService;
 
     @GetMapping("/welcome")
     public String index() {

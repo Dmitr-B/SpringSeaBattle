@@ -3,9 +3,9 @@ package com.seabattlespring.springseabattle.service;
 import com.seabattlespring.springseabattle.dto.Coordinates;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.dto.Shot;
-import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
-import com.seabattlespring.springseabattle.game.state.*;
+import com.seabattlespring.springseabattle.game.state.GameContext;
 import com.seabattlespring.springseabattle.game.validator.ship.*;
+import com.seabattlespring.springseabattle.game.validator.ship.exception.*;
 import com.seabattlespring.springseabattle.game.validator.shot.ShotValidator;
 import com.seabattlespring.springseabattle.game.validator.shot.exception.ShotException;
 import com.seabattlespring.springseabattle.repository.GameRepository;
@@ -18,9 +18,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service

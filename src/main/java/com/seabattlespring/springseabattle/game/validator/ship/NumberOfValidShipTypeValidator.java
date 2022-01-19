@@ -3,15 +3,10 @@ package com.seabattlespring.springseabattle.game.validator.ship;
 import com.seabattlespring.springseabattle.dto.Ship;
 import com.seabattlespring.springseabattle.repository.domain.FightField;
 import com.seabattlespring.springseabattle.repository.domain.ShipType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-//@Component
 public class NumberOfValidShipTypeValidator extends ShipValidator {
 
-    //@Autowired
-    public NumberOfValidShipTypeValidator(/*@Qualifier("cellEmptyValidator")*/ ShipValidator nextShipValidator) {
+    public NumberOfValidShipTypeValidator(ShipValidator nextShipValidator) {
         super(nextShipValidator);
     }
 
