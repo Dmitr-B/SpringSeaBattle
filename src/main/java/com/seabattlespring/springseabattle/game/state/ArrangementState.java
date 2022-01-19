@@ -36,9 +36,7 @@ public class ArrangementState extends GameState{
         //todo change size of ships to 10
         FightField fightField1 = game.getFightField1();
         FightField fightField2 = game.getFightField2();
-        //log.info("size1 " + fightField1.getShips().size());
-        //log.info("size2 " + fightField2.getShips().size());
 
-        return fightField1.getShips().size() == 1 && fightField2.getShips().size() == 1;
+        return fightField1.getShips().size() == 10 && fightField2.getShips().size() == 10;
     }
 }

@@ -50,7 +50,7 @@ public class AuthenticationController {
                     () -> new UsernameNotFoundException("User doesn`t exists"));
             String token = jwtTokenProvider.createToken(userDto.getUserName(), user.getRole().name());
             Map<Object, Object> response = new HashMap<>();
-            //response.put("userName", userDto.getUserName());
+
             response.put("id", user.getId());
             response.put("token", token);
 

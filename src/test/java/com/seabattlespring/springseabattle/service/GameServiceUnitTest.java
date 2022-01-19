@@ -524,11 +524,8 @@ public class GameServiceUnitTest {
         testUser1.setUserName(userName1);
         testUser1.setId(userId1);
 
-        User testUser2 = new User();
-        testUser1.setUserName(userName2);
-        testUser1.setId(userId2);
-
-        List<Cell> testCells = new ArrayList<>();
+        List<Cell> testCells1 = new ArrayList<>();
+        List<Cell> testCells2 = new ArrayList<>();
         List<ShipDto> testShips = new ArrayList<>();
 
         Coordinates testCoordinates1 = new Coordinates(0,0);
@@ -537,20 +534,20 @@ public class GameServiceUnitTest {
         Cell testCell1 = new Cell();
         testCell1.setCellState(CellState.SHIP);
         testCell1.setCoordinates(testCoordinates1);
-        testCells.add(testCell1);
+        testCells1.add(testCell1);
 
         Cell testCell2 = new Cell();
         testCell2.setCellState(CellState.SHIP);
         testCell2.setCoordinates(testCoordinates2);
-        testCells.add(testCell2);
+        testCells2.add(testCell2);
 
         ShipDto testShip1 = new ShipDto();
         testShip1.setShipType(ShipType.SINGLE);
-        testShip1.setCells(testCells);
+        testShip1.setCells(testCells1);
 
         ShipDto testShip2 = new ShipDto();
         testShip2.setShipType(ShipType.SINGLE);
-        testShip2.setCells(testCells);
+        testShip2.setCells(testCells2);
 
         testShips.add(testShip1);
         testShips.add(testShip2);
@@ -569,12 +566,99 @@ public class GameServiceUnitTest {
 
         when(gameRepository.findGameById(gameId)).thenReturn(testGame);
         when(userRepository.getByUserName(userName1)).thenReturn(testUser1);
-        //when(userRepository.getByUserName(userName2)).thenReturn(testUser2);
         when(shotValidator.valid(testGame, testGame.getFightField2())).thenReturn(true);
 
         CellState actual = gameService.shot(gameId, userName1, FightField.Owner.PLAYER1, testShot);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shot_whenDoesNotExists_thenThrowShotException() throws ShotException {
+        String expectedMessage = "The move must be made by Player1";
+        Game testGame = new Game();
+
+        testGame.setId(gameId);
+        testGame.setUser1(userId1);
+        testGame.setUser2(userId2);
+        testGame.setState(State.PLAYER1TURN);
+
+        User testUser = new User();
+        testUser.setUserName(userName1);
+        testUser.setId(userId1);
+
+        List<Cell> testCells = new ArrayList<>();
+        List<ShipDto> testShips = new ArrayList<>();
+
+        Coordinates testCoordinates = new Coordinates(0,0);
+
+        Cell testCell = new Cell();
+        testCell.setCellState(CellState.SHIP);
+        testCell.setCoordinates(testCoordinates);
+        testCells.add(testCell);
+
+        ShipDto testShip = new ShipDto();
+        testShip.setShipType(ShipType.SINGLE);
+        testShip.setCells(testCells);
+        testShips.add(testShip);
+
+        testGame.getFightField1().setShips(testShips);
+        testGame.getFightField2().setShips(testShips);
+
+        Shot testShot = new Shot(testCoordinates);
+
+        when(gameRepository.findGameById(gameId)).thenReturn(testGame);
+        when(userRepository.getByUserName(userName1)).thenReturn(testUser);
+        when(shotValidator.valid(testGame, testGame.getFightField1())).thenThrow(new ShotException(expectedMessage));
+
+        ShotException actual = assertThrows(ShotException.class,
+                () -> gameService.shot(gameId, userName1, FightField.Owner.PLAYER2, testShot));
+
+        assertEquals(expectedMessage, actual.getMessage());
+    }
+
+    @Test
+    void shot_whenDoesNotExists_thenThrowPlayerException() throws ShotException {
+        String expectedMessage = "User not found in a game";
+        Game testGame = new Game();
+
+        testGame.setId(gameId);
+        testGame.setUser1(userId1);
+        testGame.setUser2("61768b15d9e3d602d1a9934c");
+        testGame.setState(State.PLAYER1TURN);
+
+        User testUser = new User();
+        testUser.setUserName(userName1);
+        testUser.setId(userId2);
+
+        List<Cell> testCells = new ArrayList<>();
+        List<ShipDto> testShips = new ArrayList<>();
+
+        Coordinates testCoordinates = new Coordinates(0,0);
+
+        Cell testCell = new Cell();
+        testCell.setCellState(CellState.SHIP);
+        testCell.setCoordinates(testCoordinates);
+        testCells.add(testCell);
+
+        ShipDto testShip = new ShipDto();
+        testShip.setShipType(ShipType.SINGLE);
+        testShip.setCells(testCells);
+        testShips.add(testShip);
+
+        testGame.getFightField1().setShips(testShips);
+        testGame.getFightField2().setShips(testShips);
+
+        Shot testShot = new Shot(testCoordinates);
+
+        when(gameRepository.findGameById(gameId)).thenReturn(testGame);
+        when(userRepository.getByUserName(userName1)).thenReturn(testUser);
+        when(shotValidator.valid(testGame, testGame.getFightField2())).thenReturn(true);
+
+        PlayerException actual = assertThrows(PlayerException.class,
+                () -> gameService.shot(gameId, userName1, FightField.Owner.PLAYER1, testShot));
+
+        assertEquals(expectedMessage, actual.getMessage());
     }
 
 

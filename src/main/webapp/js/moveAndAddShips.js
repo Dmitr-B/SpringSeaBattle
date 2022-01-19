@@ -1,12 +1,11 @@
-let activeSingleShip = null; /* add change active ship with cursor */
-let activeDoubleShip = null; /* add change active ship with cursor */
-let activeTripleShip = null; /* add change active ship with cursor */
-let activeFourShip = null; /* add change active ship with cursor */
+let activeSingleShip = null;
+let activeDoubleShip = null;
+let activeTripleShip = null;
+let activeFourShip = null;
 let allSingleDeckShips = document.querySelectorAll('.singleDeckShip');
 let allDoubleDeckShips = document.querySelectorAll('.doubleDeckShip');
 let allTripleDeckShips = document.querySelectorAll('.tripleDeckShip');
 let allFourDeckShips = document.querySelectorAll('.fourDeckShip');
-//let singleDeckShip = null;
 let shipOnMove = null;
 let startShipCell = null;
 let currentDroppable = null;
@@ -100,25 +99,16 @@ function moveShip(allShips, activeShip, ship) {
 
             moveAt(e);
             ship.hidden = true;
-            let testCoords = getCoords(ship);
+
             const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
             ship.hidden = false;
             let cell = document.getElementById(elemBelow.id);
-            // let coords = getCoords(ship);
-            // shipTail = document.elementFromPoint(coords.right, coords.bottom);
-            // console.log("celllll " + cell);
-            // console.log("test suka " + shipTail.tagName);
-            // console.log("top " + coords.top);
-            // console.log("left " + coords.left);
-            // console.log("bottom " + coords.bottom);
-            // console.log("right " + coords.right);
-
 
             if (cell !== null) {
                 startShipCell = cell;
                 let coords = getCoords(shipOnMove);
                 shipTail = document.elementFromPoint(coords.right, coords.bottom);
-                console.log("test suka " + coords.right + " " + coords.bottom);
+
                 if (shipTail.tagName === "TH") {
                     moveToCellAndSetButtonCoordinates(cell, ship);
                 }
@@ -156,13 +146,6 @@ function moveShip(allShips, activeShip, ship) {
         return false;
     }
 
-    // if (activeSingleShip != null) {
-    //     singleDeckShip = ship;
-    // }
-    //
-    // if (activeDoubleShip != null) {
-    //     doubleDeckShip = ship;
-    // }
     shipOnMove = ship;
 
 }
@@ -219,30 +202,11 @@ function moveToStart(ship) {
 
 function moveToCellAndSetButtonCoordinates(element, ship) {
 
-
-    //const shipHead = document.elementFromPoint(getCoords(ship).left, getCoords(ship).top);
-
-    //console.log("tail " + shipTail.closest('.test_table'));
-    //console.log("head " + shipHead.id);
     console.log("right " + getCoords(ship).right);
     console.log("bottom " + getCoords(ship).bottom);
 
-    // if (shipHead.closest('.test_table') !== null) {
-    //     ship.style.right = getCellCoords(element).left.valueOf()-1 + "px";
-    //     ship.style.bottom = getCellCoords(element).top.valueOf() + "px";
-    // }
-
-     //if (shipTail.tagName === "TH") {
          ship.style.left = getCoords(element).left.valueOf()-1 + "px";
          ship.style.top = getCoords(element).top.valueOf() + "px";
-
-     //} //else {
-    // let coords = getCoords(shipOnMove);
-    // shipTail = document.elementFromPoint(coords.right, coords.bottom);
-    // console.log("test suka " + coords.right + " " + coords.bottom);
-    //     ship.style.right = getCellCoords(element).left.valueOf()-1 + "px";
-    //     ship.style.bottom = getCellCoords(element).top.valueOf() + "px";
-    // }
 
     buttonX = (Number.parseInt(ship.style.left) - 55).toString() + "px";
     console.log("buttonX " + buttonX);
@@ -331,8 +295,7 @@ function setActiveShip(type, value) {
 
 function addShipToField(cell, ship) {
     let shipJSON = null;
-    //let xhr = new XMLHttpRequest();
-    //let url = '/game/' + sessionStorage.getItem("gameId") + '/fight_field/' + sessionStorage.getItem("owner") + '/ship';
+
     switch (document.getElementById(ship.id).className) {
         case "singleDeckShip":
             shipJSON = {
@@ -523,18 +486,6 @@ function addShipToField(cell, ship) {
             }
             break;
     }
-    // let singleDeckShipJSON = {
-    //     type: "SINGLE",
-    //     cells: [
-    //         {
-    //             cellState: "SHIP",
-    //             coordinates: {
-    //                 x: cell.dataset.x,
-    //                 y: cell.dataset.y
-    //             }
-    //         }
-    //     ]
-    // }
 
     let data = JSON.stringify(shipJSON);
 

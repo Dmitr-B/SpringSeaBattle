@@ -12,18 +12,12 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class Coordinates {
 
-    //@JsonProperty("x")
     @Min(value = 0, message = "x must not be below 0")
     @Max(value = 9, message = "y must not be below 9")
     private int x;
-    //@JsonProperty("y")
+
     @Min(value = 0, message = "x must not be below 0")
     @Max(value = 9, message = "y must not be below 9")
     private int y;
 
-//    @JsonCreator
-//    public Coordinates (int x, int y) {
-//        this.x = x;
-//        this.y = y;
-//    }
 }

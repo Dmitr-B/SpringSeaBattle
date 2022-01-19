@@ -81,23 +81,6 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    //@GetMapping("/test/{id}")
-    @GetMapping("/test")
-    public ResponseEntity<Void> getUserNameFromToken(Authentication authentication/*, @PathVariable("id") String id*/) {
-        String name = authentication.getName();
-        //Game game = gameService.getGameById(id);
-        //log.info(game);
-        //statRepository.saveWin("loh", "suka");
-        //gameService.testChangeStat("PLAYER2", game);
-        //Date date = new Date();
-        //System.out.println("Date " + date.getTime());
-        //redisGameRepository.addAvailableGame("available_games", "id", 6000);
-        //log.info("id " + gameService.getAvailableId());
-        log.info("stat " + statService.getStat("win"));
-
-        return ResponseEntity.ok().build();
-    }
-
     @PatchMapping("/join")
     public ResponseEntity<Void> joinRandom(Authentication authentication) {
 

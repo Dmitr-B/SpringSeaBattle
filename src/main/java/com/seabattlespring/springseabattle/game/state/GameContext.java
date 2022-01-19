@@ -5,12 +5,7 @@ import com.seabattlespring.springseabattle.repository.domain.Game;
 public class GameContext {
     private GameState gameState;
 
-//    public void setGameState(GameState gameState) {
-//        this.gameState = gameState;
-//    }
-
     public GameContext() {
-        //getCurrentState(game);
     }
 
     public void changeGameState(GameState gameState) {

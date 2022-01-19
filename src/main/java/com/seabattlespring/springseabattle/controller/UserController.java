@@ -20,8 +20,6 @@ import java.net.URISyntaxException;
 @RequestMapping("/")
 public class UserController {
 
-    private final UserService userService;
-
     @GetMapping("auth/login")
     public String getLoginPage() {
         return "login";

@@ -31,15 +31,12 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final StatRepository statRepository;
-    //@Autowired
     private final ShotValidator shotValidator;
     private final RedisGameRepository redisGameRepository;
-    //@Qualifier("numberOfCoordinatesValidator")
-    //@Autowired
     private final ShipValidator shipValidator = new NumberOfCoordinatesValidator(new OneStraightLineValidator(
             new NearbyCoordinatesValidator(new NumberOfValidShipTypeValidator(
                     new CellEmptyValidator(null)))));
-    //private final GameContext gameContext;
+
     GameContext gameContext = new GameContext();
 
     public String createGame(String userName) {
@@ -111,10 +108,6 @@ public class GameService {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("field not found"));
 
-            //ShipValidator shipValidator = createValidator();
-
-            log.info("valid " + shipValidator.valid(fightField, ship));
-
             if (shipValidator.valid(fightField, ship)) {
                 ShipDto shipDto = new ShipDto();
                 shipDto.setShipType(ship.getShipType());
@@ -130,11 +123,6 @@ public class GameService {
                 fightField.getShips().add(shipDto);
                 setCellArea(fightField, shipDto);
 
-                //log.info("stateFight " + isFightStateGame(game));
-
-            /*if (isFightStateGame(game)) {
-                game.setState(State.FIGHT);
-            }*/
                 gameContext.doChangeGameState(game);
 
                 //todo якщо гра завершилася, то змінити статистику
@@ -160,11 +148,8 @@ public class GameService {
 
         if (shotValidator.valid(game, fightField) && isValidUserId(game, userId)) {
 
-            log.info("state " + gameContext.getGameState());
-
             Cell cell = fightField.getCells().get(shot.getCoordinates().getX()).get(shot.getCoordinates().getY());
 
-            //
             if (CellState.SHIP.equals(cell.getCellState())) {
                 newCellState = resultOfTheShot(fightField, shot.getCoordinates());
             } else {

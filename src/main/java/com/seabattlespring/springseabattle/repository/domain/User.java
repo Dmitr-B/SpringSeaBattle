@@ -21,5 +21,4 @@ public class User {
     private Role role;
     private Status status;
 
-//    private List<String> games;
 }

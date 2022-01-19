@@ -12,11 +12,7 @@ import javax.validation.Valid;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Document(collection = "game")
 public class Cell {
-
-//    @Id
-//    private String id;
 
     private CellState cellState;
     @Valid

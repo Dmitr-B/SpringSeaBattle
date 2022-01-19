@@ -8,12 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-//@NoArgsConstructor
-//@Document(collection = "fightField")
 public class FightField {
-
-//    @Id
-//    private String id;
 
     private Owner owner;
     private List<List<Cell>> cells;
@@ -34,9 +29,4 @@ public class FightField {
     public enum Owner {
         PLAYER1, PLAYER2
     }
-// [0] [1] [2] [3]
-// |
-// [0]
-// [1]
-// [2]
 }

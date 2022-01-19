@@ -17,29 +17,14 @@ function onStartGame() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             const respText = xhr.responseText;
-            alert("gameeee " + respText);
+
             sessionStorage.setItem("game", respText);
-            alert("gameInSessionStorage " + sessionStorage.getItem("game"));
+
             let jData = JSON.parse(respText);
 
-            //alert("field1 " + JSON.stringify(fightField1));
-            // user1Cells = JSON.stringify(jData["fightField1"]["cells"]);
-            // alert("celllllls " + user1Cells);
+
              user1Cells = jData["fightField1"]["cells"];
              changeCellStyle();
-            // alert("user1Cells " + user1Cells[0][0]["cellState"]);
-
-            // for (let i = 0; i < user1Cells.length; i++) {
-            //     alert(user1Cells[i]);
-            // }
-
-            // let id = jData["id"];
-            // sessionStorage.setItem("token", token);
-            // //sessionStorage.setItem("id", id);
-            //
-            // alert("tokenInSession " + sessionStorage.getItem("token"));
-            // alert("idInSession " + sessionStorage.getItem("id"));
-            // window.location.replace("/auth/success");
         }
     }
 }
@@ -53,8 +38,6 @@ function changeCellStyle() {
                 case "PAST":
                     cell = document.getElementById("cell_" + x +"_" + y);
                     cell.className = "battlefield_cell_past";
-                    //cell.style.backgroundColor = "#fce38a";
-                    //setSunkStyle(cell);
                 break;
                 case "KNOCKED":
                     cell = document.getElementById("cell_" + x +"_" + y);
@@ -69,5 +52,4 @@ function changeCellStyle() {
             }
         }
     }
-
 }

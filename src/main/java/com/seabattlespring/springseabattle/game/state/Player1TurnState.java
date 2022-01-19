@@ -18,7 +18,6 @@ public class Player1TurnState extends GameState{
             gameContext.changeGameState(new OverState(gameContext));
             gameContext.doChangeGameState(game);
             game.setWinner(FightField.Owner.PLAYER1.name());
-            //game.setState(State.OVER);
         }
     }
 
